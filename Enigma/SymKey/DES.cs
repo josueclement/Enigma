@@ -67,7 +67,7 @@ namespace Enigma.SymKey
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void EncryptCBC(Stream input, Stream output, byte[] key, byte[] iv, IDataPadding padding, Action<int> notifyProgression = null, int bufferSize = 4096)
+        public static void EncryptCBC(Stream input, Stream output, byte[] key, byte[] iv, IDataPadding padding, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -97,7 +97,7 @@ namespace Enigma.SymKey
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task EncryptCBCAsync(Stream input, Stream output, byte[] key, byte[] iv, IDataPadding padding, Action<int> notifyProgression = null, int bufferSize = 4096)
+        public static async Task EncryptCBCAsync(Stream input, Stream output, byte[] key, byte[] iv, IDataPadding padding, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -154,7 +154,7 @@ namespace Enigma.SymKey
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void DecryptCBC(Stream input, Stream output, byte[] key, byte[] iv, IDataPadding padding, Action<int> notifyProgression = null, int bufferSize = 4096)
+        public static void DecryptCBC(Stream input, Stream output, byte[] key, byte[] iv, IDataPadding padding, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -184,7 +184,7 @@ namespace Enigma.SymKey
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task DecryptCBCAsync(Stream input, Stream output, byte[] key, byte[] iv, IDataPadding padding, Action<int> notifyProgression = null, int bufferSize = 4096)
+        public static async Task DecryptCBCAsync(Stream input, Stream output, byte[] key, byte[] iv, IDataPadding padding, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));

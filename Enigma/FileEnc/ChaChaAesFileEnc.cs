@@ -33,7 +33,7 @@ namespace Enigma.FileEnc
         /// <param name="keyName">Key name</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void Encrypt(Stream input, Stream output, RSACryptoServiceProvider rsa, string keyName, Action<int> notifyProgression = null)
+        public static void Encrypt(Stream input, Stream output, RSACryptoServiceProvider rsa, string keyName, Action<int>? notifyProgression = null)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -78,7 +78,7 @@ namespace Enigma.FileEnc
         /// <param name="keyName">Key name</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task EncryptAsync(Stream input, Stream output, RSACryptoServiceProvider rsa, string keyName, Action<int> notifyProgression = null)
+        public static async Task EncryptAsync(Stream input, Stream output, RSACryptoServiceProvider rsa, string keyName, Action<int>? notifyProgression = null)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -123,7 +123,7 @@ namespace Enigma.FileEnc
         /// <param name="keyName">Key name</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void Encrypt(string inputFile, string outputFile, RSACryptoServiceProvider rsa, string keyName, Action<int> notifyProgression = null)
+        public static void Encrypt(string inputFile, string outputFile, RSACryptoServiceProvider rsa, string keyName, Action<int>? notifyProgression = null)
         {
             if (inputFile == null)
                 throw new ArgumentNullException(nameof(inputFile));
@@ -152,7 +152,7 @@ namespace Enigma.FileEnc
         /// <param name="keyName">Key name</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task EncryptAsync(string inputFile, string outputFile, RSACryptoServiceProvider rsa, string keyName, Action<int> notifyProgression = null)
+        public static async Task EncryptAsync(string inputFile, string outputFile, RSACryptoServiceProvider rsa, string keyName, Action<int>? notifyProgression = null)
         {
             if (inputFile == null)
                 throw new ArgumentNullException(nameof(inputFile));
@@ -184,7 +184,7 @@ namespace Enigma.FileEnc
         /// <param name="password">Passw0rd</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void Encrypt(Stream input, Stream output, string password, Action<int> notifyProgression = null)
+        public static void Encrypt(Stream input, Stream output, string password, Action<int>? notifyProgression = null)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -219,7 +219,7 @@ namespace Enigma.FileEnc
         /// <param name="password">Passw0rd</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task EncryptAsync(Stream input, Stream output, string password, Action<int> notifyProgression = null)
+        public static async Task EncryptAsync(Stream input, Stream output, string password, Action<int>? notifyProgression = null)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -254,7 +254,7 @@ namespace Enigma.FileEnc
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void Encrypt(string inputFile, string outputFile, string password, Action<int> notifyProgression = null)
+        public static void Encrypt(string inputFile, string outputFile, string password, Action<int>? notifyProgression = null)
         {
             if (inputFile == null)
                 throw new ArgumentNullException(nameof(inputFile));
@@ -280,7 +280,7 @@ namespace Enigma.FileEnc
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task EncryptAsync(string inputFile, string outputFile, string password, Action<int> notifyProgression = null)
+        public static async Task EncryptAsync(string inputFile, string outputFile, string password, Action<int>? notifyProgression = null)
         {
             if (inputFile == null)
                 throw new ArgumentNullException(nameof(inputFile));
@@ -310,7 +310,7 @@ namespace Enigma.FileEnc
         /// <param name="rsa">RSA key</param>
         /// <param name="notifyProgression">Notify progression delgate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void Decrypt(Stream input, Stream output, RSACryptoServiceProvider rsa, Action<int> notifyProgression = null)
+        public static void Decrypt(Stream input, Stream output, RSACryptoServiceProvider rsa, Action<int>? notifyProgression = null)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -350,7 +350,7 @@ namespace Enigma.FileEnc
         /// <param name="rsa">RSA key</param>
         /// <param name="notifyProgression">Notify progression delgate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task DecryptAsync(Stream input, Stream output, RSACryptoServiceProvider rsa, Action<int> notifyProgression = null)
+        public static async Task DecryptAsync(Stream input, Stream output, RSACryptoServiceProvider rsa, Action<int>? notifyProgression = null)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -390,7 +390,7 @@ namespace Enigma.FileEnc
         /// <param name="rsa">RSA key</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void Decrypt(string inputFile, string outputFile, RSACryptoServiceProvider rsa, Action<int> notifyProgression = null)
+        public static void Decrypt(string inputFile, string outputFile, RSACryptoServiceProvider rsa, Action<int>? notifyProgression = null)
         {
             if (inputFile == null)
                 throw new ArgumentNullException(nameof(inputFile));
@@ -416,7 +416,7 @@ namespace Enigma.FileEnc
         /// <param name="rsa">RSA key</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task DecryptAsync(string inputFile, string outputFile, RSACryptoServiceProvider rsa, Action<int> notifyProgression = null)
+        public static async Task DecryptAsync(string inputFile, string outputFile, RSACryptoServiceProvider rsa, Action<int>? notifyProgression = null)
         {
             if (inputFile == null)
                 throw new ArgumentNullException(nameof(inputFile));
@@ -446,7 +446,7 @@ namespace Enigma.FileEnc
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void Decrypt(Stream input, Stream output, string password, Action<int> notifyProgression = null)
+        public static void Decrypt(Stream input, Stream output, string password, Action<int>? notifyProgression = null)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -480,7 +480,7 @@ namespace Enigma.FileEnc
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task DecryptAsync(Stream input, Stream output, string password, Action<int> notifyProgression = null)
+        public static async Task DecryptAsync(Stream input, Stream output, string password, Action<int>? notifyProgression = null)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -514,7 +514,7 @@ namespace Enigma.FileEnc
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void Decrypt(string inputFile, string outputFile, string password, Action<int> notifyProgression = null)
+        public static void Decrypt(string inputFile, string outputFile, string password, Action<int>? notifyProgression = null)
         {
             if (inputFile == null)
                 throw new ArgumentNullException(nameof(inputFile));
@@ -540,7 +540,7 @@ namespace Enigma.FileEnc
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task DecryptAsync(string inputFile, string outputFile, string password, Action<int> notifyProgression = null)
+        public static async Task DecryptAsync(string inputFile, string outputFile, string password, Action<int>? notifyProgression = null)
         {
             if (inputFile == null)
                 throw new ArgumentNullException(nameof(inputFile));
@@ -572,7 +572,7 @@ namespace Enigma.FileEnc
         /// <param name="aesKey">AES key</param>
         /// <param name="aesIv">AES Iv</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        private static void SymEncryptAndPad(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int> notifyProgression = null)
+        private static void SymEncryptAndPad(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int>? notifyProgression = null)
         {
             IDataPadding padding = new Pkcs7Padding();
 
@@ -623,7 +623,7 @@ namespace Enigma.FileEnc
         /// <param name="aesKey">AES key</param>
         /// <param name="aesIv">AES Iv</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        private static async Task SymEncryptAndPadAsync(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int> notifyProgression = null)
+        private static async Task SymEncryptAndPadAsync(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int>? notifyProgression = null)
         {
             IDataPadding padding = new Pkcs7Padding();
 
@@ -674,12 +674,12 @@ namespace Enigma.FileEnc
         /// <param name="aesKey">AES key</param>
         /// <param name="aesIv">AES Iv</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        private static void SymDecryptAndUnpad(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int> notifyProgression = null)
+        private static void SymDecryptAndUnpad(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int>? notifyProgression = null)
         {
             IDataPadding padding = new Pkcs7Padding();
 
             byte[] d1, d2;
-            byte[] backup = null;
+            byte[] backup = new byte[] { };
 
             do
             {
@@ -722,12 +722,12 @@ namespace Enigma.FileEnc
         /// <param name="aesKey">AES key</param>
         /// <param name="aesIv">AES Iv</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        private static async Task SymDecryptAndUnpadAsync(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int> notifyProgression = null)
+        private static async Task SymDecryptAndUnpadAsync(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int>? notifyProgression = null)
         {
             IDataPadding padding = new Pkcs7Padding();
 
             byte[] d1, d2;
-            byte[] backup = null;
+            byte[] backup = new byte[] { };
 
             do
             {

@@ -23,7 +23,7 @@ namespace Enigma.SymKey
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
         public static void EncryptCBC(Stream input, Stream output, IBufferedCipher cipher, int blockSize,
-                                      IDataPadding padding, Action<int> notifyProgression = null, int bufferSize = 4096)
+                                      IDataPadding padding, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -83,7 +83,7 @@ namespace Enigma.SymKey
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
         public static async Task EncryptCBCAsync(Stream input, Stream output, IBufferedCipher cipher, int blockSize,
-                                                 IDataPadding padding, Action<int> notifyProgression = null, int bufferSize = 4096)
+                                                 IDataPadding padding, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -143,7 +143,7 @@ namespace Enigma.SymKey
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
         public static void DecryptCBC(Stream input, Stream output, IBufferedCipher cipher, int blockSize,
-                                      IDataPadding padding, Action<int> notifyProgression = null, int bufferSize = 4096)
+                                      IDataPadding padding, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -154,7 +154,7 @@ namespace Enigma.SymKey
             if (padding == null)
                 throw new ArgumentNullException(nameof(padding));
 
-            byte[] backup = null;
+            byte[]? backup = null;
             int bytesRead;
             byte[] buffer = new byte[bufferSize];
             byte[] dec = new byte[bufferSize];
@@ -213,7 +213,7 @@ namespace Enigma.SymKey
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
         public static async Task DecryptCBCAsync(Stream input, Stream output, IBufferedCipher cipher, int blockSize,
-                                                 IDataPadding padding, Action<int> notifyProgression = null, int bufferSize = 4096)
+                                                 IDataPadding padding, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -224,7 +224,7 @@ namespace Enigma.SymKey
             if (padding == null)
                 throw new ArgumentNullException(nameof(padding));
 
-            byte[] backup = null;
+            byte[]? backup = null;
             int bytesRead;
             byte[] buffer = new byte[bufferSize];
             byte[] dec = new byte[bufferSize];

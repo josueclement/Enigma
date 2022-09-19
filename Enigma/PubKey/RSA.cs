@@ -67,7 +67,7 @@ namespace Enigma.PubKey
         /// <param name="input">Input stream</param>
         /// <param name="password">Password</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static RSACryptoServiceProvider LoadFromPEM(Stream input, string password = null)
+        public static RSACryptoServiceProvider LoadFromPEM(Stream input, string? password = null)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -112,7 +112,7 @@ namespace Enigma.PubKey
         /// <param name="filePath">PEM file path</param>
         /// <param name="password">Password</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static RSACryptoServiceProvider LoadFromPEM(string filePath, string password = null)
+        public static RSACryptoServiceProvider LoadFromPEM(string filePath, string? password = null)
         {
             if (filePath == null)
                 throw new ArgumentNullException(nameof(filePath));
@@ -331,9 +331,9 @@ namespace Enigma.PubKey
         /// </summary>
         class PasswordFinder : IPasswordFinder
         {
-            private string _password;
+            private string? _password;
 
-            public PasswordFinder(string password)
+            public PasswordFinder(string? password)
             {
                 _password = password;
             }
@@ -342,9 +342,9 @@ namespace Enigma.PubKey
             /// Get password stored
             /// </summary>
             /// <returns>Password</returns>
-            public char[] GetPassword()
+            public char[]? GetPassword()
             {
-                return _password.ToCharArray();
+                return _password?.ToCharArray();
             }
         }
     }

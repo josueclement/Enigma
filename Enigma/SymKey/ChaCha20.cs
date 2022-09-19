@@ -59,7 +59,7 @@ namespace Enigma.SymKey
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void Encrypt(Stream input, Stream output, byte[] key, byte[] nonce, Action<int> notifyProgression = null, int bufferSize = 4096)
+        public static void Encrypt(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -102,7 +102,7 @@ namespace Enigma.SymKey
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce, Action<int> notifyProgression = null, int bufferSize = 4096)
+        public static async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -172,7 +172,7 @@ namespace Enigma.SymKey
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void Decrypt(Stream input, Stream output, byte[] key, byte[] nonce, Action<int> notifyProgression = null, int bufferSize = 4096)
+        public static void Decrypt(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -215,7 +215,7 @@ namespace Enigma.SymKey
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static async Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce, Action<int> notifyProgression = null, int bufferSize = 4096)
+        public static async Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
