@@ -23,7 +23,7 @@ namespace CryptoToolkitUnitTests.Padding
             byte[] padded = Hex.Decode(paddedStr);
 
             byte[] calcData = new NoPadding().Unpad(padded, 16);
-            Assert.AreEqual(padded, calcData);
+            Assert.That(calcData, Is.EqualTo(padded));
         }
 
         [Test]

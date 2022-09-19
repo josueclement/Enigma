@@ -14,7 +14,7 @@ namespace CryptoToolkitUnitTests.KDF
         public void GenerateKeys(Tuple<string, byte[], byte[]> values)
         {
             byte[] key = PBKDF2.GenerateKeyFromPassword(32, values.Item1, values.Item2, 50000);
-            Assert.AreEqual(values.Item3, key);
+            Assert.That(key, Is.EqualTo(values.Item3));
         }
 
         static IEnumerable<Tuple<string, byte[], byte[]>> DataSource()

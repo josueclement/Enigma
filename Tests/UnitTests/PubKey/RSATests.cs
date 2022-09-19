@@ -133,7 +133,7 @@ namespace CryptoToolkitUnitTests.PubKey
             System.Security.Cryptography.RSACryptoServiceProvider rsa = RSA.LoadFromPEM(@"data\PubKey\pk_key1.pem", "test1234");
 
             byte[] dec = RSA.Decrypt(rsa, values.Item2);
-            Assert.AreEqual(values.Item1, dec);
+            Assert.That(dec, Is.EqualTo(values.Item1));
         }
 
         [TestCaseSource(nameof(DataSource2))]
@@ -144,7 +144,7 @@ namespace CryptoToolkitUnitTests.PubKey
                 System.Security.Cryptography.RSACryptoServiceProvider rsa = RSA.LoadFromPEM(@"data\PubKey\pk_key1.pem", "test1234");
 
                 byte[] dec = RSA.Decrypt(rsa, values.Item2);
-                Assert.AreEqual(values.Item1, dec);
+                Assert.That(dec, Is.EqualTo(values.Item1));
             });
         }
 
@@ -156,7 +156,7 @@ namespace CryptoToolkitUnitTests.PubKey
                 System.Security.Cryptography.RSACryptoServiceProvider rsa = RSA.LoadFromPEM(@"data\PubKey\pub_key1.pem");
 
                 byte[] dec = RSA.Decrypt(rsa, values.Item2);
-                Assert.AreEqual(values.Item1, dec);
+                Assert.That(dec, Is.EqualTo(values.Item1));
             });
         }
 

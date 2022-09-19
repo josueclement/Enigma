@@ -29,7 +29,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                     dec = output.ToArray();
                 }
             }
-            Assert.AreEqual(values.Item1, dec);
+            Assert.That(dec, Is.EqualTo(values.Item1));
         }
 
         [TestCaseSource(nameof(DataSourceKey))]
@@ -45,7 +45,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                     dec = output.ToArray();
                 }
             }
-            Assert.AreEqual(values.Item1, dec);
+            Assert.That(dec, Is.EqualTo(values.Item1));
         }
 
         [TestCaseSource(nameof(DataSourcePass))]
@@ -60,7 +60,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                     dec = output.ToArray();
                 }
             }
-            Assert.AreEqual(values.Item1, dec);
+            Assert.That(dec, Is.EqualTo(values.Item1));
         }
 
         [TestCaseSource(nameof(DataSourcePass))]
@@ -75,7 +75,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                     dec = output.ToArray();
                 }
             }
-            Assert.AreEqual(values.Item1, dec);
+            Assert.That(dec, Is.EqualTo(values.Item1));
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                     dec = output.ToArray();
                 }
             }
-            Assert.AreEqual(data, dec);
+            Assert.That(dec, Is.EqualTo(data));
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                     dec = output.ToArray();
                 }
             }
-            Assert.AreEqual(data, dec);
+            Assert.That(dec, Is.EqualTo(data));
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                     dec = output.ToArray();
                 }
             }
-            Assert.AreEqual(data, dec);
+            Assert.That(dec, Is.EqualTo(data));
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                     dec = output.ToArray();
                 }
             }
-            Assert.AreEqual(data, dec);
+            Assert.That(dec, Is.EqualTo(data));
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                 }
             }
 
-            Assert.AreEqual(data, dec);
+            Assert.That(dec, Is.EqualTo(data));
         }
 
         [Test]
@@ -233,7 +233,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                 }
             }
 
-            Assert.AreEqual(data, dec);
+            Assert.That(dec, Is.EqualTo(data));
         }
 
         [Test]
@@ -260,7 +260,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                 }
             }
 
-            Assert.AreEqual(data, dec);
+            Assert.That(dec, Is.EqualTo(data));
         }
 
         [Test]
@@ -287,7 +287,7 @@ namespace CryptoToolkitUnitTests.FileEnc
                 }
             }
 
-            Assert.AreEqual(data, dec);
+            Assert.That(dec, Is.EqualTo(data));
         }
 
         [Test]
@@ -310,13 +310,13 @@ namespace CryptoToolkitUnitTests.FileEnc
                 using (MemoryStream ms = new MemoryStream(enc))
                 {
                     byte[] header = BinaryHelper.ReadBytes(ms, 7);
-                    Assert.AreEqual("CAENCR!", Encoding.ASCII.GetString(header));
+                    Assert.That(Encoding.ASCII.GetString(header), Is.EqualTo("CAENCR!"));
 
                     byte version = BinaryHelper.ReadByte(ms);
-                    Assert.AreEqual(0x05, version);
+                    Assert.That(version, Is.EqualTo(0x05));
 
                     byte[] keyNameData = BinaryHelper.ReadLV(ms);
-                    Assert.AreEqual("keyname", Encoding.ASCII.GetString(keyNameData));
+                    Assert.That(Encoding.ASCII.GetString(keyNameData), Is.EqualTo("keyname"));
 
                     byte[] encKeyData = BinaryHelper.ReadLV(ms);
                     byte[] keyData = RSA.Decrypt(rsa, encKeyData);
@@ -330,10 +330,10 @@ namespace CryptoToolkitUnitTests.FileEnc
                         aesIv = BinaryHelper.ReadLV(msKeyData);
                     }
 
-                    Assert.AreEqual(32, chachaKey.Length);
-                    Assert.AreEqual(12, chachaNonce.Length);
-                    Assert.AreEqual(32, aesKey.Length);
-                    Assert.AreEqual(16, aesIv.Length);
+                    Assert.That(chachaKey.Length, Is.EqualTo(32));
+                    Assert.That(chachaNonce.Length, Is.EqualTo(12));
+                    Assert.That(aesKey.Length, Is.EqualTo(32));
+                    Assert.That(aesIv.Length, Is.EqualTo(16));
 
                     byte[] enc;
                     using (MemoryStream msData = new MemoryStream())
@@ -348,9 +348,9 @@ namespace CryptoToolkitUnitTests.FileEnc
                         byte[] d2 = BinaryHelper.ReadLV(msData);
                         byte[] d0 = BinaryHelper.ReadLV(msData);
 
-                        Assert.AreEqual(32, d1.Length);
-                        Assert.AreEqual(32, d2.Length);
-                        Assert.AreEqual(0, d0.Length);
+                        Assert.That(d1.Length, Is.EqualTo(32));
+                        Assert.That(d2.Length, Is.EqualTo(32));
+                        Assert.That(d0.Length, Is.EqualTo(0));
 
                         byte[] rpad = ChaCha20Rfc7539.Decrypt(d1, chachaKey, chachaNonce);
                         byte[] xor = AES.DecryptCBC(d2, aesKey, aesIv);
@@ -364,7 +364,7 @@ namespace CryptoToolkitUnitTests.FileEnc
 
                         byte[] unpad = new Pkcs7Padding().Unpad(dec, 16);
 
-                        Assert.AreEqual(data, unpad);
+                        Assert.That(unpad, Is.EqualTo(data));
                     }
                 }
             });
@@ -390,13 +390,13 @@ namespace CryptoToolkitUnitTests.FileEnc
                 using (MemoryStream ms = new MemoryStream(enc))
                 {
                     byte[] header = await BinaryHelper.ReadBytesAsync(ms, 7).ConfigureAwait(false);
-                    Assert.AreEqual("CAENCR!", Encoding.ASCII.GetString(header));
+                    Assert.That(Encoding.ASCII.GetString(header), Is.EqualTo("CAENCR!"));
 
                     byte version = await BinaryHelper.ReadByteAsync(ms).ConfigureAwait(false);
-                    Assert.AreEqual(0x05, version);
+                    Assert.That(version, Is.EqualTo(0x05));
 
                     byte[] keyNameData = await BinaryHelper.ReadLVAsync(ms).ConfigureAwait(false);
-                    Assert.AreEqual("keyname", Encoding.ASCII.GetString(keyNameData));
+                    Assert.That(Encoding.ASCII.GetString(keyNameData), Is.EqualTo("keyname"));
 
                     byte[] encKeyData = await BinaryHelper.ReadLVAsync(ms).ConfigureAwait(false);
                     byte[] keyData = RSA.Decrypt(rsa, encKeyData);
@@ -410,10 +410,10 @@ namespace CryptoToolkitUnitTests.FileEnc
                         aesIv = await BinaryHelper.ReadLVAsync(msKeyData).ConfigureAwait(false);
                     }
 
-                    Assert.AreEqual(32, chachaKey.Length);
-                    Assert.AreEqual(12, chachaNonce.Length);
-                    Assert.AreEqual(32, aesKey.Length);
-                    Assert.AreEqual(16, aesIv.Length);
+                    Assert.That(chachaKey.Length, Is.EqualTo(32));
+                    Assert.That(chachaNonce.Length, Is.EqualTo(12));
+                    Assert.That(aesKey.Length, Is.EqualTo(32));
+                    Assert.That(aesIv.Length, Is.EqualTo(16));
 
                     byte[] enc;
                     using (MemoryStream msData = new MemoryStream())
@@ -428,9 +428,9 @@ namespace CryptoToolkitUnitTests.FileEnc
                         byte[] d2 = await BinaryHelper.ReadLVAsync(msData).ConfigureAwait(false);
                         byte[] d0 = await BinaryHelper.ReadLVAsync(msData).ConfigureAwait(false);
 
-                        Assert.AreEqual(32, d1.Length);
-                        Assert.AreEqual(32, d2.Length);
-                        Assert.AreEqual(0, d0.Length);
+                        Assert.That(d1.Length, Is.EqualTo(32));
+                        Assert.That(d2.Length, Is.EqualTo(32));
+                        Assert.That(d0.Length, Is.EqualTo(0));
 
                         byte[] rpad = ChaCha20Rfc7539.Decrypt(d1, chachaKey, chachaNonce);
                         byte[] xor = AES.DecryptCBC(d2, aesKey, aesIv);
@@ -444,7 +444,7 @@ namespace CryptoToolkitUnitTests.FileEnc
 
                         byte[] unpad = new Pkcs7Padding().Unpad(dec, 16);
 
-                        Assert.AreEqual(data, unpad);
+                        Assert.That(unpad, Is.EqualTo(data));
                     }
                 }
             });
@@ -469,20 +469,20 @@ namespace CryptoToolkitUnitTests.FileEnc
                 using (MemoryStream ms = new MemoryStream(enc))
                 {
                     byte[] header = BinaryHelper.ReadBytes(ms, 7);
-                    Assert.AreEqual("CAENCP!", Encoding.ASCII.GetString(header));
+                    Assert.That(Encoding.ASCII.GetString(header), Is.EqualTo("CAENCP!"));
 
                     byte version = BinaryHelper.ReadByte(ms);
-                    Assert.AreEqual(0x05, version);
+                    Assert.That(version, Is.EqualTo(0x05));
 
                     byte[] chachaSalt = BinaryHelper.ReadLV(ms);
                     byte[] chachaNonce = BinaryHelper.ReadLV(ms);
                     byte[] aesSalt = BinaryHelper.ReadLV(ms);
                     byte[] aesIv = BinaryHelper.ReadLV(ms);
 
-                    Assert.AreEqual(16, chachaSalt.Length);
-                    Assert.AreEqual(12, chachaNonce.Length);
-                    Assert.AreEqual(16, aesSalt.Length);
-                    Assert.AreEqual(16, aesIv.Length);
+                    Assert.That(chachaSalt.Length, Is.EqualTo(16));
+                    Assert.That(chachaNonce.Length, Is.EqualTo(12));
+                    Assert.That(aesSalt.Length, Is.EqualTo(16));
+                    Assert.That(aesIv.Length, Is.EqualTo(16));
 
                     byte[] chachaKey = PBKDF2.GenerateKeyFromPassword(32, "test1234abc", chachaSalt, 60000);
                     byte[] aesKey = PBKDF2.GenerateKeyFromPassword(32, "test1234abc", aesSalt, 60000);
@@ -500,9 +500,9 @@ namespace CryptoToolkitUnitTests.FileEnc
                         byte[] d2 = BinaryHelper.ReadLV(msData);
                         byte[] d0 = BinaryHelper.ReadLV(msData);
 
-                        Assert.AreEqual(32, d1.Length);
-                        Assert.AreEqual(32, d2.Length);
-                        Assert.AreEqual(0, d0.Length);
+                        Assert.That(d1.Length, Is.EqualTo(32));
+                        Assert.That(d2.Length, Is.EqualTo(32));
+                        Assert.That(d0.Length, Is.EqualTo(0));
 
                         byte[] rpad = ChaCha20Rfc7539.Decrypt(d1, chachaKey, chachaNonce);
                         byte[] xor = AES.DecryptCBC(d2, aesKey, aesIv);
@@ -516,7 +516,7 @@ namespace CryptoToolkitUnitTests.FileEnc
 
                         byte[] unpad = new Pkcs7Padding().Unpad(dec, 16);
 
-                        Assert.AreEqual(data, unpad);
+                        Assert.That(unpad, Is.EqualTo(data));
                     }
                 }
             });
@@ -541,20 +541,20 @@ namespace CryptoToolkitUnitTests.FileEnc
                 using (MemoryStream ms = new MemoryStream(enc))
                 {
                     byte[] header = await BinaryHelper.ReadBytesAsync(ms, 7).ConfigureAwait(false);
-                    Assert.AreEqual("CAENCP!", Encoding.ASCII.GetString(header));
+                    Assert.That(Encoding.ASCII.GetString(header), Is.EqualTo("CAENCP!"));
 
                     byte version = await BinaryHelper.ReadByteAsync(ms).ConfigureAwait(false);
-                    Assert.AreEqual(0x05, version);
+                    Assert.That(version, Is.EqualTo(0x05));
 
                     byte[] chachaSalt = await BinaryHelper.ReadLVAsync(ms).ConfigureAwait(false);
                     byte[] chachaNonce = await BinaryHelper.ReadLVAsync(ms).ConfigureAwait(false);
                     byte[] aesSalt = await BinaryHelper.ReadLVAsync(ms).ConfigureAwait(false);
                     byte[] aesIv = await BinaryHelper.ReadLVAsync(ms).ConfigureAwait(false);
 
-                    Assert.AreEqual(16, chachaSalt.Length);
-                    Assert.AreEqual(12, chachaNonce.Length);
-                    Assert.AreEqual(16, aesSalt.Length);
-                    Assert.AreEqual(16, aesIv.Length);
+                    Assert.That(chachaSalt.Length, Is.EqualTo(16));
+                    Assert.That(chachaNonce.Length, Is.EqualTo(12));
+                    Assert.That(aesSalt.Length, Is.EqualTo(16));
+                    Assert.That(aesIv.Length, Is.EqualTo(16));
 
                     byte[] chachaKey = PBKDF2.GenerateKeyFromPassword(32, "test1234abc", chachaSalt, 60000);
                     byte[] aesKey = PBKDF2.GenerateKeyFromPassword(32, "test1234abc", aesSalt, 60000);
@@ -572,9 +572,9 @@ namespace CryptoToolkitUnitTests.FileEnc
                         byte[] d2 = await BinaryHelper.ReadLVAsync(msData).ConfigureAwait(false);
                         byte[] d0 = await BinaryHelper.ReadLVAsync(msData).ConfigureAwait(false);
 
-                        Assert.AreEqual(32, d1.Length);
-                        Assert.AreEqual(32, d2.Length);
-                        Assert.AreEqual(0, d0.Length);
+                        Assert.That(d1.Length, Is.EqualTo(32));
+                        Assert.That(d2.Length, Is.EqualTo(32));
+                        Assert.That(d0.Length, Is.EqualTo(0));
 
                         byte[] rpad = ChaCha20Rfc7539.Decrypt(d1, chachaKey, chachaNonce);
                         byte[] xor = AES.DecryptCBC(d2, aesKey, aesIv);
@@ -588,7 +588,7 @@ namespace CryptoToolkitUnitTests.FileEnc
 
                         byte[] unpad = new Pkcs7Padding().Unpad(dec, 16);
 
-                        Assert.AreEqual(data, unpad);
+                        Assert.That(unpad, Is.EqualTo(data));
                     }
                 }
             });

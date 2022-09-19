@@ -15,7 +15,7 @@ namespace CryptoToolkitUnitTests.Hash
         public void Hash(Tuple<byte[], string> values)
         {
             byte[] hash = MD5.Hash(values.Item1);
-            Assert.AreEqual(values.Item2, Hex.Encode(hash));
+            Assert.That(Hex.Encode(hash), Is.EqualTo(values.Item2));
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace CryptoToolkitUnitTests.Hash
         {
             string hashStr = File.ReadAllText(@"data\Hash\md5.dat.txt", Encoding.ASCII);
             byte[] hash = MD5.Hash(@"data\Hash\md5.dat");
-            Assert.AreEqual(hashStr, Hex.Encode(hash));
+            Assert.That(Hex.Encode(hash), Is.EqualTo(hashStr));
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace CryptoToolkitUnitTests.Hash
             {
                 hash = MD5.Hash(fs);
             }
-            Assert.AreEqual(hashStr, Hex.Encode(hash));
+            Assert.That(Hex.Encode(hash), Is.EqualTo(hashStr));
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace CryptoToolkitUnitTests.Hash
             {
                 hash = await MD5.HashAsync(fs).ConfigureAwait(false);
             }
-            Assert.AreEqual(hashStr, Hex.Encode(hash));
+            Assert.That(Hex.Encode(hash), Is.EqualTo(hashStr));
         }
 
         [Test]

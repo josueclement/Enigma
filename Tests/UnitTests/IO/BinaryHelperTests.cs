@@ -18,25 +18,25 @@ namespace CryptoToolkitUnitTests.IO
                 Assert.Multiple(() =>
                 {
                     byte b = BinaryHelper.ReadByte(fs);
-                    Assert.AreEqual((byte)0xfe, b);
+                    Assert.That(b, Is.EqualTo((byte)0xfe));
                     bool bo = BinaryHelper.ReadBool(fs);
-                    Assert.AreEqual(true, bo);
+                    Assert.That(bo, Is.EqualTo(true));
                     Int16 i16 = BinaryHelper.ReadInt16(fs);
-                    Assert.AreEqual(-12, i16);
+                    Assert.That(i16, Is.EqualTo(-12));
                     UInt16 ui16 = BinaryHelper.ReadUInt16(fs);
-                    Assert.AreEqual(12, ui16);
+                    Assert.That(ui16, Is.EqualTo(12));
                     Int32 i32 = BinaryHelper.ReadInt32(fs);
-                    Assert.AreEqual(-120, i32);
+                    Assert.That(i32, Is.EqualTo(-120));
                     UInt32 ui32 = BinaryHelper.ReadUInt32(fs);
-                    Assert.AreEqual(120, ui32);
+                    Assert.That(ui32, Is.EqualTo(120));
                     Int64 i64 = BinaryHelper.ReadInt64(fs);
-                    Assert.AreEqual(-1200, i64);
+                    Assert.That(i64, Is.EqualTo(-1200));
                     UInt64 ui64 = BinaryHelper.ReadUInt64(fs);
-                    Assert.AreEqual(1200, ui64);
+                    Assert.That(ui64, Is.EqualTo(1200));
                     float fl = BinaryHelper.ReadFloat(fs);
-                    Assert.AreEqual(12.0f, fl);
+                    Assert.That(fl, Is.EqualTo(12.0f));
                     double db = BinaryHelper.ReadDouble(fs);
-                    Assert.AreEqual(120.0, db);
+                    Assert.That(db, Is.EqualTo(120.0));
                 });
             }
         }
@@ -49,25 +49,25 @@ namespace CryptoToolkitUnitTests.IO
                 Assert.Multiple(async () =>
                 {
                     byte b = await BinaryHelper.ReadByteAsync(fs).ConfigureAwait(false);
-                    Assert.AreEqual((byte)0xfe, b);
+                    Assert.That(b, Is.EqualTo((byte)0xfe));
                     bool bo = await BinaryHelper.ReadBoolAsync(fs).ConfigureAwait(false);
-                    Assert.AreEqual(true, bo);
+                    Assert.That(bo, Is.EqualTo(true));
                     Int16 i16 = await BinaryHelper.ReadInt16Async(fs).ConfigureAwait(false);
-                    Assert.AreEqual(-12, i16);
+                    Assert.That(i16, Is.EqualTo(-12));
                     UInt16 ui16 = await BinaryHelper.ReadUInt16Async(fs).ConfigureAwait(false);
-                    Assert.AreEqual(12, ui16);
+                    Assert.That(ui16, Is.EqualTo(12));
                     Int32 i32 = await BinaryHelper.ReadInt32Async(fs).ConfigureAwait(false);
-                    Assert.AreEqual(-120, i32);
+                    Assert.That(i32, Is.EqualTo(-120));
                     UInt32 ui32 = await BinaryHelper.ReadUInt32Async(fs).ConfigureAwait(false);
-                    Assert.AreEqual(120, ui32);
+                    Assert.That(ui32, Is.EqualTo(120));
                     Int64 i64 = await BinaryHelper.ReadInt64Async(fs).ConfigureAwait(false);
-                    Assert.AreEqual(-1200, i64);
+                    Assert.That(i64, Is.EqualTo(-1200));
                     UInt64 ui64 = await BinaryHelper.ReadUInt64Async(fs).ConfigureAwait(false);
-                    Assert.AreEqual(1200, ui64);
+                    Assert.That(ui64, Is.EqualTo(1200));
                     float fl = await BinaryHelper.ReadFloatAsync(fs).ConfigureAwait(false);
-                    Assert.AreEqual(12.0f, fl);
+                    Assert.That(fl, Is.EqualTo(12.0f));
                     double db = await BinaryHelper.ReadDoubleAsync(fs).ConfigureAwait(false);
-                    Assert.AreEqual(120.0, db);
+                    Assert.That(db, Is.EqualTo(120.0));
                 });
             }
         }
@@ -101,7 +101,7 @@ namespace CryptoToolkitUnitTests.IO
                 generated = ms.ToArray();
             }
 
-            Assert.AreEqual(fileData, generated);
+            Assert.That(generated, Is.EqualTo(fileData));
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace CryptoToolkitUnitTests.IO
                 generated = ms.ToArray();
             }
 
-            Assert.AreEqual(fileData, generated);
+            Assert.That(generated, Is.EqualTo(fileData));
         }
     }
 }

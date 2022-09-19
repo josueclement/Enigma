@@ -17,14 +17,14 @@ namespace CryptoToolkitUnitTests.SymKey
         public void EncryptCBC(Tuple<byte[], byte[], byte[], byte[]> values)
         {
             byte[] enc = DES.EncryptCBC(values.Item3, values.Item1, values.Item2);
-            Assert.AreEqual(values.Item4, enc);
+            Assert.That(enc, Is.EqualTo(values.Item4));
         }
 
         [TestCaseSource(nameof(DataSource))]
         public void DecryptCBC(Tuple<byte[], byte[], byte[], byte[]> values)
         {
             byte[] dec = DES.DecryptCBC(values.Item4, values.Item1, values.Item2);
-            Assert.AreEqual(values.Item3, dec);
+            Assert.That(dec, Is.EqualTo(values.Item3));
         }
 
         [TestCaseSource(nameof(DataSource))]
@@ -39,7 +39,7 @@ namespace CryptoToolkitUnitTests.SymKey
                     enc = msEnc.ToArray();
                 }
             }
-            Assert.AreEqual(values.Item4, enc);
+            Assert.That(enc, Is.EqualTo(values.Item4));
         }
 
         [TestCaseSource(nameof(DataSource))]
@@ -54,7 +54,7 @@ namespace CryptoToolkitUnitTests.SymKey
                     enc = msEnc.ToArray();
                 }
             }
-            Assert.AreEqual(values.Item4, enc);
+            Assert.That(enc, Is.EqualTo(values.Item4));
         }
 
         [TestCaseSource(nameof(DataSource))]
@@ -69,7 +69,7 @@ namespace CryptoToolkitUnitTests.SymKey
                     dec = msDec.ToArray();
                 }
             }
-            Assert.AreEqual(values.Item3, dec);
+            Assert.That(dec, Is.EqualTo(values.Item3));
         }
 
         [TestCaseSource(nameof(DataSource))]
@@ -84,7 +84,7 @@ namespace CryptoToolkitUnitTests.SymKey
                     dec = msDec.ToArray();
                 }
             }
-            Assert.AreEqual(values.Item3, dec);
+            Assert.That(dec, Is.EqualTo(values.Item3));
         }
 
         [Test]

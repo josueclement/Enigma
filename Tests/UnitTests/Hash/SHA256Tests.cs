@@ -15,7 +15,7 @@ namespace CryptoToolkitUnitTests.Hash
         public void Hash(Tuple<byte[], string> values)
         {
             byte[] hash = SHA256.Hash(values.Item1);
-            Assert.AreEqual(values.Item2, Hex.Encode(hash));
+            Assert.That(Hex.Encode(hash), Is.EqualTo(values.Item2));
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace CryptoToolkitUnitTests.Hash
         {
             string hashStr = File.ReadAllText(@"data\Hash\sha256.dat.txt", Encoding.ASCII);
             byte[] hash = SHA256.Hash(@"data\Hash\sha256.dat");
-            Assert.AreEqual(hashStr, Hex.Encode(hash));
+            Assert.That(Hex.Encode(hash), Is.EqualTo(hashStr));
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace CryptoToolkitUnitTests.Hash
             {
                 hash = SHA256.Hash(fs);
             }
-            Assert.AreEqual(hashStr, Hex.Encode(hash));
+            Assert.That(Hex.Encode(hash), Is.EqualTo(hashStr));
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace CryptoToolkitUnitTests.Hash
             {
                 hash = await SHA256.HashAsync(fs).ConfigureAwait(false);
             }
-            Assert.AreEqual(hashStr, Hex.Encode(hash));
+            Assert.That(Hex.Encode(hash), Is.EqualTo(hashStr));
         }
 
         [Test]

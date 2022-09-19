@@ -13,14 +13,14 @@ namespace CryptoToolkitUnitTests.Padding
         public void Pad(Tuple<byte[], byte[]> values)
         {
             byte[] padded = new AnsiX923Padding().Pad(values.Item1, 16);
-            Assert.AreEqual(values.Item2, padded);
+            Assert.That(padded, Is.EqualTo(values.Item2));
         }
 
         [TestCaseSource(nameof(DataSource))]
         public void Unpad(Tuple<byte[], byte[]> values)
         {
             byte[] unpadded = new AnsiX923Padding().Unpad(values.Item2, 16);
-            Assert.AreEqual(values.Item1, unpadded);
+            Assert.That(unpadded, Is.EqualTo(values.Item1));
         }
 
         [Test]

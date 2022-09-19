@@ -12,27 +12,27 @@ namespace CryptoToolkitUnitTests.IO
         [Test]
         public void EncodeEmpty()
         {
-            Assert.AreEqual("", Hex.Encode(new byte[] { }));
+            Assert.That(Hex.Encode(new byte[] { }), Is.EqualTo(""));
         }
 
         [Test]
         public void DecodeEmpty()
         {
-            Assert.AreEqual(new byte[] { }, Hex.Decode(""));
+            Assert.That(Hex.Decode(""), Is.EqualTo(new byte[] { }));
         }
 
         [TestCaseSource(nameof(DataSource))]
         public void Encode(Tuple<byte[], string> values)
         {
             string encoded = Hex.Encode(values.Item1);
-            Assert.AreEqual(values.Item2, encoded);
+            Assert.That(encoded, Is.EqualTo(values.Item2));
         }
 
         [TestCaseSource(nameof(DataSource))]
         public void Decode(Tuple<byte[], string> values)
         {
             byte[] decoded = Hex.Decode(values.Item2);
-            Assert.AreEqual(values.Item1, decoded);
+            Assert.That(decoded, Is.EqualTo(values.Item1));
         }
 
         [Test]
