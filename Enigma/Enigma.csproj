@@ -12,6 +12,8 @@
 		<RepositoryUrl>https://github.com/josueclement/Enigma.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<LangVersion>10.0</LangVersion>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
