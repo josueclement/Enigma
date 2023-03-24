@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Enigma.IO;
 using Enigma.Padding;
@@ -215,18 +216,30 @@ namespace CryptoToolkitUnitTests.SymKey
 
         static IEnumerable<Tuple<byte[], byte[], byte[], byte[]>> DataSource()
         {
-            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\SymKey\salsa20.dat"))
+            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\SymKey\salsa20.csv"))
             {
-                int total = BinaryHelper.ReadInt32(fs);
-
-                for (int i = 0; i < total; i++)
+                using (StreamReader sr = new StreamReader(fs, Encoding.Default))
                 {
-                    byte[] key = BinaryHelper.ReadLV(fs);
-                    byte[] iv = BinaryHelper.ReadLV(fs);
-                    byte[] data = BinaryHelper.ReadLV(fs);
-                    byte[] enc = BinaryHelper.ReadLV(fs);
+                    sr.ReadLine();
 
-                    yield return new Tuple<byte[], byte[], byte[], byte[]>(key, iv, data, enc);
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+
+                        if (line != null)
+                        {
+                            string[] split = line.Split(',');
+                            if (split.Length == 4)
+                            {
+                                byte[] key = Hex.Decode(split[0]);
+                                byte[] iv = Hex.Decode(split[1]);
+                                byte[] data = Hex.Decode(split[2]);
+                                byte[] enc = Hex.Decode(split[3]);
+
+                                yield return new Tuple<byte[], byte[], byte[], byte[]>(key, iv, data, enc);
+                            }
+                        }
+                    }
                 }
             }
         }

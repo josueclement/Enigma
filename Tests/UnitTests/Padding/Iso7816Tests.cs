@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Enigma.IO;
 using Enigma.Padding;
 using NUnit.Framework;
@@ -79,16 +80,28 @@ namespace CryptoToolkitUnitTests.Padding
 
         static IEnumerable<Tuple<byte[], byte[]>> DataSource()
         {
-            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\Padding\iso7816.dat"))
+            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\Padding\iso7816.csv"))
             {
-                int total = BinaryHelper.ReadInt32(fs);
-
-                for (int i = 0; i < total; i++)
+                using (StreamReader sr = new StreamReader(fs, Encoding.Default))
                 {
-                    byte[] data = BinaryHelper.ReadLV(fs);
-                    byte[] padded = BinaryHelper.ReadLV(fs);
+                    sr.ReadLine();
 
-                    yield return new Tuple<byte[], byte[]>(data, padded);
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+
+                        if (line != null)
+                        {
+                            string[] split = line.Split(',');
+                            if (split.Length == 2)
+                            {
+                                byte[] data = Hex.Decode(split[0]);
+                                byte[] padded = Hex.Decode(split[1]);
+
+                                yield return new Tuple<byte[], byte[]>(data, padded);
+                            }
+                        }
+                    }
                 }
             }
         }
