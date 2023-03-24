@@ -24,8 +24,15 @@ namespace Enigma.Padding
         byte[] Unpad(byte[] paddedData, int blockSize);
     }
 
+    /// <summary>
+    /// Padding exception
+    /// </summary>
     public sealed class PaddingException : Exception
     {
+        /// <summary>
+        /// Constructor for <see cref="PaddingException"/>
+        /// </summary>
+        /// <param name="message">Message</param>
         public PaddingException(string message) : base(message) { }
     }
 }
