@@ -15,7 +15,7 @@ namespace Enigma.PQC
         /// <param name="publicKey">Public key</param>
         /// <param name="privateKey">Private key</param>
         /// <param name="parameters">Parameters</param>
-        public static void GenerateKeyPair(out AsymmetricKeyParameter publicKey, out KyberPrivateKeyParameters privateKey, KyberParameters? parameters = null)
+        public static void GenerateKeyPair(out KyberPublicKeyParameters publicKey, out KyberPrivateKeyParameters privateKey, KyberParameters? parameters = null)
         {
             parameters ??= KyberParameters.kyber1024_aes;
 
@@ -24,7 +24,7 @@ namespace Enigma.PQC
             KyberKeyPairGenerator kyberKeyPairGenerator = new KyberKeyPairGenerator();
             kyberKeyPairGenerator.Init(keyGenParameters);
             AsymmetricCipherKeyPair keyPair = kyberKeyPairGenerator.GenerateKeyPair();
-            publicKey = keyPair.Public;
+            publicKey = (KyberPublicKeyParameters)keyPair.Public;
             privateKey = (KyberPrivateKeyParameters)keyPair.Private;
         }
 

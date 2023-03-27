@@ -13,6 +13,8 @@ namespace UnitTests.PQC
         public void FirstTest()
         {
             Kyber.GenerateKeyPair(out var publicKey, out var privateKey);
+            byte[] pubKeyData = publicKey.GetEncoded();
+            byte[] pKeyData = privateKey.GetEncoded();
             Kyber.Generate(publicKey, out byte[] clear1, out byte[] cipher1);
             Kyber.Generate(publicKey, out byte[] clear2, out byte[] cipher2);
             byte[] dec1 = Kyber.Extract(privateKey, cipher1);
