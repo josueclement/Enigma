@@ -1,6 +1,7 @@
 ﻿using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Pqc.Crypto.Crystals.Kyber;
 using Org.BouncyCastle.Security;
+using System.IO;
 
 namespace Enigma.PQC
 {
@@ -53,5 +54,73 @@ namespace Enigma.PQC
             KyberKemExtractor aliceKemExtractor = new KyberKemExtractor(privateKey);
             return aliceKemExtractor.ExtractSecret(encryptedKey);
         }
+
+        #region Save / Load PEM files
+
+        /// <summary>
+        /// Load public key from PEM
+        /// </summary>
+        /// <param name="input">Input stream</param>
+        public static KyberPublicKeyParameters LoadPublicKeyFromPEM(Stream input)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Load private key from PEM
+        /// </summary>
+        /// <param name="input">Input stream</param>
+        public static KyberPrivateKeyParameters LoadPrivateKeyFromPEM(Stream input)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Load private key from PEM secured with a password
+        /// </summary>
+        /// <param name="input">Input stream</param>
+        /// <param name="password">Password</param>
+        public static KyberPrivateKeyParameters LoadPrivateKeyFromPEM(Stream input, string password)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Save public key to PEM
+        /// </summary>
+        /// <param name="publicKey">Public key</param>
+        /// <param name="output">Output stream</param>
+        public static void SavePublicKeyToPEM(KyberPublicKeyParameters publicKey, Stream output)
+        {
+            // !! save publicKey.Parameters infos
+            // - Name : byte (to identify the type: 0x01=kyber512, 0x02=kyber768, etc..)
+            // - K: 2/3/4 as byte too
+            // - sessionKeySize: 128/192/256 as byte too
+            // - usingAes: true/false as byte too
+
+        }
+
+        /// <summary>
+        /// Save private key to PEM
+        /// </summary>
+        /// <param name="privateKey">Private key</param>
+        /// <param name="output">Output stream</param>
+        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, Stream output)
+        {
+
+        }
+
+        /// <summary>
+        /// Save private key to PEM secured with a password
+        /// </summary>
+        /// <param name="privateKey">Private key</param>
+        /// <param name="output">Output stream</param>
+        /// <param name="password">Password</param>
+        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, Stream output, string password)
+        {
+            // !! in addition to the parameters info, write the salt 
+        }
+
+        #endregion
     }
 }
