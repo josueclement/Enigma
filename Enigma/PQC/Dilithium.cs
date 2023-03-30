@@ -38,14 +38,14 @@ namespace Enigma.PQC
         {
             switch (name)
             {
-                case Dilithium.DILITHIUM2_NAME:
-                case Dilithium.DILITHIUM2_AES_NAME:
+                case Dilithium.DILITHIUM2:
+                case Dilithium.DILITHIUM2_AES:
                     return new DilithiumComponentsSizes(32, 32, 32, 384, 384, 1664, 1280);
-                case Dilithium.DILITHIUM3_NAME:
-                case Dilithium.DILITHIUM3_AES_NAME:
+                case Dilithium.DILITHIUM3:
+                case Dilithium.DILITHIUM3_AES:
                     return new DilithiumComponentsSizes(32, 32, 32, 640, 768, 2496, 1920);
-                case Dilithium.DILITHIUM5_NAME:
-                case Dilithium.DILITHIUM5_AES_NAME:
+                case Dilithium.DILITHIUM5:
+                case Dilithium.DILITHIUM5_AES:
                     return new DilithiumComponentsSizes(32, 32, 32, 672, 768, 3328, 2560);
                 default:
                     throw new InvalidOperationException();
@@ -61,27 +61,27 @@ namespace Enigma.PQC
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium2"/> name
         /// </summary>
-        public const string DILITHIUM2_NAME = "dilithium2";
+        public const string DILITHIUM2= "dilithium2";
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium2Aes"/> name
         /// </summary>
-        public const string DILITHIUM2_AES_NAME = "dilithium2-aes";
+        public const string DILITHIUM2_AES= "dilithium2-aes";
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium3"/> name
         /// </summary>
-        public const string DILITHIUM3_NAME = "dilithium3";
+        public const string DILITHIUM3= "dilithium3";
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium3Aes"/> name
         /// </summary>
-        public const string DILITHIUM3_AES_NAME = "dilithium3-aes";
+        public const string DILITHIUM3_AES= "dilithium3-aes";
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium5"/> name
         /// </summary>
-        public const string DILITHIUM5_NAME = "dilithium5";
+        public const string DILITHIUM5= "dilithium5";
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium5Aes"/> name
         /// </summary>
-        public const string DILITHIUM5_AES_NAME = "dilithium5-aes";
+        public const string DILITHIUM5_AES= "dilithium5-aes";
 
         /// <summary>
         /// Generate key pair
@@ -134,7 +134,7 @@ namespace Enigma.PQC
         public static DilithiumPublicKeyParameters LoadPublicKeyFromPEM(Stream input)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Name")?.Value ?? throw new InvalidOperationException();
+            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             byte[] data = pem.Data ?? throw new InvalidOperationException();
 
             DilithiumParameters parameters = GetParameters(name);
@@ -157,7 +157,7 @@ namespace Enigma.PQC
         public static DilithiumPrivateKeyParameters LoadPrivateKeyFromPEM(Stream input)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Name")?.Value ?? throw new InvalidOperationException();
+            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             byte[] data = pem.Data ?? throw new InvalidOperationException();
 
             DilithiumParameters parameters = GetParameters(name);
@@ -194,7 +194,7 @@ namespace Enigma.PQC
         public static DilithiumPrivateKeyParameters LoadPrivateKeyFromPEM(Stream input, string password)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Name")?.Value ?? throw new InvalidOperationException();
+            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             string saltStr = pem.Header.FirstOrDefault(x => x.Name == "Salt")?.Value ?? throw new InvalidOperationException();
             string ivStr = pem.Header.FirstOrDefault(x => x.Name == "IV")?.Value ?? throw new InvalidOperationException();
             byte[] enc = pem.Data ?? throw new InvalidOperationException();
@@ -243,7 +243,7 @@ namespace Enigma.PQC
             {
                 new PemHeaderItem
                 {
-                    Name = "Name",
+                    Name = "Type",
                     Value = name
                 }
             };
@@ -264,7 +264,7 @@ namespace Enigma.PQC
             {
                 new PemHeaderItem
                 {
-                    Name = "Name",
+                    Name = "Type",
                     Value = name
                 }
             };
@@ -290,7 +290,7 @@ namespace Enigma.PQC
             {
                 new PemHeaderItem
                 {
-                    Name = "Name",
+                    Name = "Type",
                     Value = name
                 },
                 new PemHeaderItem
@@ -324,17 +324,17 @@ namespace Enigma.PQC
         {
             switch (name)
             {
-                case DILITHIUM2_NAME:
+                case DILITHIUM2:
                     return DilithiumParameters.Dilithium2;
-                case DILITHIUM2_AES_NAME:
+                case DILITHIUM2_AES:
                     return DilithiumParameters.Dilithium2Aes;
-                case DILITHIUM3_NAME:
+                case DILITHIUM3:
                     return DilithiumParameters.Dilithium3;
-                case DILITHIUM3_AES_NAME:
+                case DILITHIUM3_AES:
                     return DilithiumParameters.Dilithium3Aes;
-                case DILITHIUM5_NAME:
+                case DILITHIUM5:
                     return DilithiumParameters.Dilithium5;
-                case DILITHIUM5_AES_NAME:
+                case DILITHIUM5_AES:
                     return DilithiumParameters.Dilithium5Aes;
                 default:
                     throw new InvalidOperationException();

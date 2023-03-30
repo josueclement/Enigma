@@ -34,14 +34,14 @@ namespace Enigma.PQC
         {
             switch (name)
             {
-                case Kyber.KYBER512_NAME:
-                case Kyber.KYBER512_AES_NAME:
+                case Kyber.KYBER512:
+                case Kyber.KYBER512_AES:
                     return new KyberComponentsSizes(768, 32, 32, 768, 32);
-                case Kyber.KYBER768_NAME:
-                case Kyber.KYBER768_AES_NAME:
+                case Kyber.KYBER768:
+                case Kyber.KYBER768_AES:
                     return new KyberComponentsSizes(1152, 32, 32, 1152, 32);
-                case Kyber.KYBER1024_NAME:
-                case Kyber.KYBER1024_AES_NAME:
+                case Kyber.KYBER1024:
+                case Kyber.KYBER1024_AES:
                     return new KyberComponentsSizes(1536, 32, 32, 1536, 32);
                 default:
                     throw new InvalidOperationException();
@@ -57,27 +57,27 @@ namespace Enigma.PQC
         /// <summary>
         /// <see cref="KyberParameters.kyber512"/> name
         /// </summary>
-        public const string KYBER512_NAME = "kyber512";
+        public const string KYBER512= "kyber512";
         /// <summary>
         /// <see cref="KyberParameters.kyber512_aes"/> name
         /// </summary>
-        public const string KYBER512_AES_NAME = "kyber512-aes";
+        public const string KYBER512_AES= "kyber512-aes";
         /// <summary>
         /// <see cref="KyberParameters.kyber768"/> name
         /// </summary>
-        public const string KYBER768_NAME = "kyber768";
+        public const string KYBER768= "kyber768";
         /// <summary>
         /// <see cref="KyberParameters.kyber768_aes"/> name
         /// </summary>
-        public const string KYBER768_AES_NAME = "kyber768-aes";
+        public const string KYBER768_AES= "kyber768-aes";
         /// <summary>
         /// <see cref="KyberParameters.kyber1024"/> name
         /// </summary>
-        public const string KYBER1024_NAME = "kyber1024";
+        public const string KYBER1024= "kyber1024";
         /// <summary>
         /// <see cref="KyberParameters.kyber1024_aes"/> name
         /// </summary>
-        public const string KYBER1024_AES_NAME = "kyber1024-aes";
+        public const string KYBER1024_AES= "kyber1024-aes";
 
         /// <summary>
         /// Generate key pair
@@ -133,7 +133,7 @@ namespace Enigma.PQC
         public static KyberPublicKeyParameters LoadPublicKeyFromPEM(Stream input)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Name")?.Value ?? throw new InvalidOperationException();
+            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             byte[] data = pem.Data ?? throw new InvalidOperationException();
 
             KyberParameters parameters = GetParameters(name);
@@ -156,7 +156,7 @@ namespace Enigma.PQC
         public static KyberPrivateKeyParameters LoadPrivateKeyFromPEM(Stream input)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Name")?.Value ?? throw new InvalidOperationException();
+            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             byte[] data = pem.Data ?? throw new InvalidOperationException();
 
             KyberParameters parameters = GetParameters(name);
@@ -190,7 +190,7 @@ namespace Enigma.PQC
         public static KyberPrivateKeyParameters LoadPrivateKeyFromPEM(Stream input, string password)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Name")?.Value ?? throw new InvalidOperationException();
+            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             string saltStr = pem.Header.FirstOrDefault(x => x.Name == "Salt")?.Value ?? throw new InvalidOperationException();
             string ivStr = pem.Header.FirstOrDefault(x => x.Name == "IV")?.Value ?? throw new InvalidOperationException();
             byte[] enc = pem.Data ?? throw new InvalidOperationException();
@@ -236,7 +236,7 @@ namespace Enigma.PQC
             {
                 new PemHeaderItem
                 {
-                    Name = "Name",
+                    Name = "Type",
                     Value = name
                 }
             };
@@ -257,7 +257,7 @@ namespace Enigma.PQC
             {
                 new PemHeaderItem
                 {
-                    Name = "Name",
+                    Name = "Type",
                     Value = name
                 }
             };
@@ -283,7 +283,7 @@ namespace Enigma.PQC
             {
                 new PemHeaderItem
                 {
-                    Name = "Name",
+                    Name = "Type",
                     Value = name
                 },
                 new PemHeaderItem
@@ -317,17 +317,17 @@ namespace Enigma.PQC
         {
             switch (name)
             {
-                case KYBER512_NAME:
+                case KYBER512:
                     return KyberParameters.kyber512;
-                case KYBER512_AES_NAME:
+                case KYBER512_AES:
                     return KyberParameters.kyber512_aes;
-                case KYBER768_NAME:
+                case KYBER768:
                     return KyberParameters.kyber768;
-                case KYBER768_AES_NAME:
+                case KYBER768_AES:
                     return KyberParameters.kyber768_aes;
-                case KYBER1024_NAME:
+                case KYBER1024:
                     return KyberParameters.kyber1024;
-                case KYBER1024_AES_NAME:
+                case KYBER1024_AES:
                     return KyberParameters.kyber1024_aes;
                 default:
                     throw new InvalidOperationException();

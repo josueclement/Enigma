@@ -92,7 +92,7 @@ namespace UnitTests.PQC
 
             using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPublic.pem", FileMode.Create, FileAccess.Write))
             {
-                Dilithium.SavePublicKeyToPEM(publicKey, Dilithium.DILITHIUM5_AES_NAME, fs);
+                Dilithium.SavePublicKeyToPEM(publicKey, Dilithium.DILITHIUM5_AES, fs);
             }
             using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPublic.pem", FileMode.Open, FileAccess.Read))
             {
@@ -101,7 +101,7 @@ namespace UnitTests.PQC
 
             using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivate.pem", FileMode.Create, FileAccess.Write))
             {
-                Dilithium.SavePrivateKeyToPEM(privateKey, Dilithium.DILITHIUM5_AES_NAME, fs);
+                Dilithium.SavePrivateKeyToPEM(privateKey, Dilithium.DILITHIUM5_AES, fs);
             }
             using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivate.pem", FileMode.Open, FileAccess.Read))
             {
@@ -110,7 +110,7 @@ namespace UnitTests.PQC
 
             using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivateEnc.pem", FileMode.Create, FileAccess.Write))
             {
-                Dilithium.SavePrivateKeyToPEM(privateKey, Dilithium.DILITHIUM5_AES_NAME, fs, "test1234");
+                Dilithium.SavePrivateKeyToPEM(privateKey, Dilithium.DILITHIUM5_AES, fs, "test1234");
             }
             using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivateEnc.pem", FileMode.Open, FileAccess.Read))
             {
