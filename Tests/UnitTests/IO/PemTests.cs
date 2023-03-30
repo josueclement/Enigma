@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace CryptoToolkitUnitTests.IO
@@ -34,13 +35,29 @@ namespace CryptoToolkitUnitTests.IO
                 }
             };
 
+            Pem.Write("Test data", data, @"C:\Temp\test.pem");
+            Pem.Write("Test data", header, data, @"C:\Temp\test2.pem");
 
+            using (FileStream fs = new FileStream(@"C:\Temp\test3.pem", FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    Pem.Write("test1", new byte[] { 1, 2, 3 }, sw);
+                    Pem.Write("test2", new byte[] { 4, 5, 6 }, sw);
+                }
+            }
 
-            PemWriter.Write("Test data", data, @"C:\Temp\test.pem");
-            PemWriter.Write("Test data", header, data, @"C:\Temp\test2.pem");
+            PemContent c1 = Pem.Read(@"C:\Temp\test.pem");
+            PemContent c2 = Pem.Read(@"C:\Temp\test2.pem");
 
-            PemContent c1 = PemReader.Read(@"C:\Temp\test.pem");
-            PemContent c2 = PemReader.Read(@"C:\Temp\test2.pem");
+            using (FileStream fs = new FileStream(@"C:\Temp\test3.pem", FileMode.Open, FileAccess.Read))
+            {
+                using(StreamReader sr = new StreamReader(fs))
+                {
+                    PemContent c3 = Pem.Read(sr);
+                    PemContent c4 = Pem.Read(sr);
+                }
+            }
         }
     }
 }
