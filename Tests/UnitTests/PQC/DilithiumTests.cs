@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Org.BouncyCastle.Pqc.Crypto.Crystals.Dilithium;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace UnitTests.PQC
@@ -88,6 +89,33 @@ namespace UnitTests.PQC
             byte[] newMessage = Encoding.UTF8.GetBytes("this is a secret message...");
             byte[] newSignature = Dilithium.Sign(newMessage, newPrivate);
             bool newValid = Dilithium.Verify(Encoding.UTF8.GetBytes("this is a secret message..."), newSignature, newPublic);
+
+            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPublic.pem", FileMode.Create, FileAccess.Write))
+            {
+                Dilithium.SavePublicKeyToPEM(publicKey, "dilithium5-aes", fs);
+            }
+            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPublic.pem", FileMode.Open, FileAccess.Read))
+            {
+                DilithiumPublicKeyParameters publicFromPem = Dilithium.LoadPublicKeyFromPEM(fs);
+            }
+
+            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivate.pem", FileMode.Create, FileAccess.Write))
+            {
+                Dilithium.SavePrivateKeyToPEM(privateKey, "dilithium5-aes", fs);
+            }
+            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivate.pem", FileMode.Open, FileAccess.Read))
+            {
+                DilithiumPrivateKeyParameters privateFromPem = Dilithium.LoadPrivateKeyFromPEM(fs);
+            }
+
+            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivateEnc.pem", FileMode.Create, FileAccess.Write))
+            {
+                Dilithium.SavePrivateKeyToPEM(privateKey, "dilithium5-aes", fs, "test1234");
+            }
+            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivateEnc.pem", FileMode.Open, FileAccess.Read))
+            {
+                DilithiumPrivateKeyParameters privateFromPem = Dilithium.LoadPrivateKeyFromPEM(fs, "test1234");
+            }
         }
     }
 }
