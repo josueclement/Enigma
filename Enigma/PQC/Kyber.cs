@@ -34,14 +34,14 @@ namespace Enigma.PQC
         {
             switch (name)
             {
-                case "kyber512":
-                case "kyber512-aes":
+                case Kyber.KYBER512_NAME:
+                case Kyber.KYBER512_AES_NAME:
                     return new KyberComponentsSizes(768, 32, 32, 768, 32);
-                case "kyber768":
-                case "kyber768-aes":
+                case Kyber.KYBER768_NAME:
+                case Kyber.KYBER768_AES_NAME:
                     return new KyberComponentsSizes(1152, 32, 32, 1152, 32);
-                case "kyber1024":
-                case "kyber1024-aes":
+                case Kyber.KYBER1024_NAME:
+                case Kyber.KYBER1024_AES_NAME:
                     return new KyberComponentsSizes(1536, 32, 32, 1536, 32);
                 default:
                     throw new InvalidOperationException();
@@ -54,6 +54,31 @@ namespace Enigma.PQC
     /// </summary>
     public static class Kyber
     {
+        /// <summary>
+        /// <see cref="KyberParameters.kyber512"/> name
+        /// </summary>
+        public const string KYBER512_NAME = "kyber512";
+        /// <summary>
+        /// <see cref="KyberParameters.kyber512_aes"/> name
+        /// </summary>
+        public const string KYBER512_AES_NAME = "kyber512-aes";
+        /// <summary>
+        /// <see cref="KyberParameters.kyber768"/> name
+        /// </summary>
+        public const string KYBER768_NAME = "kyber768";
+        /// <summary>
+        /// <see cref="KyberParameters.kyber768_aes"/> name
+        /// </summary>
+        public const string KYBER768_AES_NAME = "kyber768-aes";
+        /// <summary>
+        /// <see cref="KyberParameters.kyber1024"/> name
+        /// </summary>
+        public const string KYBER1024_NAME = "kyber1024";
+        /// <summary>
+        /// <see cref="KyberParameters.kyber1024_aes"/> name
+        /// </summary>
+        public const string KYBER1024_AES_NAME = "kyber1024-aes";
+
         /// <summary>
         /// Generate key pair
         /// </summary>
@@ -203,15 +228,16 @@ namespace Enigma.PQC
         /// Save public key to PEM
         /// </summary>
         /// <param name="publicKey">Public key</param>
+        /// <param name="name">Parameters name</param>
         /// <param name="output">Output stream</param>
-        public static void SavePublicKeyToPEM(KyberPublicKeyParameters publicKey, Stream output)
+        public static void SavePublicKeyToPEM(KyberPublicKeyParameters publicKey, string name, Stream output)
         {
             List<PemHeaderItem> header = new List<PemHeaderItem>
             {
                 new PemHeaderItem
                 {
                     Name = "Name",
-                    Value = publicKey.Parameters.Name.ToString()
+                    Value = name
                 }
             };
 
@@ -223,15 +249,16 @@ namespace Enigma.PQC
         /// Save private key to PEM
         /// </summary>
         /// <param name="privateKey">Private key</param>
+        /// <param name="name">Parameters name</param>
         /// <param name="output">Output stream</param>
-        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, Stream output)
+        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, string name, Stream output)
         {
             List<PemHeaderItem> header = new List<PemHeaderItem>
             {
                 new PemHeaderItem
                 {
                     Name = "Name",
-                    Value = privateKey.Parameters.Name.ToString()
+                    Value = name
                 }
             };
 
@@ -244,9 +271,10 @@ namespace Enigma.PQC
         /// Save private key to PEM secured with a password
         /// </summary>
         /// <param name="privateKey">Private key</param>
+        /// <param name="name">Parameters name</param>
         /// <param name="output">Output stream</param>
         /// <param name="password">Password</param>
-        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, Stream output, string password)
+        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, string name, Stream output, string password)
         {
             byte[] salt = RandomHelper.GenerateBytes(16);
             byte[] iv = RandomHelper.GenerateBytes(AES.IV_SIZE);
@@ -256,7 +284,7 @@ namespace Enigma.PQC
                 new PemHeaderItem
                 {
                     Name = "Name",
-                    Value = privateKey.Parameters.Name.ToString()
+                    Value = name
                 },
                 new PemHeaderItem
                 {
@@ -289,17 +317,17 @@ namespace Enigma.PQC
         {
             switch (name)
             {
-                case "kyber512":
+                case KYBER512_NAME:
                     return KyberParameters.kyber512;
-                case "kyber512-aes":
+                case KYBER512_AES_NAME:
                     return KyberParameters.kyber512_aes;
-                case "kyber768":
+                case KYBER768_NAME:
                     return KyberParameters.kyber768;
-                case "kyber768-aes":
+                case KYBER768_AES_NAME:
                     return KyberParameters.kyber768_aes;
-                case "kyber1024":
+                case KYBER1024_NAME:
                     return KyberParameters.kyber1024;
-                case "kyber1024-aes":
+                case KYBER1024_AES_NAME:
                     return KyberParameters.kyber1024_aes;
                 default:
                     throw new InvalidOperationException();

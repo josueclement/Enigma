@@ -86,7 +86,7 @@ namespace UnitTests.PQC
 
             using (FileStream fs = new FileStream(@"C:\Temp\KyberPublic.pem", FileMode.Create, FileAccess.Write))
             {
-                Kyber.SavePublicKeyToPEM(publicKey, fs);
+                Kyber.SavePublicKeyToPEM(publicKey, Kyber.KYBER1024_AES_NAME, fs);
             }
             using (FileStream fs = new FileStream(@"C:\Temp\KyberPublic.pem", FileMode.Open, FileAccess.Read))
             {
@@ -95,7 +95,7 @@ namespace UnitTests.PQC
 
             using (FileStream fs = new FileStream(@"C:\Temp\KyberPrivate.pem", FileMode.Create, FileAccess.Write))
             {
-                Kyber.SavePrivateKeyToPEM(privateKey, fs);
+                Kyber.SavePrivateKeyToPEM(privateKey, Kyber.KYBER1024_AES_NAME, fs);
             }
             using (FileStream fs = new FileStream(@"C:\Temp\KyberPrivate.pem", FileMode.Open, FileAccess.Read))
             {
@@ -104,7 +104,7 @@ namespace UnitTests.PQC
 
             using (FileStream fs = new FileStream(@"C:\Temp\KyberPrivateEnc.pem", FileMode.Create, FileAccess.Write))
             {
-                Kyber.SavePrivateKeyToPEM(privateKey, fs, "test1234");
+                Kyber.SavePrivateKeyToPEM(privateKey, Kyber.KYBER1024_AES_NAME, fs, "test1234");
             }
             using (FileStream fs = new FileStream(@"C:\Temp\KyberPrivateEnc.pem", FileMode.Open, FileAccess.Read))
             {
