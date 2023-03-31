@@ -61,37 +61,62 @@ namespace Enigma.PQC
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium2"/> name
         /// </summary>
-        public const string DILITHIUM2= "dilithium2";
+        public const string DILITHIUM2 = "dilithium2";
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium2Aes"/> name
         /// </summary>
-        public const string DILITHIUM2_AES= "dilithium2-aes";
+        public const string DILITHIUM2_AES = "dilithium2-aes";
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium3"/> name
         /// </summary>
-        public const string DILITHIUM3= "dilithium3";
+        public const string DILITHIUM3 = "dilithium3";
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium3Aes"/> name
         /// </summary>
-        public const string DILITHIUM3_AES= "dilithium3-aes";
+        public const string DILITHIUM3_AES = "dilithium3-aes";
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium5"/> name
         /// </summary>
-        public const string DILITHIUM5= "dilithium5";
+        public const string DILITHIUM5 = "dilithium5";
         /// <summary>
         /// <see cref="DilithiumParameters.Dilithium5Aes"/> name
         /// </summary>
-        public const string DILITHIUM5_AES= "dilithium5-aes";
+        public const string DILITHIUM5_AES = "dilithium5-aes";
 
         /// <summary>
         /// Generate key pair
         /// </summary>
+        /// <param name="type">Parameters type</param>
         /// <param name="publicKey">Public key</param>
         /// <param name="privateKey">Private key</param>
-        /// <param name="parameters">Parameters</param>
-        public static void GenerateKeyPair(out DilithiumPublicKeyParameters publicKey, out DilithiumPrivateKeyParameters privateKey, DilithiumParameters? parameters = null)
+        public static void GenerateKeyPair(string type, out DilithiumPublicKeyParameters publicKey, out DilithiumPrivateKeyParameters privateKey)
         {
-            parameters ??= DilithiumParameters.Dilithium5;
+            DilithiumParameters parameters;
+
+            switch (type)
+            {
+                case DILITHIUM2:
+                    parameters = DilithiumParameters.Dilithium2;
+                    break;
+                case DILITHIUM2_AES:
+                    parameters = DilithiumParameters.Dilithium2Aes;
+                    break;
+                case DILITHIUM3:
+                    parameters = DilithiumParameters.Dilithium3;
+                    break;
+                case DILITHIUM3_AES:
+                    parameters = DilithiumParameters.Dilithium3Aes;
+                    break;
+                case DILITHIUM5:
+                    parameters = DilithiumParameters.Dilithium5;
+                    break;
+                case DILITHIUM5_AES:
+                    parameters = DilithiumParameters.Dilithium5Aes;
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
+
             DilithiumKeyGenerationParameters keyGenParameters = new DilithiumKeyGenerationParameters(new SecureRandom(), parameters);
             DilithiumKeyPairGenerator dilithiumKeyPairGenerator = new DilithiumKeyPairGenerator();
             dilithiumKeyPairGenerator.Init(keyGenParameters);

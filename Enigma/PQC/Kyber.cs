@@ -57,40 +57,63 @@ namespace Enigma.PQC
         /// <summary>
         /// <see cref="KyberParameters.kyber512"/> name
         /// </summary>
-        public const string KYBER512= "kyber512";
+        public const string KYBER512 = "kyber512";
         /// <summary>
         /// <see cref="KyberParameters.kyber512_aes"/> name
         /// </summary>
-        public const string KYBER512_AES= "kyber512-aes";
+        public const string KYBER512_AES = "kyber512-aes";
         /// <summary>
         /// <see cref="KyberParameters.kyber768"/> name
         /// </summary>
-        public const string KYBER768= "kyber768";
+        public const string KYBER768 = "kyber768";
         /// <summary>
         /// <see cref="KyberParameters.kyber768_aes"/> name
         /// </summary>
-        public const string KYBER768_AES= "kyber768-aes";
+        public const string KYBER768_AES = "kyber768-aes";
         /// <summary>
         /// <see cref="KyberParameters.kyber1024"/> name
         /// </summary>
-        public const string KYBER1024= "kyber1024";
+        public const string KYBER1024 = "kyber1024";
         /// <summary>
         /// <see cref="KyberParameters.kyber1024_aes"/> name
         /// </summary>
-        public const string KYBER1024_AES= "kyber1024-aes";
+        public const string KYBER1024_AES = "kyber1024-aes";
 
         /// <summary>
         /// Generate key pair
         /// </summary>
+        /// <param name="type">Parameters type</param>
         /// <param name="publicKey">Public key</param>
         /// <param name="privateKey">Private key</param>
-        /// <param name="parameters">Parameters</param>
-        public static void GenerateKeyPair(out KyberPublicKeyParameters publicKey, out KyberPrivateKeyParameters privateKey, KyberParameters? parameters = null)
+        public static void GenerateKeyPair(string type, out KyberPublicKeyParameters publicKey, out KyberPrivateKeyParameters privateKey)
         {
-            parameters ??= KyberParameters.kyber1024_aes;
+            KyberParameters parameters;
 
-            SecureRandom random = new SecureRandom();
-            KyberKeyGenerationParameters keyGenParameters = new KyberKeyGenerationParameters(random, parameters);
+            switch (type)
+            {
+                case KYBER512:
+                    parameters = KyberParameters.kyber512;
+                    break;
+                case KYBER512_AES:
+                    parameters = KyberParameters.kyber512_aes;
+                    break;
+                case KYBER768:
+                    parameters = KyberParameters.kyber768;
+                    break;
+                case KYBER768_AES:
+                    parameters = KyberParameters.kyber768_aes;
+                    break;
+                case KYBER1024:
+                    parameters = KyberParameters.kyber1024;
+                    break;
+                case KYBER1024_AES:
+                    parameters = KyberParameters.kyber1024_aes;
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
+
+            KyberKeyGenerationParameters keyGenParameters = new KyberKeyGenerationParameters(new SecureRandom(), parameters);
             KyberKeyPairGenerator kyberKeyPairGenerator = new KyberKeyPairGenerator();
             kyberKeyPairGenerator.Init(keyGenParameters);
             AsymmetricCipherKeyPair keyPair = kyberKeyPairGenerator.GenerateKeyPair();
