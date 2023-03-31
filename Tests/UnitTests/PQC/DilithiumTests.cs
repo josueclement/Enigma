@@ -90,32 +90,14 @@ namespace UnitTests.PQC
             byte[] newSignature = Dilithium.Sign(newMessage, newPrivate);
             bool newValid = Dilithium.Verify(Encoding.UTF8.GetBytes("this is a secret message..."), newSignature, newPublic);
 
-            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPublic.pem", FileMode.Create, FileAccess.Write))
-            {
-                Dilithium.SavePublicKeyToPEM(publicKey, Dilithium.DILITHIUM5_AES, fs);
-            }
-            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPublic.pem", FileMode.Open, FileAccess.Read))
-            {
-                DilithiumPublicKeyParameters publicFromPem = Dilithium.LoadPublicKeyFromPEM(fs);
-            }
+            Dilithium.SavePublicKeyToPEM(publicKey, Dilithium.DILITHIUM5_AES, @"C:\Temp\DilithiumPublic.pem");
+            DilithiumPublicKeyParameters publicFromPem = Dilithium.LoadPublicKeyFromPEM(@"C:\Temp\DilithiumPublic.pem");
 
-            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivate.pem", FileMode.Create, FileAccess.Write))
-            {
-                Dilithium.SavePrivateKeyToPEM(privateKey, Dilithium.DILITHIUM5_AES, fs);
-            }
-            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivate.pem", FileMode.Open, FileAccess.Read))
-            {
-                DilithiumPrivateKeyParameters privateFromPem = Dilithium.LoadPrivateKeyFromPEM(fs);
-            }
+            Dilithium.SavePrivateKeyToPEM(privateKey, Dilithium.DILITHIUM5_AES, @"C:\Temp\DilithiumPrivate.pem");
+            DilithiumPrivateKeyParameters privateFromPem = Dilithium.LoadPrivateKeyFromPEM(@"C:\Temp\DilithiumPrivate.pem");
 
-            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivateEnc.pem", FileMode.Create, FileAccess.Write))
-            {
-                Dilithium.SavePrivateKeyToPEM(privateKey, Dilithium.DILITHIUM5_AES, fs, "test1234");
-            }
-            using (FileStream fs = new FileStream(@"C:\Temp\DilithiumPrivateEnc.pem", FileMode.Open, FileAccess.Read))
-            {
-                DilithiumPrivateKeyParameters privateFromPem = Dilithium.LoadPrivateKeyFromPEM(fs, "test1234");
-            }
+            Dilithium.SavePrivateKeyToPEM(privateKey, Dilithium.DILITHIUM5_AES, @"C:\Temp\DilithiumPrivateEnc.pem", "test1234");
+            DilithiumPrivateKeyParameters privateFromPem2 = Dilithium.LoadPrivateKeyFromPEM(@"C:\Temp\DilithiumPrivateEnc.pem", "test1234");
         }
     }
 }

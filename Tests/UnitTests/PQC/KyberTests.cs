@@ -84,32 +84,14 @@ namespace UnitTests.PQC
             byte[] newDec = Kyber.Extract(newPrivate, Hex.Decode("c5f8c1c8bbe59885cd0ca6e6ce93cfe2fb25d3a901cf68c51c563ddb4a5bd3888f59605ea6eb8a465774aefa32efc0c22b238adc99c0c87ef8bdaed414f61a263da59c1c26585dfa774d9d870293fd78f7ed5c551082c33bb8041542980d260ba60cbcc27ae796bfcc3f05e993e93e6f4d7ffe5f2032a55c0570bdf4d3deea49220b0d5de89e47725e1db41ff3c7f003e4efaf97de9a31b6afd6f93f4bf708060978aa76300991832ddd6eec83c9433bc8785688dde5d679dc3e24df1e6a9e5201f3bbacca4ba6a70b3a9d4204bc9deb5e165eeaa6816ccf62178c4ec8fa0a8b843887bf56da937ee2d1d4c9ff9a47a378ded581c5c82dc1e707bd826e15d2cdb3a8aed09cbb124882941b73f708c9f80f3ee2619a1e7f837bbd6b419d9f71839779727fb665b19cac91d589b59ddf27340fc9b00b7f1c92a4e894e93aee6cca62f43faca12c47d2f918f9d5443a993bf78f65bee00c203f9bc0f79917df4b3b77025274170cb9252b607ddfce381cbfc35cc3ab9f081b36a68c2860da408485029cbf7bcac7c4d74df708001d351d70486cd56ba8a82c054228ab6e1580bb5d9fb7243912a456caf6c3e8cbe16cae7caf2b831b28337dad40dde96f08df6e0442ec2876235335f9bf335eb78785b2ecd5b7b67a45467e5c9fcb98cd2b6d37bf31faa56781999e3feb1a686b22a7599f6d1a9e3b7b088e52493981d40918aa03073eccad2d0135ea4d6cd84efdb615770bb3288acfe8c70f082c3593f8ba717be5fe0434009690ca7cf055ae038139c9f01ffd4d4ba5d8401c7bd931d375089488b64d6de298c97283258891659313694c3eb96b9fd086a3f4046dd1ea202742cb960e4f35a048f37e645e592efd55db4227e4a06eaae8c5a841e2d4a72a621b95b5415343236b89fc20cc5a2a6184d090a796f612b342d805b0d911da51ae2b1937d0d30703b6e8dceb3c20e6cc0c4ee1a24d27f0ff98c3f90eadf11b4091bb0092dee5feb474e8b491cbdf002fcb77494719991f0b2b8c89bda34ada2ef413602cbcbe494c1602b459b82fc2dafcc47d5c55ef6769a3415a8916de9bd152411886afa32d780f44eba4535eef52fe928627372863e10bca9ea7730ae46f52d236fdd01520176e5f6d2555dd5f39174e9d3dbbc8328dc2a265b7c81f5bbf30abe0039040c9b4f4ffe36363243ead0dddaa89f9504b6b53379efe684ea40e0090e5f3480d0291ac585bd85f2c269c9daff5c21f6f82b7c49e2868057eb86110f870a77a8a5d0efad3ace3a79e54d9053c80909592979ad94be68bf47f3943e419022a33efeb0a72b4c5e0cced46ff86f7dfbf618d005dc450ce74579125a76ebe6b4781ea765c8f4bc5384d8bcf7e276ad4f46a43cd0056cd465e1a4406af23ce4af1cc33f791965073ddfa718afb1c0242428679b42a38e4761cd689afb55e290947ee3392c38cfc10d0e36b5fafca71a969dce714a844ad362074ada7ec0d9aeee408602ba760901e8c15b72e130de4da9eaa3592f8235d537c5bf19c2b8e4481b9debbd7494b85c02fd1b8b49809bf6f61c44d93a75aaf161d31bd579b0c28ceb42b0f2c0d6e0220ddd4d3b77780f3a7c1b53ef3e5b21a27921461c2bb28865cbb0f6fa7b3eca3fa7ec81a3df2a154743d294ea7a7ac1fdc0d6b3f256488d2721a97255007aba3dbcd843fd95313b5732413fe64dea0e36c91a5f8456e5bb0701c1a22315d0b9509adebd4159c65e0ef465287a0736d5b98283e3fe215a9a33d3b209c2cc4501b36b038e23993287446ac11e88b385e94952bcb26c8f2257214ebdc7d37eff867c691394ba20e3b855b7a8bf6773d5914fc4e38c7f355f1c2db8f7577f318142d6b25c4fa1c01495bd65dd5cca4907a2804d614fc36c148ab39714647dc5a78d6f1a1f61ecab7dc9fa70c3296797889e2d21474621bcfa7e3f6bbb838414c1c0b201e64d913ac07e759c2ad78cfb6a7c9094f04c07d27982c2517e97500c19e9bbb4ca42c60e2cac1990da4bec85cb7ea34dfe985c84279918f3fcd0ce186cd3e7dc4f331475c4e6e9bef25490e561220420e694d1aaa742a4018cb66d8d582a10dc43dcea7d4e8a21cd3607cd3cd22603543d9aa2b347ad8a65ae2e60a02c93e8f5291543e56a69de34be669d58c9c9c8bad68d03f79fc0dfae47c05a3ef298c17a2245be148a8e5da2899cd4c4b9768395ef7c1c160c825"));
             string newDecStr = Hex.Encode(newDec);
 
-            using (FileStream fs = new FileStream(@"C:\Temp\KyberPublic.pem", FileMode.Create, FileAccess.Write))
-            {
-                Kyber.SavePublicKeyToPEM(publicKey, Kyber.KYBER1024_AES, fs);
-            }
-            using (FileStream fs = new FileStream(@"C:\Temp\KyberPublic.pem", FileMode.Open, FileAccess.Read))
-            {
-                KyberPublicKeyParameters publicFromPem = Kyber.LoadPublicKeyFromPEM(fs);
-            }
+            Kyber.SavePublicKeyToPEM(publicKey, Kyber.KYBER1024_AES, @"C:\Temp\KyberPublic.pem");
+            KyberPublicKeyParameters publicFromPem = Kyber.LoadPublicKeyFromPEM(@"C:\Temp\KyberPublic.pem");
 
-            using (FileStream fs = new FileStream(@"C:\Temp\KyberPrivate.pem", FileMode.Create, FileAccess.Write))
-            {
-                Kyber.SavePrivateKeyToPEM(privateKey, Kyber.KYBER1024_AES, fs);
-            }
-            using (FileStream fs = new FileStream(@"C:\Temp\KyberPrivate.pem", FileMode.Open, FileAccess.Read))
-            {
-                KyberPrivateKeyParameters privateFromPem = Kyber.LoadPrivateKeyFromPEM(fs);
-            }
+            Kyber.SavePrivateKeyToPEM(privateKey, Kyber.KYBER1024_AES, @"C:\Temp\KyberPrivate.pem");
+            KyberPrivateKeyParameters privateFromPem = Kyber.LoadPrivateKeyFromPEM(@"C:\Temp\KyberPrivate.pem");
 
-            using (FileStream fs = new FileStream(@"C:\Temp\KyberPrivateEnc.pem", FileMode.Create, FileAccess.Write))
-            {
-                Kyber.SavePrivateKeyToPEM(privateKey, Kyber.KYBER1024_AES, fs, "test1234");
-            }
-            using (FileStream fs = new FileStream(@"C:\Temp\KyberPrivateEnc.pem", FileMode.Open, FileAccess.Read))
-            {
-                KyberPrivateKeyParameters privateFromPem = Kyber.LoadPrivateKeyFromPEM(fs, "test1234");
-            }
+            Kyber.SavePrivateKeyToPEM(privateKey, Kyber.KYBER1024_AES, @"C:\Temp\KyberPrivateEnc.pem", "test1234");
+            KyberPrivateKeyParameters privateFromPem2 = Kyber.LoadPrivateKeyFromPEM(@"C:\Temp\KyberPrivateEnc.pem", "test1234");
         }
     }
 }

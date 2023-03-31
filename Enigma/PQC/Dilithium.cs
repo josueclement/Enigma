@@ -34,9 +34,9 @@ namespace Enigma.PQC
         public int T0 { get; }
         public int T1 { get; }
 
-        public static DilithiumComponentsSizes GetComponentsSizes(string name)
+        public static DilithiumComponentsSizes GetComponentsSizes(string type)
         {
-            switch (name)
+            switch (type)
             {
                 case Dilithium.DILITHIUM2:
                 case Dilithium.DILITHIUM2_AES:
@@ -151,17 +151,29 @@ namespace Enigma.PQC
         }
 
         /// <summary>
+        /// Load public key from PEM file
+        /// </summary>
+        /// <param name="filePath">File path</param>
+        public static DilithiumPublicKeyParameters LoadPublicKeyFromPEM(string filePath)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                return LoadPublicKeyFromPEM(fs);
+            }
+        }
+
+        /// <summary>
         /// Load private key from PEM
         /// </summary>
         /// <param name="input">Input stream</param>
         public static DilithiumPrivateKeyParameters LoadPrivateKeyFromPEM(Stream input)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
+            string type = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             byte[] data = pem.Data ?? throw new InvalidOperationException();
 
-            DilithiumParameters parameters = GetParameters(name);
-            DilithiumComponentsSizes sizes = DilithiumComponentsSizes.GetComponentsSizes(name);
+            DilithiumParameters parameters = GetParameters(type);
+            DilithiumComponentsSizes sizes = DilithiumComponentsSizes.GetComponentsSizes(type);
 
             byte[] rho = new byte[sizes.Rho];
             byte[] k = new byte[sizes.K];
@@ -184,6 +196,18 @@ namespace Enigma.PQC
             Array.Copy(data, index, t0, 0, sizes.T0);
 
             return new DilithiumPrivateKeyParameters(parameters, rho, k, tr, s1, s2, t0, null);
+        }
+
+        /// <summary>
+        /// Load private key from PEM file
+        /// </summary>
+        /// <param name="filePath">File path</param>
+        public static DilithiumPrivateKeyParameters LoadPrivateKeyFromPEM(string filePath)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                return LoadPrivateKeyFromPEM(fs);
+            }
         }
 
         /// <summary>
@@ -194,7 +218,7 @@ namespace Enigma.PQC
         public static DilithiumPrivateKeyParameters LoadPrivateKeyFromPEM(Stream input, string password)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
+            string type = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             string saltStr = pem.Header.FirstOrDefault(x => x.Name == "Salt")?.Value ?? throw new InvalidOperationException();
             string ivStr = pem.Header.FirstOrDefault(x => x.Name == "IV")?.Value ?? throw new InvalidOperationException();
             byte[] enc = pem.Data ?? throw new InvalidOperationException();
@@ -205,8 +229,8 @@ namespace Enigma.PQC
 
             byte[] data = new Pkcs7Padding().Unpad(dec, AES.BLOCK_SIZE);
 
-            DilithiumParameters parameters = GetParameters(name);
-            DilithiumComponentsSizes sizes = DilithiumComponentsSizes.GetComponentsSizes(name);
+            DilithiumParameters parameters = GetParameters(type);
+            DilithiumComponentsSizes sizes = DilithiumComponentsSizes.GetComponentsSizes(type);
 
             byte[] rho = new byte[sizes.Rho];
             byte[] k = new byte[sizes.K];
@@ -232,19 +256,32 @@ namespace Enigma.PQC
         }
 
         /// <summary>
+        /// Load private key from PEM file secured with password
+        /// </summary>
+        /// <param name="filePath">File path</param>
+        /// <param name="password">Password</param>
+        public static DilithiumPrivateKeyParameters LoadPrivateKeyFromPEM(string filePath, string password)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                return LoadPrivateKeyFromPEM(fs, password);
+            }
+        }
+
+        /// <summary>
         /// Save public key to PEM
         /// </summary>
         /// <param name="publicKey">Public key</param>
-        /// <param name="name">Parameters name</param>
+        /// <param name="type">Parameters type</param>
         /// <param name="output">Output stream</param>
-        public static void SavePublicKeyToPEM(DilithiumPublicKeyParameters publicKey, string name, Stream output)
+        public static void SavePublicKeyToPEM(DilithiumPublicKeyParameters publicKey, string type, Stream output)
         {
             List<PemHeaderItem> header = new List<PemHeaderItem>
             {
                 new PemHeaderItem
                 {
                     Name = "Type",
-                    Value = name
+                    Value = type
                 }
             };
 
@@ -253,19 +290,33 @@ namespace Enigma.PQC
         }
 
         /// <summary>
+        /// Save public key to PEM file
+        /// </summary>
+        /// <param name="publicKey">Public key</param>
+        /// <param name="type">Parameters type</param>
+        /// <param name="filePath">File path</param>
+        public static void SavePublicKeyToPEM(DilithiumPublicKeyParameters publicKey, string type, string filePath)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                SavePublicKeyToPEM(publicKey, type, fs);
+            }
+        }
+
+        /// <summary>
         /// Save private key to PEM
         /// </summary>
         /// <param name="privateKey">Private key</param>
-        /// <param name="name">Parameters name</param>
+        /// <param name="type">Parameters type</param>
         /// <param name="output">Output stream</param>
-        public static void SavePrivateKeyToPEM(DilithiumPrivateKeyParameters privateKey, string name, Stream output)
+        public static void SavePrivateKeyToPEM(DilithiumPrivateKeyParameters privateKey, string type, Stream output)
         {
             List<PemHeaderItem> header = new List<PemHeaderItem>
             {
                 new PemHeaderItem
                 {
                     Name = "Type",
-                    Value = name
+                    Value = type
                 }
             };
 
@@ -275,13 +326,27 @@ namespace Enigma.PQC
         }
 
         /// <summary>
+        /// Save private key to PEM file
+        /// </summary>
+        /// <param name="privateKey">Private key</param>
+        /// <param name="type">Parameters type</param>
+        /// <param name="filePath">File path</param>
+        public static void SavePrivateKeyToPEM(DilithiumPrivateKeyParameters privateKey, string type, string filePath)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                SavePrivateKeyToPEM(privateKey, type, fs);
+            }
+        }
+
+        /// <summary>
         /// Save private key to PEM secured with a password
         /// </summary>
         /// <param name="privateKey">Private key</param>
-        /// <param name="name">Parameters name</param>
+        /// <param name="type">Parameters type</param>
         /// <param name="output">Output stream</param>
         /// <param name="password">Password</param>
-        public static void SavePrivateKeyToPEM(DilithiumPrivateKeyParameters privateKey, string name, Stream output, string password)
+        public static void SavePrivateKeyToPEM(DilithiumPrivateKeyParameters privateKey, string type, Stream output, string password)
         {
             byte[] salt = RandomHelper.GenerateBytes(16);
             byte[] iv = RandomHelper.GenerateBytes(AES.IV_SIZE);
@@ -291,7 +356,7 @@ namespace Enigma.PQC
                 new PemHeaderItem
                 {
                     Name = "Type",
-                    Value = name
+                    Value = type
                 },
                 new PemHeaderItem
                 {
@@ -316,13 +381,28 @@ namespace Enigma.PQC
             Pem.Write("DILITHIUM ENCRYPTED PRIVATE KEY", header, enc, output);
         }
 
+        /// <summary>
+        /// Save private key to PEM file secured with a password
+        /// </summary>
+        /// <param name="privateKey">Private key</param>
+        /// <param name="type">Parameters type</param>
+        /// <param name="filePath">File path</param>
+        /// <param name="password">Password</param>
+        public static void SavePrivateKeyToPEM(DilithiumPrivateKeyParameters privateKey, string type, string filePath, string password)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                SavePrivateKeyToPEM(privateKey, type, fs, password);
+            }
+        }
+
         #endregion
 
         #region Helpers
 
-        private static DilithiumParameters GetParameters(string name)
+        private static DilithiumParameters GetParameters(string type)
         {
-            switch (name)
+            switch (type)
             {
                 case DILITHIUM2:
                     return DilithiumParameters.Dilithium2;

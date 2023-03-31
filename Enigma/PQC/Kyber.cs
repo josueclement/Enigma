@@ -30,9 +30,9 @@ namespace Enigma.PQC
         public int S { get; }
         public int Nonce { get; }
 
-        public static KyberComponentsSizes GetComponentsSizes(string name)
+        public static KyberComponentsSizes GetComponentsSizes(string type)
         {
-            switch (name)
+            switch (type)
             {
                 case Kyber.KYBER512:
                 case Kyber.KYBER512_AES:
@@ -133,11 +133,11 @@ namespace Enigma.PQC
         public static KyberPublicKeyParameters LoadPublicKeyFromPEM(Stream input)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
+            string type = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             byte[] data = pem.Data ?? throw new InvalidOperationException();
 
-            KyberParameters parameters = GetParameters(name);
-            KyberComponentsSizes sizes = KyberComponentsSizes.GetComponentsSizes(name);
+            KyberParameters parameters = GetParameters(type);
+            KyberComponentsSizes sizes = KyberComponentsSizes.GetComponentsSizes(type);
             byte[] t = new byte[sizes.T];
             byte[] rho = new byte[sizes.Rho];
 
@@ -150,17 +150,29 @@ namespace Enigma.PQC
         }
 
         /// <summary>
+        /// Load public key from PEM file
+        /// </summary>
+        /// <param name="filePath">File path</param>
+        public static KyberPublicKeyParameters LoadPublicKeyFromPEM(string filePath)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                return LoadPublicKeyFromPEM(fs);
+            }
+        }
+
+        /// <summary>
         /// Load private key from PEM
         /// </summary>
         /// <param name="input">Input stream</param>
         public static KyberPrivateKeyParameters LoadPrivateKeyFromPEM(Stream input)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
+            string type = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             byte[] data = pem.Data ?? throw new InvalidOperationException();
 
-            KyberParameters parameters = GetParameters(name);
-            KyberComponentsSizes sizes = KyberComponentsSizes.GetComponentsSizes(name);
+            KyberParameters parameters = GetParameters(type);
+            KyberComponentsSizes sizes = KyberComponentsSizes.GetComponentsSizes(type);
 
             byte[] s = new byte[sizes.S];
             byte[] t = new byte[sizes.T];
@@ -180,6 +192,18 @@ namespace Enigma.PQC
             Array.Copy(data, index, nonce, 0, sizes.Nonce);
 
             return new KyberPrivateKeyParameters(parameters, s, hpk, nonce, t, rho);
+        }
+
+        /// <summary>
+        /// Load private key from PEM file
+        /// </summary>
+        /// <param name="filePath">File path</param>
+        public static KyberPrivateKeyParameters LoadPrivateKeyFromPEM(string filePath)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                return LoadPrivateKeyFromPEM(fs);
+            }
         }
 
         /// <summary>
@@ -190,7 +214,7 @@ namespace Enigma.PQC
         public static KyberPrivateKeyParameters LoadPrivateKeyFromPEM(Stream input, string password)
         {
             PemContent pem = Pem.Read(input);
-            string name = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
+            string type = pem.Header.FirstOrDefault(x => x.Name == "Type")?.Value ?? throw new InvalidOperationException();
             string saltStr = pem.Header.FirstOrDefault(x => x.Name == "Salt")?.Value ?? throw new InvalidOperationException();
             string ivStr = pem.Header.FirstOrDefault(x => x.Name == "IV")?.Value ?? throw new InvalidOperationException();
             byte[] enc = pem.Data ?? throw new InvalidOperationException();
@@ -201,8 +225,8 @@ namespace Enigma.PQC
 
             byte[] data = new Pkcs7Padding().Unpad(dec, AES.BLOCK_SIZE);
 
-            KyberParameters parameters = GetParameters(name);
-            KyberComponentsSizes sizes = KyberComponentsSizes.GetComponentsSizes(name);
+            KyberParameters parameters = GetParameters(type);
+            KyberComponentsSizes sizes = KyberComponentsSizes.GetComponentsSizes(type);
 
             byte[] s = new byte[sizes.S];
             byte[] t = new byte[sizes.T];
@@ -225,19 +249,32 @@ namespace Enigma.PQC
         }
 
         /// <summary>
+        /// Load private key from PEM file secured with password
+        /// </summary>
+        /// <param name="filePath">File path</param>
+        /// <param name="password">Password</param>
+        public static KyberPrivateKeyParameters LoadPrivateKeyFromPEM(string filePath, string password)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                return LoadPrivateKeyFromPEM(fs, password);
+            }
+        }
+
+        /// <summary>
         /// Save public key to PEM
         /// </summary>
         /// <param name="publicKey">Public key</param>
-        /// <param name="name">Parameters name</param>
+        /// <param name="type">Parameters type</param>
         /// <param name="output">Output stream</param>
-        public static void SavePublicKeyToPEM(KyberPublicKeyParameters publicKey, string name, Stream output)
+        public static void SavePublicKeyToPEM(KyberPublicKeyParameters publicKey, string type, Stream output)
         {
             List<PemHeaderItem> header = new List<PemHeaderItem>
             {
                 new PemHeaderItem
                 {
                     Name = "Type",
-                    Value = name
+                    Value = type
                 }
             };
 
@@ -246,19 +283,33 @@ namespace Enigma.PQC
         }
 
         /// <summary>
+        /// Save public key to PEM file
+        /// </summary>
+        /// <param name="publicKey">Public key</param>
+        /// <param name="type">Parameters type</param>
+        /// <param name="filePath">File path</param>
+        public static void SavePublicKeyToPEM(KyberPublicKeyParameters publicKey, string type, string filePath)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                SavePublicKeyToPEM(publicKey, type, fs);
+            }
+        }
+
+        /// <summary>
         /// Save private key to PEM
         /// </summary>
         /// <param name="privateKey">Private key</param>
-        /// <param name="name">Parameters name</param>
+        /// <param name="type">Parameters type</param>
         /// <param name="output">Output stream</param>
-        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, string name, Stream output)
+        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, string type, Stream output)
         {
             List<PemHeaderItem> header = new List<PemHeaderItem>
             {
                 new PemHeaderItem
                 {
                     Name = "Type",
-                    Value = name
+                    Value = type
                 }
             };
 
@@ -268,13 +319,27 @@ namespace Enigma.PQC
         }
 
         /// <summary>
+        /// Save private key to PEM file
+        /// </summary>
+        /// <param name="privateKey">Private key</param>
+        /// <param name="type">Parameters type</param>
+        /// <param name="filePath">File path</param>
+        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, string type, string filePath)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                SavePrivateKeyToPEM(privateKey, type, fs);
+            }
+        }
+
+        /// <summary>
         /// Save private key to PEM secured with a password
         /// </summary>
         /// <param name="privateKey">Private key</param>
-        /// <param name="name">Parameters name</param>
+        /// <param name="type">Parameters type</param>
         /// <param name="output">Output stream</param>
         /// <param name="password">Password</param>
-        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, string name, Stream output, string password)
+        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, string type, Stream output, string password)
         {
             byte[] salt = RandomHelper.GenerateBytes(16);
             byte[] iv = RandomHelper.GenerateBytes(AES.IV_SIZE);
@@ -284,7 +349,7 @@ namespace Enigma.PQC
                 new PemHeaderItem
                 {
                     Name = "Type",
-                    Value = name
+                    Value = type
                 },
                 new PemHeaderItem
                 {
@@ -309,13 +374,28 @@ namespace Enigma.PQC
             Pem.Write("KYBER ENCRYPTED PRIVATE KEY", header, enc, output);
         }
 
+        /// <summary>
+        /// Save private key to PEM file secured with a password
+        /// </summary>
+        /// <param name="privateKey">Private key</param>
+        /// <param name="type">Parameters type</param>
+        /// <param name="filePath">File path</param>
+        /// <param name="password">Password</param>
+        public static void SavePrivateKeyToPEM(KyberPrivateKeyParameters privateKey, string type, string filePath, string password)
+        {
+            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                SavePrivateKeyToPEM(privateKey, type, fs, password);
+            }
+        }
+
         #endregion
 
         #region Helpers
 
-        private static KyberParameters GetParameters(string name)
+        private static KyberParameters GetParameters(string type)
         {
-            switch (name)
+            switch (type)
             {
                 case KYBER512:
                     return KyberParameters.kyber512;
