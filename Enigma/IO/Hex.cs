@@ -2,8 +2,15 @@
 
 namespace Enigma.IO
 {
+    /// <summary>
+    /// Decode exception for <see cref="Hex"/>
+    /// </summary>
     public sealed class HexDecodeException : Exception
     {
+        /// <summary>
+        /// Constructor for <see cref="HexDecodeException"/>
+        /// </summary>
+        /// <param name="message"></param>
         public HexDecodeException(string message) : base(message) { }
     }
 

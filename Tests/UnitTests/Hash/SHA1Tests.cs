@@ -21,17 +21,17 @@ namespace CryptoToolkitUnitTests.Hash
         [Test]
         public void HashFile()
         {
-            string hashStr = File.ReadAllText(@"data\Hash\sha1.dat.txt", Encoding.ASCII);
-            byte[] hash = SHA1.Hash(@"data\Hash\sha1.dat");
+            string hashStr = File.ReadAllText(@"data\Hash\sha1.csv.txt", Encoding.ASCII);
+            byte[] hash = SHA1.Hash(@"data\Hash\sha1.csv");
             Assert.That(Hex.Encode(hash), Is.EqualTo(hashStr));
         }
 
         [Test]
         public void HashStream()
         {
-            string hashStr = File.ReadAllText(@"data\Hash\sha1.dat.txt", Encoding.ASCII);
+            string hashStr = File.ReadAllText(@"data\Hash\sha1.csv.txt", Encoding.ASCII);
             byte[] hash;
-            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\Hash\sha1.dat"))
+            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\Hash\sha1.csv"))
             {
                 hash = SHA1.Hash(fs);
             }
@@ -41,9 +41,9 @@ namespace CryptoToolkitUnitTests.Hash
         [Test]
         public async Task HashStreamAsync()
         {
-            string hashStr = await File.ReadAllTextAsync(@"data\Hash\sha1.dat.txt", Encoding.ASCII).ConfigureAwait(false);
+            string hashStr = await File.ReadAllTextAsync(@"data\Hash\sha1.csv.txt", Encoding.ASCII).ConfigureAwait(false);
             byte[] hash;
-            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\Hash\sha1.dat"))
+            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\Hash\sha1.csv"))
             {
                 hash = await SHA1.HashAsync(fs).ConfigureAwait(false);
             }
@@ -61,16 +61,28 @@ namespace CryptoToolkitUnitTests.Hash
 
         static IEnumerable<Tuple<byte[], string>> DataSource()
         {
-            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\Hash\sha1.dat"))
+            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\Hash\sha1.csv"))
             {
-                int total = BinaryHelper.ReadInt32(fs);
-
-                for (int i = 0; i < total; i++)
+                using (StreamReader sr = new StreamReader(fs, Encoding.Default))
                 {
-                    byte[] data = BinaryHelper.ReadLV(fs);
-                    byte[] sha1Data = BinaryHelper.ReadLV(fs);
+                    sr.ReadLine();
 
-                    yield return new Tuple<byte[], string>(data, Encoding.ASCII.GetString(sha1Data));
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+
+                        if (line != null)
+                        {
+                            string[] split = line.Split(',');
+                            if (split.Length == 2)
+                            {
+                                byte[] data = Hex.Decode(split[0]);
+                                string hash = split[1];
+
+                                yield return new Tuple<byte[], string>(data, hash);
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -19,17 +19,29 @@ namespace CryptoToolkitUnitTests.KDF
 
         static IEnumerable<Tuple<string, byte[], byte[]>> DataSource()
         {
-            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\KDF\pbkdf2.dat"))
+            using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\KDF\pbkdf2.csv"))
             {
-                int total = BinaryHelper.ReadInt32(fs);
-
-                for (int i = 0; i < total; i++)
+                using (StreamReader sr = new StreamReader(fs, Encoding.Default))
                 {
-                    byte[] passwordData = BinaryHelper.ReadLV(fs);
-                    byte[] salt = BinaryHelper.ReadLV(fs);
-                    byte[] key = BinaryHelper.ReadLV(fs);
+                    sr.ReadLine();
 
-                    yield return new Tuple<string, byte[], byte[]>(Encoding.ASCII.GetString(passwordData), salt, key);
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+
+                        if (line != null)
+                        {
+                            string[] split = line.Split(',');
+                            if (split.Length == 3)
+                            {
+                                string password = split[0];
+                                byte[] salt = Hex.Decode(split[1]);
+                                byte[] key = Hex.Decode(split[2]);
+
+                                yield return new Tuple<string, byte[], byte[]>(password, salt, key);
+                            }
+                        }
+                    }
                 }
             }
         }

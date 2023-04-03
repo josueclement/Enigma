@@ -2,8 +2,15 @@
 
 namespace Enigma.IO
 {
+    /// <summary>
+    /// Decode exception for <see cref="Base64"/>
+    /// </summary>
     public sealed class Base64DecodeException : Exception
     {
+        /// <summary>
+        /// Constructor for <see cref="Base64DecodeException"/>
+        /// </summary>
+        /// <param name="message">Message</param>
         public Base64DecodeException(string message) : base(message) { }
     }
 

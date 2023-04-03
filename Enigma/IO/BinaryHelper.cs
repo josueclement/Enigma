@@ -10,15 +10,45 @@ namespace Enigma.IO
     /// </summary>
     public static class BinaryHelper
     {
+        /// <summary>
+        /// Size of <see cref="Byte"/>
+        /// </summary>
         public const int SIZEOF_BYTE = sizeof(byte);
+        /// <summary>
+        /// Size of <see cref="bool"/>
+        /// </summary>
         public const int SIZEOF_BOOL = sizeof(bool);
+        /// <summary>
+        /// Size of <see cref="Int16"/>
+        /// </summary>
         public const int SIZEOF_INT16 = sizeof(Int16);
+        /// <summary>
+        /// Size of <see cref="UInt16"/>
+        /// </summary>
         public const int SIZEOF_UINT16 = sizeof(UInt16);
+        /// <summary>
+        /// Size of <see cref="Int32"/>
+        /// </summary>
         public const int SIZEOF_INT32 = sizeof(Int32);
+        /// <summary>
+        /// Size of <see cref="UInt32"/>
+        /// </summary>
         public const int SIZEOF_UINT32 = sizeof(UInt32);
+        /// <summary>
+        /// Size of <see cref="Int64"/>
+        /// </summary>
         public const int SIZEOF_INT64 = sizeof(Int64);
+        /// <summary>
+        /// Size of <see cref="UInt64"/>
+        /// </summary>
         public const int SIZEOF_UINT64 = sizeof(UInt64);
+        /// <summary>
+        /// Size of <see cref="float"/>
+        /// </summary>
         public const int SIZEOF_FLOAT = sizeof(float);
+        /// <summary>
+        /// Size of <see cref="double"/>
+        /// </summary>
         public const int SIZEOF_DOUBLE = sizeof(double);
 
         #region Byte
