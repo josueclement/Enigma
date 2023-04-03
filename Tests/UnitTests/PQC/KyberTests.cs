@@ -1,21 +1,28 @@
 ﻿using Enigma.PQC;
 using NUnit.Framework;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 namespace UnitTests.PQC
 {
     internal class KyberTests
     {
         [Test]
-        public void SaveAndLoadPublicKey()
+        [TestCase(Kyber.KYBER512)]
+        [TestCase(Kyber.KYBER512_AES)]
+        [TestCase(Kyber.KYBER768)]
+        [TestCase(Kyber.KYBER768_AES)]
+        [TestCase(Kyber.KYBER1024)]
+        [TestCase(Kyber.KYBER1024_AES)]
+        public void SaveAndLoadPublicKey(string type)
         {
-            Kyber.GenerateKeyPair(Kyber.KYBER1024_AES, out var publicKey, out _);
+            Kyber.GenerateKeyPair(type, out var publicKey, out _);
             byte[] publicData = publicKey.GetEncoded();
 
             byte[] data;
             using (MemoryStream ms = new MemoryStream())
             {
-                Kyber.SavePublicKeyToPEM(publicKey, Kyber.KYBER1024_AES, ms);
+                Kyber.SavePublicKeyToPEM(publicKey, type, ms);
                 data = ms.ToArray();
             }
             byte[] readPublicData;
@@ -29,15 +36,21 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        public void SaveAndLoadPrivateKey()
+        [TestCase(Kyber.KYBER512)]
+        [TestCase(Kyber.KYBER512_AES)]
+        [TestCase(Kyber.KYBER768)]
+        [TestCase(Kyber.KYBER768_AES)]
+        [TestCase(Kyber.KYBER1024)]
+        [TestCase(Kyber.KYBER1024_AES)]
+        public void SaveAndLoadPrivateKey(string type)
         {
-            Kyber.GenerateKeyPair(Kyber.KYBER1024_AES, out _, out var privateKey);
+            Kyber.GenerateKeyPair(type, out _, out var privateKey);
             byte[] privateData = privateKey.GetEncoded();
 
             byte[] data;
             using (MemoryStream ms = new MemoryStream())
             {
-                Kyber.SavePrivateKeyToPEM(privateKey, Kyber.KYBER1024_AES, ms);
+                Kyber.SavePrivateKeyToPEM(privateKey, type, ms);
                 data = ms.ToArray();
             }
             byte[] readPrivateData;
@@ -51,15 +64,21 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        public void SaveAndLoadPrivateKeyWithPassword()
+        [TestCase(Kyber.KYBER512)]
+        [TestCase(Kyber.KYBER512_AES)]
+        [TestCase(Kyber.KYBER768)]
+        [TestCase(Kyber.KYBER768_AES)]
+        [TestCase(Kyber.KYBER1024)]
+        [TestCase(Kyber.KYBER1024_AES)]
+        public void SaveAndLoadPrivateKeyWithPassword(string type)
         {
-            Kyber.GenerateKeyPair(Kyber.KYBER1024_AES, out _, out var privateKey);
+            Kyber.GenerateKeyPair(type, out _, out var privateKey);
             byte[] privateData = privateKey.GetEncoded();
 
             byte[] data;
             using (MemoryStream ms = new MemoryStream())
             {
-                Kyber.SavePrivateKeyToPEM(privateKey, Kyber.KYBER1024_AES, ms, "test1234ABC");
+                Kyber.SavePrivateKeyToPEM(privateKey, type, ms, "test1234ABC");
                 data = ms.ToArray();
             }
             byte[] readPrivateData;
@@ -73,19 +92,31 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        public void GenerateAndExtract()
+        [TestCase(Kyber.KYBER512)]
+        [TestCase(Kyber.KYBER512_AES)]
+        [TestCase(Kyber.KYBER768)]
+        [TestCase(Kyber.KYBER768_AES)]
+        [TestCase(Kyber.KYBER1024)]
+        [TestCase(Kyber.KYBER1024_AES)]
+        public void GenerateAndExtract(string type)
         {
-            Kyber.GenerateKeyPair(Kyber.KYBER1024_AES, out var publicKey, out var privateKey);
+            Kyber.GenerateKeyPair(type, out var publicKey, out var privateKey);
             Kyber.Generate(publicKey, out byte[] clearKey, out byte[] encryptedKey);
             byte[] decryptedKey = Kyber.Extract(privateKey, encryptedKey);
             Assert.That(decryptedKey, Is.EqualTo(clearKey));
         }
 
         [Test]
-        public void GenerateAndExtractWithWrongKey()
+        [TestCase(Kyber.KYBER512)]
+        [TestCase(Kyber.KYBER512_AES)]
+        [TestCase(Kyber.KYBER768)]
+        [TestCase(Kyber.KYBER768_AES)]
+        [TestCase(Kyber.KYBER1024)]
+        [TestCase(Kyber.KYBER1024_AES)]
+        public void GenerateAndExtractWithWrongKey(string type)
         {
-            Kyber.GenerateKeyPair(Kyber.KYBER1024_AES, out var publicKey, out _);
-            Kyber.GenerateKeyPair(Kyber.KYBER1024_AES, out _, out var privateKey);
+            Kyber.GenerateKeyPair(type, out var publicKey, out _);
+            Kyber.GenerateKeyPair(type, out _, out var privateKey);
             Kyber.Generate(publicKey, out byte[] clearKey, out byte[] encryptedKey);
             byte[] decryptedKey = Kyber.Extract(privateKey, encryptedKey);
             Assert.That(decryptedKey, Is.Not.EqualTo(clearKey));

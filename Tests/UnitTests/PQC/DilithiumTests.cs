@@ -8,15 +8,21 @@ namespace UnitTests.PQC
     internal class DilithiumTests
     {
         [Test]
-        public void SaveAndLoadPublicKey()
+        [TestCase(Dilithium.DILITHIUM2)]
+        [TestCase(Dilithium.DILITHIUM2_AES)]
+        [TestCase(Dilithium.DILITHIUM3)]
+        [TestCase(Dilithium.DILITHIUM3_AES)]
+        [TestCase(Dilithium.DILITHIUM5)]
+        [TestCase(Dilithium.DILITHIUM5_AES)]
+        public void SaveAndLoadPublicKey(string type)
         {
-            Dilithium.GenerateKeyPair(Dilithium.DILITHIUM5_AES, out var publicKey, out _);
+            Dilithium.GenerateKeyPair(type, out var publicKey, out _);
             byte[] publicData = publicKey.GetEncoded();
 
             byte[] data;
             using (MemoryStream ms = new MemoryStream())
             {
-                Dilithium.SavePublicKeyToPEM(publicKey, Dilithium.DILITHIUM5_AES, ms);
+                Dilithium.SavePublicKeyToPEM(publicKey, type, ms);
                 data = ms.ToArray();
             }
             byte[] readPublicData;
@@ -30,15 +36,21 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        public void SaveAndLoadPrivateKey()
+        [TestCase(Dilithium.DILITHIUM2)]
+        [TestCase(Dilithium.DILITHIUM2_AES)]
+        [TestCase(Dilithium.DILITHIUM3)]
+        [TestCase(Dilithium.DILITHIUM3_AES)]
+        [TestCase(Dilithium.DILITHIUM5)]
+        [TestCase(Dilithium.DILITHIUM5_AES)]
+        public void SaveAndLoadPrivateKey(string type)
         {
-            Dilithium.GenerateKeyPair(Dilithium.DILITHIUM5_AES, out _, out var privateKey);
+            Dilithium.GenerateKeyPair(type, out _, out var privateKey);
             byte[] privateData = privateKey.GetEncoded();
 
             byte[] data;
             using (MemoryStream ms = new MemoryStream())
             {
-                Dilithium.SavePrivateKeyToPEM(privateKey, Dilithium.DILITHIUM5_AES, ms);
+                Dilithium.SavePrivateKeyToPEM(privateKey, type, ms);
                 data = ms.ToArray();
             }
             byte[] readPrivateData;
@@ -52,15 +64,21 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        public void SaveAndLoadPrivateKeyWithPassword()
+        [TestCase(Dilithium.DILITHIUM2)]
+        [TestCase(Dilithium.DILITHIUM2_AES)]
+        [TestCase(Dilithium.DILITHIUM3)]
+        [TestCase(Dilithium.DILITHIUM3_AES)]
+        [TestCase(Dilithium.DILITHIUM5)]
+        [TestCase(Dilithium.DILITHIUM5_AES)]
+        public void SaveAndLoadPrivateKeyWithPassword(string type)
         {
-            Dilithium.GenerateKeyPair(Dilithium.DILITHIUM5_AES, out _, out var privateKey);
+            Dilithium.GenerateKeyPair(type, out _, out var privateKey);
             byte[] privateData = privateKey.GetEncoded();
 
             byte[] data;
             using (MemoryStream ms = new MemoryStream())
             {
-                Dilithium.SavePrivateKeyToPEM(privateKey, Dilithium.DILITHIUM5_AES, ms, "test1234ABC");
+                Dilithium.SavePrivateKeyToPEM(privateKey, type, ms, "test1234ABC");
                 data = ms.ToArray();
             }
             byte[] readPrivateData;
@@ -74,9 +92,15 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        public void SignAndVerify()
+        [TestCase(Dilithium.DILITHIUM2)]
+        [TestCase(Dilithium.DILITHIUM2_AES)]
+        [TestCase(Dilithium.DILITHIUM3)]
+        [TestCase(Dilithium.DILITHIUM3_AES)]
+        [TestCase(Dilithium.DILITHIUM5)]
+        [TestCase(Dilithium.DILITHIUM5_AES)]
+        public void SignAndVerify(string type)
         {
-            Dilithium.GenerateKeyPair(Dilithium.DILITHIUM5_AES, out var publicKey, out var privateKey);
+            Dilithium.GenerateKeyPair(type, out var publicKey, out var privateKey);
             byte[] data = RandomHelper.GenerateBytes(32);
             byte[] signature = Dilithium.Sign(data, privateKey);
             bool isValid = Dilithium.Verify(data, signature, publicKey);
@@ -84,10 +108,16 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        public void SignAndVerifyWithWrongKey()
+        [TestCase(Dilithium.DILITHIUM2)]
+        [TestCase(Dilithium.DILITHIUM2_AES)]
+        [TestCase(Dilithium.DILITHIUM3)]
+        [TestCase(Dilithium.DILITHIUM3_AES)]
+        [TestCase(Dilithium.DILITHIUM5)]
+        [TestCase(Dilithium.DILITHIUM5_AES)]
+        public void SignAndVerifyWithWrongKey(string type)
         {
-            Dilithium.GenerateKeyPair(Dilithium.DILITHIUM5_AES, out var publicKey, out _);
-            Dilithium.GenerateKeyPair(Dilithium.DILITHIUM5_AES, out _, out var privateKey);
+            Dilithium.GenerateKeyPair(type, out var publicKey, out _);
+            Dilithium.GenerateKeyPair(type, out _, out var privateKey);
             byte[] data = RandomHelper.GenerateBytes(32);
             byte[] signature = Dilithium.Sign(data, privateKey);
             bool isValid = Dilithium.Verify(data, signature, publicKey);
@@ -95,9 +125,15 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        public void SignAndVerifyWithBadData()
+        [TestCase(Dilithium.DILITHIUM2)]
+        [TestCase(Dilithium.DILITHIUM2_AES)]
+        [TestCase(Dilithium.DILITHIUM3)]
+        [TestCase(Dilithium.DILITHIUM3_AES)]
+        [TestCase(Dilithium.DILITHIUM5)]
+        [TestCase(Dilithium.DILITHIUM5_AES)]
+        public void SignAndVerifyWithBadData(string type)
         {
-            Dilithium.GenerateKeyPair(Dilithium.DILITHIUM5_AES, out var publicKey, out var privateKey);
+            Dilithium.GenerateKeyPair(type, out var publicKey, out var privateKey);
             byte[] data = RandomHelper.GenerateBytes(32);
             byte[] badData = RandomHelper.GenerateBytes(32);
             byte[] signature = Dilithium.Sign(data, privateKey);
