@@ -39,11 +39,11 @@ namespace Enigma.PQC
             switch (type)
             {
                 case Dilithium.DILITHIUM2:
-                    return new DilithiumComponentsSizes(32, 32, 32, 384, 384, 1664, 1280);
+                    return new DilithiumComponentsSizes(32, 32, 64, 384, 384, 1664, 1280);
                 case Dilithium.DILITHIUM3:
-                    return new DilithiumComponentsSizes(32, 32, 32, 640, 768, 2496, 1920);
+                    return new DilithiumComponentsSizes(32, 32, 64, 640, 768, 2496, 1920);
                 case Dilithium.DILITHIUM5:
-                    return new DilithiumComponentsSizes(32, 32, 32, 672, 768, 3328, 2560);
+                    return new DilithiumComponentsSizes(32, 32, 64, 672, 768, 3328, 2560);
                 default:
                     throw new InvalidOperationException();
             }
