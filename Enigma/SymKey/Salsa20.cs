@@ -29,16 +29,8 @@ namespace Enigma.SymKey
         /// <param name="key">Key</param>
         /// <param name="nonce">Nonce</param>
         /// <returns>Encrypted data</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Encrypt(byte[] data, byte[] key, byte[] nonce)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             byte[] enc = new byte[data.Length];
 
             Salsa20Engine engine = new Salsa20Engine();
@@ -58,18 +50,8 @@ namespace Enigma.SymKey
         /// <param name="nonce">Nonce</param>
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Encrypt(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             Salsa20Engine engine = new Salsa20Engine();
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(key, 0, key.Length), nonce, 0, nonce.Length);
             engine.Init(true, parameters);
@@ -101,18 +83,8 @@ namespace Enigma.SymKey
         /// <param name="nonce">Nonce</param>
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             Salsa20Engine engine = new Salsa20Engine();
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(key, 0, key.Length), nonce, 0, nonce.Length);
             engine.Init(true, parameters);
@@ -142,16 +114,8 @@ namespace Enigma.SymKey
         /// <param name="key">Key</param>
         /// <param name="nonce">Nonce</param>
         /// <returns>Decrypted data</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Decrypt(byte[] data, byte[] key, byte[] nonce)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             byte[] dec = new byte[data.Length];
 
             Salsa20Engine engine = new Salsa20Engine();
@@ -171,18 +135,8 @@ namespace Enigma.SymKey
         /// <param name="nonce">Nonce</param>
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Decrypt(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             Salsa20Engine engine = new Salsa20Engine();
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(key, 0, key.Length), nonce, 0, nonce.Length);
             engine.Init(false, parameters);
@@ -214,18 +168,8 @@ namespace Enigma.SymKey
         /// <param name="nonce">Nonce</param>
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             Salsa20Engine engine = new Salsa20Engine();
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(key, 0, key.Length), nonce, 0, nonce.Length);
             engine.Init(false, parameters);

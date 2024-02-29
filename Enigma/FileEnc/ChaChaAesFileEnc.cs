@@ -32,18 +32,8 @@ namespace Enigma.FileEnc
         /// <param name="rsa">RSA key</param>
         /// <param name="keyName">Key name</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Encrypt(Stream input, Stream output, RSACryptoServiceProvider rsa, string keyName, Action<int>? notifyProgression = null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (keyName == null)
-                throw new ArgumentNullException(nameof(keyName));
-
             byte[] chachaKey = RandomHelper.GenerateBytes(ChaCha20Rfc7539.KEY_SIZE);
             byte[] chachaNonce = RandomHelper.GenerateBytes(ChaCha20Rfc7539.NONCE_SIZE);
             byte[] aesKey = RandomHelper.GenerateBytes(AES.KEY_SIZE);
@@ -77,18 +67,8 @@ namespace Enigma.FileEnc
         /// <param name="rsa">RSA key</param>
         /// <param name="keyName">Key name</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task EncryptAsync(Stream input, Stream output, RSACryptoServiceProvider rsa, string keyName, Action<int>? notifyProgression = null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (keyName == null)
-                throw new ArgumentNullException(nameof(keyName));
-
             byte[] chachaKey = RandomHelper.GenerateBytes(ChaCha20Rfc7539.KEY_SIZE);
             byte[] chachaNonce = RandomHelper.GenerateBytes(ChaCha20Rfc7539.NONCE_SIZE);
             byte[] aesKey = RandomHelper.GenerateBytes(AES.KEY_SIZE);
@@ -122,18 +102,8 @@ namespace Enigma.FileEnc
         /// <param name="rsa">RSA key</param>
         /// <param name="keyName">Key name</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Encrypt(string inputFile, string outputFile, RSACryptoServiceProvider rsa, string keyName, Action<int>? notifyProgression = null)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (keyName == null)
-                throw new ArgumentNullException(nameof(keyName));
-
             using (FileStream fsIn = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 using (FileStream fsOut = StreamHelper.GetFileStreamCreate(outputFile))
@@ -151,18 +121,8 @@ namespace Enigma.FileEnc
         /// <param name="rsa">RSA key</param>
         /// <param name="keyName">Key name</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task EncryptAsync(string inputFile, string outputFile, RSACryptoServiceProvider rsa, string keyName, Action<int>? notifyProgression = null)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (keyName == null)
-                throw new ArgumentNullException(nameof(keyName));
-
             using (FileStream fsIn = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 using (FileStream fsOut = StreamHelper.GetFileStreamCreate(outputFile))
@@ -183,16 +143,8 @@ namespace Enigma.FileEnc
         /// <param name="output">Output stream</param>
         /// <param name="password">Passw0rd</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Encrypt(Stream input, Stream output, string password, Action<int>? notifyProgression = null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-
             byte[] chachaSalt = RandomHelper.GenerateBytes(SALT_SIZE);
             byte[] chachaKey = PBKDF2.GenerateKeyFromPassword(ChaCha20Rfc7539.KEY_SIZE, password, chachaSalt, 60000);
             byte[] chachaNonce = RandomHelper.GenerateBytes(ChaCha20Rfc7539.NONCE_SIZE);
@@ -218,16 +170,8 @@ namespace Enigma.FileEnc
         /// <param name="output">Output stream</param>
         /// <param name="password">Passw0rd</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task EncryptAsync(Stream input, Stream output, string password, Action<int>? notifyProgression = null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-
             byte[] chachaSalt = RandomHelper.GenerateBytes(SALT_SIZE);
             byte[] chachaKey = PBKDF2.GenerateKeyFromPassword(ChaCha20Rfc7539.KEY_SIZE, password, chachaSalt, 60000);
             byte[] chachaNonce = RandomHelper.GenerateBytes(ChaCha20Rfc7539.NONCE_SIZE);
@@ -253,16 +197,8 @@ namespace Enigma.FileEnc
         /// <param name="outputFile">Output file</param>
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Encrypt(string inputFile, string outputFile, string password, Action<int>? notifyProgression = null)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-
             using (FileStream fsIn = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 using (FileStream fsOut = StreamHelper.GetFileStreamCreate(outputFile))
@@ -279,16 +215,8 @@ namespace Enigma.FileEnc
         /// <param name="outputFile">Output file</param>
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task EncryptAsync(string inputFile, string outputFile, string password, Action<int>? notifyProgression = null)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-
             using (FileStream fsIn = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 using (FileStream fsOut = StreamHelper.GetFileStreamCreate(outputFile))
@@ -309,16 +237,8 @@ namespace Enigma.FileEnc
         /// <param name="output">Output stream</param>
         /// <param name="rsa">RSA key</param>
         /// <param name="notifyProgression">Notify progression delgate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Decrypt(Stream input, Stream output, RSACryptoServiceProvider rsa, Action<int>? notifyProgression = null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-
             input.Seek(RSA_HEADER.Length, SeekOrigin.Current); // Header
             input.Seek(1, SeekOrigin.Current); // Version
 
@@ -349,16 +269,8 @@ namespace Enigma.FileEnc
         /// <param name="output">Output stream</param>
         /// <param name="rsa">RSA key</param>
         /// <param name="notifyProgression">Notify progression delgate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task DecryptAsync(Stream input, Stream output, RSACryptoServiceProvider rsa, Action<int>? notifyProgression = null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-
             input.Seek(RSA_HEADER.Length, SeekOrigin.Current); // Header
             input.Seek(1, SeekOrigin.Current); // Version
 
@@ -389,16 +301,8 @@ namespace Enigma.FileEnc
         /// <param name="outputFile">Output file</param>
         /// <param name="rsa">RSA key</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Decrypt(string inputFile, string outputFile, RSACryptoServiceProvider rsa, Action<int>? notifyProgression = null)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-
             using (FileStream fsIn = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 using (FileStream fsOut = StreamHelper.GetFileStreamCreate(outputFile))
@@ -415,16 +319,8 @@ namespace Enigma.FileEnc
         /// <param name="outputFile">Output file</param>
         /// <param name="rsa">RSA key</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task DecryptAsync(string inputFile, string outputFile, RSACryptoServiceProvider rsa, Action<int>? notifyProgression = null)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-
             using (FileStream fsIn = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 using (FileStream fsOut = StreamHelper.GetFileStreamCreate(outputFile))
@@ -445,16 +341,8 @@ namespace Enigma.FileEnc
         /// <param name="output">Output stream</param>
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Decrypt(Stream input, Stream output, string password, Action<int>? notifyProgression = null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-
             input.Seek(PASS_HEADER.Length, SeekOrigin.Current); // Header
             input.Seek(1, SeekOrigin.Current); // Version
 
@@ -479,16 +367,8 @@ namespace Enigma.FileEnc
         /// <param name="output">Output stream</param>
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task DecryptAsync(Stream input, Stream output, string password, Action<int>? notifyProgression = null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-
             input.Seek(PASS_HEADER.Length, SeekOrigin.Current); // Header
             input.Seek(1, SeekOrigin.Current); // Version
 
@@ -513,16 +393,8 @@ namespace Enigma.FileEnc
         /// <param name="outputFile">Output file</param>
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Decrypt(string inputFile, string outputFile, string password, Action<int>? notifyProgression = null)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-
             using (FileStream fsIn = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 using (FileStream fsOut = StreamHelper.GetFileStreamCreate(outputFile))
@@ -539,16 +411,8 @@ namespace Enigma.FileEnc
         /// <param name="outputFile">Output file</param>
         /// <param name="password">Password</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task DecryptAsync(string inputFile, string outputFile, string password, Action<int>? notifyProgression = null)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-
             using (FileStream fsIn = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 using (FileStream fsOut = StreamHelper.GetFileStreamCreate(outputFile))

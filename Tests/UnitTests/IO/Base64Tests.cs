@@ -55,24 +55,6 @@ namespace UnitTests.IO
             });
         }
 
-        [Test]
-        public void EncodeNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Base64.Encode(null);
-            });
-        }
-
-        [Test]
-        public void DecodeNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Base64.Decode(null);
-            });
-        }
-
         static IEnumerable<Tuple<byte[], string>> DataSource()
         {
             using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\IO\b64.dat"))

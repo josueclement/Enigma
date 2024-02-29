@@ -50,15 +50,6 @@ namespace UnitTests.Hash
             Assert.That(Hex.Encode(hash), Is.EqualTo(hashStr));
         }
 
-        [Test]
-        public void HashNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Hex.Encode(null);
-            });
-        }
-
         static IEnumerable<Tuple<byte[], string>> DataSource()
         {
             using (FileStream fs = StreamHelper.GetFileStreamOpen(@"data\Hash\md5.csv"))

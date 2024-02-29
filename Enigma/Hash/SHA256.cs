@@ -21,12 +21,8 @@ namespace Enigma.Hash
         /// </summary>
         /// <param name="data">Data to hash</param>
         /// <returns>SHA256 hash</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Hash(byte[] data)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
             byte[] result = new byte[HASH_SIZE];
 
             Sha256Digest sha256 = new Sha256Digest();
@@ -42,12 +38,8 @@ namespace Enigma.Hash
         /// <param name="input">Input stream</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <returns>SHA256 hash</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Hash(Stream input, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-
             byte[] result = new byte[HASH_SIZE];
 
             Sha256Digest sha256 = new Sha256Digest();
@@ -73,12 +65,8 @@ namespace Enigma.Hash
         /// <param name="input">Input stream</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <returns>SHA256 hash</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task<byte[]> HashAsync(Stream input, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-
             byte[] result = new byte[HASH_SIZE];
 
             Sha256Digest sha256 = new Sha256Digest();
@@ -104,12 +92,8 @@ namespace Enigma.Hash
         /// <param name="inputFile">File to hash</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <returns>SHA256 hash</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Hash(string inputFile, int bufferSize = 4096)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-
             using (FileStream fs = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 return Hash(fs, bufferSize);
@@ -122,12 +106,8 @@ namespace Enigma.Hash
         /// <param name="inputFile">File to hash</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <returns>SHA256 hash</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task<byte[]> HashAsync(string inputFile, int bufferSize = 4096)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-
             using (FileStream fs = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 return await HashAsync(fs, bufferSize).ConfigureAwait(false);

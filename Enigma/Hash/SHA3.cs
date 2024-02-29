@@ -17,12 +17,8 @@ namespace Enigma.Hash
         /// <param name="data">Data to hash</param>
         /// <param name="bitLength">SHA3 bit length</param>
         /// <returns>SHA3 hash</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Hash(byte[] data, int bitLength = 512)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
             byte[] result = new byte[bitLength / 8];
 
             Sha3Digest sha3 = new Sha3Digest(bitLength);
@@ -39,12 +35,8 @@ namespace Enigma.Hash
         /// <param name="bitLength">SHA3 bit length</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <returns>SHA3 hash</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Hash(Stream input, int bitLength = 512, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-
             byte[] result = new byte[bitLength / 8];
 
             Sha3Digest sha3 = new Sha3Digest(bitLength);
@@ -71,12 +63,8 @@ namespace Enigma.Hash
         /// <param name="bitLength">SHA3 bit length</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <returns>SHA3 hash</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task<byte[]> HashAsync(Stream input, int bitLength = 512, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-
             byte[] result = new byte[bitLength / 8];
 
             Sha3Digest sha3 = new Sha3Digest(bitLength);
@@ -103,12 +91,8 @@ namespace Enigma.Hash
         /// <param name="bitLength">SHA3 bit length</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <returns>SHA3 hash</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Hash(string inputFile, int bitLength = 512, int bufferSize = 4096)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-
             using (FileStream fs = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 return Hash(fs, bitLength, bufferSize);
@@ -122,12 +106,8 @@ namespace Enigma.Hash
         /// <param name="bitLength">SHA3 bit length</param>
         /// <param name="bufferSize">Buffer size</param>
         /// <returns>SHA3 hash</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task<byte[]> HashAsync(string inputFile, int bitLength = 512, int bufferSize = 4096)
         {
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
-
             using (FileStream fs = StreamHelper.GetFileStreamOpen(inputFile))
             {
                 return await HashAsync(fs, bitLength, bufferSize).ConfigureAwait(false);

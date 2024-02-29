@@ -36,29 +36,11 @@ namespace UnitTests.Padding
         }
 
         [Test]
-        public void PadNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new NoPadding().Pad(null, 16);
-            });
-        }
-
-        [Test]
         public void UnpadBadBlockSize()
         {
             Assert.Throws<ArgumentException>(() =>
             {
                 new NoPadding().Unpad(new byte[] { }, 0);
-            });
-        }
-
-        [Test]
-        public void UnPadNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new NoPadding().Unpad(null, 16);
             });
         }
     }

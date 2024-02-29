@@ -13,12 +13,9 @@ namespace Enigma.Padding
         /// <param name="data">Data</param>
         /// <param name="blockSize">Block size</param>
         /// <returns>Original data</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public byte[] Pad(byte[] data, int blockSize)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
             if (blockSize < 1 || blockSize > byte.MaxValue)
                 throw new ArgumentException($"Invalid block size {blockSize}", nameof(blockSize));
 
@@ -31,12 +28,9 @@ namespace Enigma.Padding
         /// <param name="paddedData">Data</param>
         /// <param name="blockSize">Block size</param>
         /// <returns>Original data</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public byte[] Unpad(byte[] paddedData, int blockSize)
         {
-            if (paddedData == null)
-                throw new ArgumentNullException(nameof(paddedData));
             if (blockSize < 1 || blockSize > byte.MaxValue)
                 throw new ArgumentException($"Invalid block size {blockSize}", nameof(blockSize));
 

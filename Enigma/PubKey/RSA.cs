@@ -30,14 +30,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="rsa">RSA Key</param>
         /// <param name="data">Data to encrypt</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Encrypt(RSACryptoServiceProvider rsa, byte[] data)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
             return rsa.Encrypt(data, true);
         }
 
@@ -46,14 +40,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="rsa">RSA Key</param>
         /// <param name="encrypted">Data to decrypt</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Decrypt(RSACryptoServiceProvider rsa, byte[] encrypted)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (encrypted == null)
-                throw new ArgumentNullException(nameof(encrypted));
-
             return rsa.Decrypt(encrypted, true);
         }
 
@@ -66,12 +54,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="input">Input stream</param>
         /// <param name="password">Password</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static RSACryptoServiceProvider LoadFromPEM(Stream input, string? password = null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-
             using (StreamReader sr = new StreamReader(input, Encoding.Default))
             {
                 PemReader pemReader;
@@ -111,12 +95,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="filePath">PEM file path</param>
         /// <param name="password">Password</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static RSACryptoServiceProvider LoadFromPEM(string filePath, string? password = null)
         {
-            if (filePath == null)
-                throw new ArgumentNullException(nameof(filePath));
-
             using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 return LoadFromPEM(fs, password);
@@ -128,14 +108,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="rsa">Public key</param>
         /// <param name="output">Output stream</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void SavePublicKeyToPEM(RSACryptoServiceProvider rsa, Stream output)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-
             using (StreamWriter sw = new StreamWriter(output, Encoding.Default))
             {
                 PemWriter pemWriter = new PemWriter(sw);
@@ -149,14 +123,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="rsa">Public key</param>
         /// <param name="outputFile">PEM output file</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void SavePublicKeyToPEM(RSACryptoServiceProvider rsa, string outputFile)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-
             using (FileStream fs = new FileStream(outputFile, FileMode.Create, FileAccess.Write))
             {
                 SavePublicKeyToPEM(rsa, fs);
@@ -170,18 +138,8 @@ namespace Enigma.PubKey
         /// <param name="output">Output stream</param>
         /// <param name="password">Password</param>
         /// <param name="algorithm">Algorithm for PEM encryption</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void SavePrivateKeyToPEM(RSACryptoServiceProvider rsa, Stream output, string password, string algorithm = "AES-256-CBC")
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-            if (algorithm == null)
-                throw new ArgumentNullException(nameof(algorithm));
-
             using (StreamWriter sw = new StreamWriter(output, Encoding.Default))
             {
                 PemWriter pemWriter = new PemWriter(sw);
@@ -198,18 +156,8 @@ namespace Enigma.PubKey
         /// <param name="outputFile">PEM output file</param>
         /// <param name="password">Password</param>
         /// <param name="algorithm">Algorithm</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void SavePrivateKeyToPEM(RSACryptoServiceProvider rsa, string outputFile, string password, string algorithm = "AES-256-CBC")
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-            if (algorithm == null)
-                throw new ArgumentNullException(nameof(algorithm));
-
             using (FileStream fs = new FileStream(outputFile, FileMode.Create, FileAccess.Write))
             {
                 SavePrivateKeyToPEM(rsa, fs, password, algorithm);
@@ -221,14 +169,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="rsa">Private key</param>
         /// <param name="output">Output stream</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void SavePrivateKeyToPEM(RSACryptoServiceProvider rsa, Stream output)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-
             using (StreamWriter sw = new StreamWriter(output, Encoding.Default))
             {
                 PemWriter pemWriter = new PemWriter(sw);
@@ -243,14 +185,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="rsa"></param>
         /// <param name="outputFile"></param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void SavePrivateKeyToPEM(RSACryptoServiceProvider rsa, string outputFile)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-
             using (FileStream fs = new FileStream(outputFile, FileMode.Create, FileAccess.Write))
             {
                 SavePrivateKeyToPEM(rsa, fs);
@@ -267,14 +203,8 @@ namespace Enigma.PubKey
         /// <param name="rsa">RSA key</param>
         /// <param name="containerName">Container name</param>
         /// <param name="csppf">CspProviderFlags</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void SaveInWinKeyStore(RSACryptoServiceProvider rsa, string containerName, CspProviderFlags csppf = CspProviderFlags.UseMachineKeyStore)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (containerName == null)
-                throw new ArgumentNullException(nameof(containerName));
-
             CspParameters cp = new CspParameters();
             cp.KeyContainerName = containerName;
             cp.Flags = csppf;
@@ -290,12 +220,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="containerName">Container name</param>
         /// <param name="csppf">CspProviderFlags</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static RSACryptoServiceProvider LoadFromWinKeyStore(string containerName, CspProviderFlags csppf = CspProviderFlags.UseMachineKeyStore)
         {
-            if (containerName == null)
-                throw new ArgumentNullException(nameof(containerName));
-
             CspParameters cp = new CspParameters();
             cp.KeyContainerName = containerName;
             cp.Flags = csppf;
@@ -308,12 +234,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="containerName">Container name</param>
         /// <param name="csppf">CspProviderFlags</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void DeleteFromWinKeyStore(string containerName, CspProviderFlags csppf = CspProviderFlags.UseMachineKeyStore)
         {
-            if (containerName == null)
-                throw new ArgumentNullException(nameof(containerName));
-
             CspParameters cp = new CspParameters();
             cp.KeyContainerName = containerName;
             cp.Flags = csppf;

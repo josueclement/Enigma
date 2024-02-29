@@ -27,12 +27,8 @@ namespace Enigma.IO
         /// </summary>
         /// <param name="data">Data to encode</param>
         /// <returns>Base64 string</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static string Encode(byte[] data)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
             int stringSize = data.Length % 3 == 0 ? (data.Length / 3) * 4 : (data.Length / 3 + 1) * 4;
             char[] ca = new char[stringSize];
             int loops = data.Length / 3;
@@ -77,13 +73,9 @@ namespace Enigma.IO
         /// </summary>
         /// <param name="str">Base64 string</param>
         /// <returns>Byte array</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="Base64DecodeException"></exception>
         public static byte[] Decode(string str)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-
             if (str.Length % 4 != 0)
                 throw new Base64DecodeException($"Invalid input string length {str.Length}: not a multiple of 4");
 

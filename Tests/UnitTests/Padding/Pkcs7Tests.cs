@@ -34,15 +34,6 @@ namespace UnitTests.Padding
         }
 
         [Test]
-        public void PadNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new Pkcs7Padding().Pad(null, 16);
-            });
-        }
-
-        [Test]
         public void UnpadBadBlockSize()
         {
             Assert.Throws<ArgumentException>(() =>
@@ -66,15 +57,6 @@ namespace UnitTests.Padding
             Assert.Throws<PaddingException>(() =>
             {
                 new Pkcs7Padding().Unpad(Hex.Decode("000f0f0f0f0f0f0f0a0f0f0f0f0f0f0f"), 16);
-            });
-        }
-
-        [Test]
-        public void UnPadNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new Pkcs7Padding().Unpad(null, 16);
             });
         }
 

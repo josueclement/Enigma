@@ -34,15 +34,6 @@ namespace UnitTests.Padding
         }
 
         [Test]
-        public void PadNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new AnsiX923Padding().Pad(null, 16);
-            });
-        }
-
-        [Test]
         public void UnpadBadBlockSize()
         {
             Assert.Throws<ArgumentException>(() =>
@@ -57,15 +48,6 @@ namespace UnitTests.Padding
             Assert.Throws<PaddingException>(() =>
             {
                 new AnsiX923Padding().Unpad(Hex.Decode("000000000000000000000000000000"), 16);
-            });
-        }
-
-        [Test]
-        public void UnPadNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new AnsiX923Padding().Unpad(null, 16);
             });
         }
 

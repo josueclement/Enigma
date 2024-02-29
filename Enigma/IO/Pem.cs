@@ -74,17 +74,8 @@ namespace Enigma.IO
         /// <param name="writer">TextWriter</param>
         public static void Write(string title, byte[] data, TextWriter writer)
         {
-            if (title == null)
-                throw new ArgumentNullException("title");
-            if (data == null)
-                throw new ArgumentNullException("data");
-            if (writer == null)
-                throw new ArgumentNullException("writer");
-
             writer.WriteLine($"-----BEGIN {title.ToUpper()}-----");
-
             WriteBase64Data(data, writer);
-
             writer.WriteLine($"-----END {title.ToUpper()}-----");
         }
 
@@ -97,15 +88,6 @@ namespace Enigma.IO
         /// <param name="writer">TextWriter</param>
         public static void Write(string title, IEnumerable<PemHeaderItem> header, byte[] data, TextWriter writer)
         {
-            if (title == null)
-                throw new ArgumentNullException("title");
-            if (header == null)
-                throw new ArgumentNullException("header");
-            if (data == null)
-                throw new ArgumentNullException("data");
-            if (writer == null)
-                throw new ArgumentNullException("writer");
-
             writer.WriteLine($"-----BEGIN {title.ToUpper()}-----");
 
             foreach (PemHeaderItem item in header)

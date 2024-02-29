@@ -15,14 +15,8 @@ namespace Enigma.IO
         /// <param name="input">Input stream</param>
         /// <param name="output">Output stream</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void WriteStream(Stream input, Stream output, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-
             byte[] buffer = new byte[bufferSize];
             int bytesRead;
 
@@ -40,14 +34,8 @@ namespace Enigma.IO
         /// <param name="input">Input stream</param>
         /// <param name="output">Output stream</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task WriteStreamAsync(Stream input, Stream output, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-
             byte[] buffer = new byte[bufferSize];
             int bytesRead;
 
@@ -66,16 +54,8 @@ namespace Enigma.IO
         /// <param name="output">Output stream</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void WriteStream(Stream input, Stream output, Action<int> notifyProgression, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (notifyProgression == null)
-                throw new ArgumentNullException(nameof(notifyProgression));
-
             byte[] buffer = new byte[bufferSize];
             int bytesRead;
 
@@ -97,16 +77,8 @@ namespace Enigma.IO
         /// <param name="output">Output stream</param>
         /// <param name="notifyProgression">Notify progression delegate</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task WriteStreamAsync(Stream input, Stream output, Action<int> notifyProgression, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (notifyProgression == null)
-                throw new ArgumentNullException(nameof(notifyProgression));
-
             byte[] buffer = new byte[bufferSize];
             int bytesRead;
 
