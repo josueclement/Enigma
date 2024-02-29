@@ -1,6 +1,5 @@
 ﻿using Enigma.IO;
 using Org.BouncyCastle.Crypto.Digests;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 

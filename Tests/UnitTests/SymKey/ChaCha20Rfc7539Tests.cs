@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Enigma.IO;
-using Enigma.Padding;
 using Enigma.SymKey;
 using NUnit.Framework;
 

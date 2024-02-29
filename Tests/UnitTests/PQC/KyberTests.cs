@@ -1,7 +1,6 @@
 ﻿using Enigma.PQC;
 using NUnit.Framework;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
 
 namespace UnitTests.PQC
 {

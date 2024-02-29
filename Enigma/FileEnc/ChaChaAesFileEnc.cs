@@ -550,8 +550,7 @@ namespace Enigma.FileEnc
                 d1 = BinaryHelper.ReadLV(input);
                 if (d1.Length > 0)
                 {
-                    if (backup != null)
-                        output.Write(backup, 0, backup.Length);
+                    output.Write(backup, 0, backup.Length);
 
                     byte[] rpad = ChaCha20Rfc7539.Decrypt(d1, chachaKey, chachaNonce);
                     d2 = BinaryHelper.ReadLV(input);
@@ -598,8 +597,7 @@ namespace Enigma.FileEnc
                 d1 = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
                 if (d1.Length > 0)
                 {
-                    if (backup != null)
-                        await output.WriteAsync(backup, 0, backup.Length).ConfigureAwait(false);
+                    await output.WriteAsync(backup, 0, backup.Length).ConfigureAwait(false);
 
                     byte[] rpad = ChaCha20Rfc7539.Decrypt(d1, chachaKey, chachaNonce);
                     d2 = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
