@@ -8,9 +8,9 @@ namespace UnitTests.PQC
     internal class KyberTests
     {
         [Test]
-        [TestCase(Kyber.KYBER512)]
-        [TestCase(Kyber.KYBER768)]
-        [TestCase(Kyber.KYBER1024)]
+        [TestCase("kyber512")]
+        [TestCase("kyber768")]
+        [TestCase("kyber1024")]
         public void SaveAndLoadPublicKey(string type)
         {
             Kyber.GenerateKeyPair(type, out var publicKey, out _);
@@ -33,9 +33,9 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        [TestCase(Kyber.KYBER512)]
-        [TestCase(Kyber.KYBER768)]
-        [TestCase(Kyber.KYBER1024)]
+        [TestCase("kyber512")]
+        [TestCase("kyber768")]
+        [TestCase("kyber1024")]
         public void SaveAndLoadPrivateKey(string type)
         {
             Kyber.GenerateKeyPair(type, out _, out var privateKey);
@@ -58,9 +58,9 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        [TestCase(Kyber.KYBER512)]
-        [TestCase(Kyber.KYBER768)]
-        [TestCase(Kyber.KYBER1024)]
+        [TestCase("kyber512")]
+        [TestCase("kyber768")]
+        [TestCase("kyber1024")]
         public void SaveAndLoadPrivateKeyWithPassword(string type)
         {
             Kyber.GenerateKeyPair(type, out _, out var privateKey);
@@ -83,9 +83,9 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        [TestCase(Kyber.KYBER512)]
-        [TestCase(Kyber.KYBER768)]
-        [TestCase(Kyber.KYBER1024)]
+        [TestCase("kyber512")]
+        [TestCase("kyber768")]
+        [TestCase("kyber1024")]
         public void GenerateAndExtract(string type)
         {
             Kyber.GenerateKeyPair(type, out var publicKey, out var privateKey);
@@ -95,9 +95,9 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        [TestCase(Kyber.KYBER512)]
-        [TestCase(Kyber.KYBER768)]
-        [TestCase(Kyber.KYBER1024)]
+        [TestCase("kyber512")]
+        [TestCase("kyber768")]
+        [TestCase("kyber1024")]
         public void GenerateAndExtractWithWrongKey(string type)
         {
             Kyber.GenerateKeyPair(type, out var publicKey, out _);
