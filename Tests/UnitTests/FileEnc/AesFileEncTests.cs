@@ -12,7 +12,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoToolkitUnitTests.FileEnc
+namespace UnitTests.FileEnc
 {
     public class AesFileEncTests
     {

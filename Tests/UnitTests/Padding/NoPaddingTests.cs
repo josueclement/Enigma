@@ -3,7 +3,7 @@ using Enigma.IO;
 using Enigma.Padding;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.Padding
+namespace UnitTests.Padding
 {
     public class NoPaddingTests
     {

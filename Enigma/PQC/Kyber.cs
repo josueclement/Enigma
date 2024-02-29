@@ -35,13 +35,10 @@ namespace Enigma.PQC
             switch (type)
             {
                 case Kyber.KYBER512:
-                case Kyber.KYBER512_AES:
                     return new KyberComponentsSizes(768, 32, 32, 768, 32);
                 case Kyber.KYBER768:
-                case Kyber.KYBER768_AES:
                     return new KyberComponentsSizes(1152, 32, 32, 1152, 32);
                 case Kyber.KYBER1024:
-                case Kyber.KYBER1024_AES:
                     return new KyberComponentsSizes(1536, 32, 32, 1536, 32);
                 default:
                     throw new InvalidOperationException();
@@ -59,25 +56,13 @@ namespace Enigma.PQC
         /// </summary>
         public const string KYBER512 = "kyber512";
         /// <summary>
-        /// <see cref="KyberParameters.kyber512_aes"/> name
-        /// </summary>
-        public const string KYBER512_AES = "kyber512-aes";
-        /// <summary>
         /// <see cref="KyberParameters.kyber768"/> name
         /// </summary>
         public const string KYBER768 = "kyber768";
         /// <summary>
-        /// <see cref="KyberParameters.kyber768_aes"/> name
-        /// </summary>
-        public const string KYBER768_AES = "kyber768-aes";
-        /// <summary>
         /// <see cref="KyberParameters.kyber1024"/> name
         /// </summary>
         public const string KYBER1024 = "kyber1024";
-        /// <summary>
-        /// <see cref="KyberParameters.kyber1024_aes"/> name
-        /// </summary>
-        public const string KYBER1024_AES = "kyber1024-aes";
 
         /// <summary>
         /// Generate key pair
@@ -94,20 +79,11 @@ namespace Enigma.PQC
                 case KYBER512:
                     parameters = KyberParameters.kyber512;
                     break;
-                case KYBER512_AES:
-                    parameters = KyberParameters.kyber512_aes;
-                    break;
                 case KYBER768:
                     parameters = KyberParameters.kyber768;
                     break;
-                case KYBER768_AES:
-                    parameters = KyberParameters.kyber768_aes;
-                    break;
                 case KYBER1024:
                     parameters = KyberParameters.kyber1024;
-                    break;
-                case KYBER1024_AES:
-                    parameters = KyberParameters.kyber1024_aes;
                     break;
                 default:
                     throw new InvalidOperationException();
@@ -422,16 +398,10 @@ namespace Enigma.PQC
             {
                 case KYBER512:
                     return KyberParameters.kyber512;
-                case KYBER512_AES:
-                    return KyberParameters.kyber512_aes;
                 case KYBER768:
                     return KyberParameters.kyber768;
-                case KYBER768_AES:
-                    return KyberParameters.kyber768_aes;
                 case KYBER1024:
                     return KyberParameters.kyber1024;
-                case KYBER1024_AES:
-                    return KyberParameters.kyber1024_aes;
                 default:
                     throw new InvalidOperationException();
             }

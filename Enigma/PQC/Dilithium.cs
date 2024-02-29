@@ -39,13 +39,10 @@ namespace Enigma.PQC
             switch (type)
             {
                 case Dilithium.DILITHIUM2:
-                case Dilithium.DILITHIUM2_AES:
                     return new DilithiumComponentsSizes(32, 32, 32, 384, 384, 1664, 1280);
                 case Dilithium.DILITHIUM3:
-                case Dilithium.DILITHIUM3_AES:
                     return new DilithiumComponentsSizes(32, 32, 32, 640, 768, 2496, 1920);
                 case Dilithium.DILITHIUM5:
-                case Dilithium.DILITHIUM5_AES:
                     return new DilithiumComponentsSizes(32, 32, 32, 672, 768, 3328, 2560);
                 default:
                     throw new InvalidOperationException();
@@ -63,25 +60,13 @@ namespace Enigma.PQC
         /// </summary>
         public const string DILITHIUM2 = "dilithium2";
         /// <summary>
-        /// <see cref="DilithiumParameters.Dilithium2Aes"/> name
-        /// </summary>
-        public const string DILITHIUM2_AES = "dilithium2-aes";
-        /// <summary>
         /// <see cref="DilithiumParameters.Dilithium3"/> name
         /// </summary>
         public const string DILITHIUM3 = "dilithium3";
         /// <summary>
-        /// <see cref="DilithiumParameters.Dilithium3Aes"/> name
-        /// </summary>
-        public const string DILITHIUM3_AES = "dilithium3-aes";
-        /// <summary>
         /// <see cref="DilithiumParameters.Dilithium5"/> name
         /// </summary>
         public const string DILITHIUM5 = "dilithium5";
-        /// <summary>
-        /// <see cref="DilithiumParameters.Dilithium5Aes"/> name
-        /// </summary>
-        public const string DILITHIUM5_AES = "dilithium5-aes";
 
         /// <summary>
         /// Generate key pair
@@ -98,20 +83,11 @@ namespace Enigma.PQC
                 case DILITHIUM2:
                     parameters = DilithiumParameters.Dilithium2;
                     break;
-                case DILITHIUM2_AES:
-                    parameters = DilithiumParameters.Dilithium2Aes;
-                    break;
                 case DILITHIUM3:
                     parameters = DilithiumParameters.Dilithium3;
                     break;
-                case DILITHIUM3_AES:
-                    parameters = DilithiumParameters.Dilithium3Aes;
-                    break;
                 case DILITHIUM5:
                     parameters = DilithiumParameters.Dilithium5;
-                    break;
-                case DILITHIUM5_AES:
-                    parameters = DilithiumParameters.Dilithium5Aes;
                     break;
                 default:
                     throw new InvalidOperationException();
@@ -431,16 +407,10 @@ namespace Enigma.PQC
             {
                 case DILITHIUM2:
                     return DilithiumParameters.Dilithium2;
-                case DILITHIUM2_AES:
-                    return DilithiumParameters.Dilithium2Aes;
                 case DILITHIUM3:
                     return DilithiumParameters.Dilithium3;
-                case DILITHIUM3_AES:
-                    return DilithiumParameters.Dilithium3Aes;
                 case DILITHIUM5:
                     return DilithiumParameters.Dilithium5;
-                case DILITHIUM5_AES:
-                    return DilithiumParameters.Dilithium5Aes;
                 default:
                     throw new InvalidOperationException();
             }

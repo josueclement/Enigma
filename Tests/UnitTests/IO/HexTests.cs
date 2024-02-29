@@ -5,7 +5,7 @@ using System.Text;
 using Enigma.IO;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.IO
+namespace UnitTests.IO
 {
     public class HexTests
     {

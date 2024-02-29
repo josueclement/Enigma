@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace CryptoToolkitUnitTests.PubKey
+namespace UnitTests.PubKey
 {
     internal class RSATests
     {

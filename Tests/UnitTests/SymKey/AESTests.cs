@@ -8,7 +8,7 @@ using Enigma.Padding;
 using Enigma.SymKey;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.SymKey
+namespace UnitTests.SymKey
 {
     public class AESTests
     {

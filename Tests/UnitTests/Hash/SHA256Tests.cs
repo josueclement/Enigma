@@ -7,7 +7,7 @@ using Enigma.Hash;
 using Enigma.IO;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.Hash
+namespace UnitTests.Hash
 {
     public class SHA256Tests
     {

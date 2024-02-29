@@ -9,11 +9,8 @@ namespace UnitTests.PQC
     {
         [Test]
         [TestCase(Kyber.KYBER512)]
-        [TestCase(Kyber.KYBER512_AES)]
         [TestCase(Kyber.KYBER768)]
-        [TestCase(Kyber.KYBER768_AES)]
         [TestCase(Kyber.KYBER1024)]
-        [TestCase(Kyber.KYBER1024_AES)]
         public void SaveAndLoadPublicKey(string type)
         {
             Kyber.GenerateKeyPair(type, out var publicKey, out _);
@@ -37,11 +34,8 @@ namespace UnitTests.PQC
 
         [Test]
         [TestCase(Kyber.KYBER512)]
-        [TestCase(Kyber.KYBER512_AES)]
         [TestCase(Kyber.KYBER768)]
-        [TestCase(Kyber.KYBER768_AES)]
         [TestCase(Kyber.KYBER1024)]
-        [TestCase(Kyber.KYBER1024_AES)]
         public void SaveAndLoadPrivateKey(string type)
         {
             Kyber.GenerateKeyPair(type, out _, out var privateKey);
@@ -65,11 +59,8 @@ namespace UnitTests.PQC
 
         [Test]
         [TestCase(Kyber.KYBER512)]
-        [TestCase(Kyber.KYBER512_AES)]
         [TestCase(Kyber.KYBER768)]
-        [TestCase(Kyber.KYBER768_AES)]
         [TestCase(Kyber.KYBER1024)]
-        [TestCase(Kyber.KYBER1024_AES)]
         public void SaveAndLoadPrivateKeyWithPassword(string type)
         {
             Kyber.GenerateKeyPair(type, out _, out var privateKey);
@@ -93,11 +84,8 @@ namespace UnitTests.PQC
 
         [Test]
         [TestCase(Kyber.KYBER512)]
-        [TestCase(Kyber.KYBER512_AES)]
         [TestCase(Kyber.KYBER768)]
-        [TestCase(Kyber.KYBER768_AES)]
         [TestCase(Kyber.KYBER1024)]
-        [TestCase(Kyber.KYBER1024_AES)]
         public void GenerateAndExtract(string type)
         {
             Kyber.GenerateKeyPair(type, out var publicKey, out var privateKey);
@@ -108,11 +96,8 @@ namespace UnitTests.PQC
 
         [Test]
         [TestCase(Kyber.KYBER512)]
-        [TestCase(Kyber.KYBER512_AES)]
         [TestCase(Kyber.KYBER768)]
-        [TestCase(Kyber.KYBER768_AES)]
         [TestCase(Kyber.KYBER1024)]
-        [TestCase(Kyber.KYBER1024_AES)]
         public void GenerateAndExtractWithWrongKey(string type)
         {
             Kyber.GenerateKeyPair(type, out var publicKey, out _);

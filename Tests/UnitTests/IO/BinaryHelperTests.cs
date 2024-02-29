@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Enigma.IO;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.IO
+namespace UnitTests.IO
 {
     public class BinaryHelperTests
     {
