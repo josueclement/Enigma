@@ -67,8 +67,7 @@ namespace Enigma.SymKey
                     engine.ProcessBytes(buffer, 0, bytesRead, enc, 0);
                     output.Write(enc, 0, bytesRead);
 
-                    if (notifyProgression != null)
-                        notifyProgression(bytesRead);
+                    notifyProgression?.Invoke(bytesRead);
                 }
 
             } while (bytesRead == bufferSize);
@@ -100,8 +99,7 @@ namespace Enigma.SymKey
                     engine.ProcessBytes(buffer, 0, bytesRead, enc, 0);
                     await output.WriteAsync(enc, 0, bytesRead).ConfigureAwait(false);
 
-                    if (notifyProgression != null)
-                        notifyProgression(bytesRead);
+                    notifyProgression?.Invoke(bytesRead);
                 }
 
             } while (bytesRead == bufferSize);
@@ -152,8 +150,7 @@ namespace Enigma.SymKey
                     engine.ProcessBytes(buffer, 0, bytesRead, dec, 0);
                     output.Write(dec, 0, bytesRead);
 
-                    if (notifyProgression != null)
-                        notifyProgression(bytesRead);
+                    notifyProgression?.Invoke(bytesRead);
                 }
 
             } while (bytesRead == bufferSize);
@@ -185,8 +182,7 @@ namespace Enigma.SymKey
                     engine.ProcessBytes(buffer, 0, bytesRead, dec, 0);
                     await output.WriteAsync(dec, 0, bytesRead).ConfigureAwait(false);
 
-                    if (notifyProgression != null)
-                        notifyProgression(bytesRead);
+                    notifyProgression?.Invoke(bytesRead);
                 }
 
             } while (bytesRead == bufferSize);

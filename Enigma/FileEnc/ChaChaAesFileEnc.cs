@@ -245,8 +245,7 @@ namespace Enigma.FileEnc
             byte[] keyNameData = BinaryHelper.ReadLV(input);
             byte[] encKeysData = BinaryHelper.ReadLV(input);
 
-            if (notifyProgression != null)
-                notifyProgression(RSA_HEADER.Length + 1 + 2 * sizeof(int) + keyNameData.Length + encKeysData.Length);
+            notifyProgression?.Invoke(RSA_HEADER.Length + 1 + 2 * sizeof(int) + keyNameData.Length + encKeysData.Length);
 
             byte[] keysData = PubKey.RSA.Decrypt(rsa, encKeysData);
 
@@ -277,8 +276,7 @@ namespace Enigma.FileEnc
             byte[] keyNameData = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
             byte[] encKeysData = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
 
-            if (notifyProgression != null)
-                notifyProgression(RSA_HEADER.Length + 1 + 2 * sizeof(int) + keyNameData.Length + encKeysData.Length);
+            notifyProgression?.Invoke(RSA_HEADER.Length + 1 + 2 * sizeof(int) + keyNameData.Length + encKeysData.Length);
 
             byte[] keysData = PubKey.RSA.Decrypt(rsa, encKeysData);
 
@@ -351,8 +349,7 @@ namespace Enigma.FileEnc
             byte[] aesSalt = BinaryHelper.ReadLV(input);
             byte[] aesIv = BinaryHelper.ReadLV(input);
 
-            if (notifyProgression != null)
-                notifyProgression(PASS_HEADER.Length + 1 + 4 * sizeof(int) + chachaSalt.Length + chachaNonce.Length + aesSalt.Length + aesIv.Length);
+            notifyProgression?.Invoke(PASS_HEADER.Length + 1 + 4 * sizeof(int) + chachaSalt.Length + chachaNonce.Length + aesSalt.Length + aesIv.Length);
 
             byte[] chachaKey = PBKDF2.GenerateKeyFromPassword(ChaCha20Rfc7539.KEY_SIZE, password, chachaSalt, 60000);
             byte[] aesKey = PBKDF2.GenerateKeyFromPassword(AES.KEY_SIZE, password, aesSalt, 60000);
@@ -377,8 +374,7 @@ namespace Enigma.FileEnc
             byte[] aesSalt = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
             byte[] aesIv = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
 
-            if (notifyProgression != null)
-                notifyProgression(PASS_HEADER.Length + 1 + 4 * sizeof(int) + chachaSalt.Length + chachaNonce.Length + aesSalt.Length + aesIv.Length);
+            notifyProgression?.Invoke(PASS_HEADER.Length + 1 + 4 * sizeof(int) + chachaSalt.Length + chachaNonce.Length + aesSalt.Length + aesIv.Length);
 
             byte[] chachaKey = PBKDF2.GenerateKeyFromPassword(ChaCha20Rfc7539.KEY_SIZE, password, chachaSalt, 60000);
             byte[] aesKey = PBKDF2.GenerateKeyFromPassword(AES.KEY_SIZE, password, aesSalt, 60000);
@@ -462,8 +458,7 @@ namespace Enigma.FileEnc
                     GenPadXorEncryptAndWrite(output, padData.Length, padData, chachaKey, chachaNonce, aesKey, aesIv);
                 }
 
-                if (notifyProgression != null)
-                    notifyProgression(bytesRead);
+                notifyProgression?.Invoke(bytesRead);
             } while (bytesRead == BUFFER_SIZE);
 
             if (!padDone)
@@ -513,8 +508,7 @@ namespace Enigma.FileEnc
                     await GenPadXorEncryptAndWriteAsync(output, padData.Length, padData, chachaKey, chachaNonce, aesKey, aesIv).ConfigureAwait(false);
                 }
 
-                if (notifyProgression != null)
-                    notifyProgression(bytesRead);
+                notifyProgression?.Invoke(bytesRead);
             } while (bytesRead == BUFFER_SIZE);
 
             if (!padDone)
@@ -556,8 +550,7 @@ namespace Enigma.FileEnc
                     d2 = BinaryHelper.ReadLV(input);
                     byte[] xor = AES.DecryptCBC(d2, aesKey, aesIv);
 
-                    if (notifyProgression != null)
-                        notifyProgression(2 * sizeof(int) + d1.Length + d2.Length);
+                    notifyProgression?.Invoke(2 * sizeof(int) + d1.Length + d2.Length);
 
                     byte[] data = new byte[rpad.Length];
                     for (int i = 0; i < rpad.Length; i++)
@@ -603,8 +596,7 @@ namespace Enigma.FileEnc
                     d2 = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
                     byte[] xor = AES.DecryptCBC(d2, aesKey, aesIv);
 
-                    if (notifyProgression != null)
-                        notifyProgression(2 * sizeof(int) + d1.Length + d2.Length);
+                    notifyProgression?.Invoke(2 * sizeof(int) + d1.Length + d2.Length);
 
                     byte[] data = new byte[rpad.Length];
                     for (int i = 0; i < rpad.Length; i++)

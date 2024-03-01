@@ -224,8 +224,7 @@ namespace Enigma.FileEnc
             byte[] keyNameData = BinaryHelper.ReadLV(input);
             byte[] encKeyData = BinaryHelper.ReadLV(input);
 
-            if (notifyProgression != null)
-                notifyProgression(RSA_HEADER.Length + 1 + 2 * sizeof(int) + keyNameData.Length + encKeyData.Length);
+            notifyProgression?.Invoke(RSA_HEADER.Length + 1 + 2 * sizeof(int) + keyNameData.Length + encKeyData.Length);
 
             byte[] keyData = PubKey.RSA.Decrypt(rsa, encKeyData);
 
@@ -254,8 +253,7 @@ namespace Enigma.FileEnc
             byte[] keyNameData = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
             byte[] encKeyData = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
 
-            if (notifyProgression != null)
-                notifyProgression(RSA_HEADER.Length + 1 + 2 * sizeof(int) + keyNameData.Length + encKeyData.Length);
+            notifyProgression?.Invoke(RSA_HEADER.Length + 1 + 2 * sizeof(int) + keyNameData.Length + encKeyData.Length);
 
             byte[] keyData = PubKey.RSA.Decrypt(rsa, encKeyData);
 
@@ -324,8 +322,7 @@ namespace Enigma.FileEnc
             byte[] salt = BinaryHelper.ReadLV(input);
             byte[] iv = BinaryHelper.ReadLV(input);
 
-            if (notifyProgression != null)
-                notifyProgression(PASS_HEADER.Length + 1 + 2 * sizeof(int) + salt.Length + iv.Length);
+            notifyProgression?.Invoke(PASS_HEADER.Length + 1 + 2 * sizeof(int) + salt.Length + iv.Length);
 
             byte[] key = PBKDF2.GenerateKeyFromPassword(AES.KEY_SIZE, password, salt, 60000);
 
@@ -347,8 +344,7 @@ namespace Enigma.FileEnc
             byte[] salt = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
             byte[] iv = await BinaryHelper.ReadLVAsync(input).ConfigureAwait(false);
 
-            if (notifyProgression != null)
-                notifyProgression(PASS_HEADER.Length + 1 + 2 * sizeof(int) + salt.Length + iv.Length);
+            notifyProgression?.Invoke(PASS_HEADER.Length + 1 + 2 * sizeof(int) + salt.Length + iv.Length);
 
             byte[] key = PBKDF2.GenerateKeyFromPassword(AES.KEY_SIZE, password, salt, 60000);
 

@@ -157,8 +157,7 @@ namespace Enigma.SymKey
                         output.Write(unpadData, 0, unpadData.Length);
                     }
 
-                    if (notifyProgression != null)
-                        notifyProgression(bytesRead);
+                    notifyProgression?.Invoke(bytesRead);
                 }
                 else
                 {
@@ -217,8 +216,7 @@ namespace Enigma.SymKey
                         await output.WriteAsync(unpadData, 0, unpadData.Length).ConfigureAwait(false);
                     }
 
-                    if (notifyProgression != null)
-                        notifyProgression(bytesRead);
+                    notifyProgression?.Invoke(bytesRead);
                 }
                 else
                 {
