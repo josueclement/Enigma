@@ -175,7 +175,7 @@ namespace Enigma.IO
         public static PemContent Read(TextReader reader)
         {
             PemContent content = new PemContent();
-            string line;
+            string? line;
 
             line = reader.ReadLine();
             if (line == null || !line.StartsWith("-----BEGIN "))

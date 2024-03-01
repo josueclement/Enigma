@@ -233,9 +233,11 @@ namespace Enigma.PubKey
         /// <param name="csppf">CspProviderFlags</param>
         public static void SaveInWinKeyStore(RSACryptoServiceProvider key, string containerName, CspProviderFlags csppf = CspProviderFlags.UseMachineKeyStore)
         {
-            CspParameters cp = new CspParameters();
-            cp.KeyContainerName = containerName;
-            cp.Flags = csppf;
+            CspParameters cp = new CspParameters
+            {
+                KeyContainerName = containerName,
+                Flags = csppf
+            };
 
             using (RSACryptoServiceProvider winKSkey = new RSACryptoServiceProvider(cp))
             {
@@ -250,9 +252,11 @@ namespace Enigma.PubKey
         /// <param name="csppf">CspProviderFlags</param>
         public static RSACryptoServiceProvider LoadFromWinKeyStore(string containerName, CspProviderFlags csppf = CspProviderFlags.UseMachineKeyStore)
         {
-            CspParameters cp = new CspParameters();
-            cp.KeyContainerName = containerName;
-            cp.Flags = csppf;
+            CspParameters cp = new CspParameters
+            {
+                KeyContainerName = containerName,
+                Flags = csppf
+            };
 
             return new RSACryptoServiceProvider(cp);
         }
@@ -264,9 +268,11 @@ namespace Enigma.PubKey
         /// <param name="csppf">CspProviderFlags</param>
         public static void DeleteFromWinKeyStore(string containerName, CspProviderFlags csppf = CspProviderFlags.UseMachineKeyStore)
         {
-            CspParameters cp = new CspParameters();
-            cp.KeyContainerName = containerName;
-            cp.Flags = csppf;
+            CspParameters cp = new CspParameters
+            {
+                KeyContainerName = containerName,
+                Flags = csppf
+            };
             using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(cp))
             {
                 rsa.PersistKeyInCsp = false;
