@@ -7,6 +7,16 @@ namespace Enigma.Padding
     /// </summary>
     public sealed class Iso7816Padding : IDataPadding
     {
+        static Iso7816Padding()
+        {
+            Instance = new Iso7816Padding();
+        }
+        
+        /// <summary>
+        /// Static instance
+        /// </summary>
+        public static Iso7816Padding Instance { get; }
+        
         /// <summary>
         /// Pad data with ISO/IEC 7816-4
         /// </summary>

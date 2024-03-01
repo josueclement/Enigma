@@ -7,6 +7,16 @@ namespace Enigma.Padding
     /// </summary>
     public sealed class NoPadding : IDataPadding
     {
+        static NoPadding()
+        {
+            Instance = new NoPadding();
+        }
+        
+        /// <summary>
+        /// Static instance
+        /// </summary>
+        public static NoPadding Instance { get; }
+        
         /// <summary>
         /// Only returns the input data
         /// </summary>

@@ -7,6 +7,16 @@ namespace Enigma.Padding
     /// </summary>
     public sealed class AnsiX923Padding : IDataPadding
     {
+        static AnsiX923Padding()
+        {
+            Instance = new AnsiX923Padding();
+        }
+        
+        /// <summary>
+        /// Static instance
+        /// </summary>
+        public static AnsiX923Padding Instance { get; }
+        
         /// <summary>
         /// Pad data with ANSI X9.23
         /// </summary>

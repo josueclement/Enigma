@@ -13,14 +13,14 @@ namespace UnitTests.Padding
         [TestCaseSource(nameof(DataSource))]
         public void Pad(Tuple<byte[], byte[]> values)
         {
-            byte[] padded = new Pkcs7Padding().Pad(values.Item1, 16);
+            byte[] padded = Pkcs7Padding.Instance.Pad(values.Item1, 16);
             Assert.That(padded, Is.EqualTo(values.Item2));
         }
 
         [TestCaseSource(nameof(DataSource))]
         public void Unpad(Tuple<byte[], byte[]> values)
         {
-            byte[] unpadded = new Pkcs7Padding().Unpad(values.Item2, 16);
+            byte[] unpadded = Pkcs7Padding.Instance.Unpad(values.Item2, 16);
             Assert.That(unpadded, Is.EqualTo(values.Item1));
         }
 
@@ -29,7 +29,7 @@ namespace UnitTests.Padding
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                new Pkcs7Padding().Pad(new byte[] { }, 0);
+                Pkcs7Padding.Instance.Pad(new byte[] { }, 0);
             });
         }
 
@@ -38,7 +38,7 @@ namespace UnitTests.Padding
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                new Pkcs7Padding().Unpad(new byte[] { }, 0);
+                Pkcs7Padding.Instance.Unpad(new byte[] { }, 0);
             });
         }
 
@@ -47,7 +47,7 @@ namespace UnitTests.Padding
         {
             Assert.Throws<PaddingException>(() =>
             {
-                new Pkcs7Padding().Unpad(Hex.Decode("000f0f0f0f0f0f0f0f0f0f0f0f0f0f"), 16);
+                Pkcs7Padding.Instance.Unpad(Hex.Decode("000f0f0f0f0f0f0f0f0f0f0f0f0f0f"), 16);
             });
         }
 
@@ -56,7 +56,7 @@ namespace UnitTests.Padding
         {
             Assert.Throws<PaddingException>(() =>
             {
-                new Pkcs7Padding().Unpad(Hex.Decode("000f0f0f0f0f0f0f0a0f0f0f0f0f0f0f"), 16);
+                Pkcs7Padding.Instance.Unpad(Hex.Decode("000f0f0f0f0f0f0f0a0f0f0f0f0f0f0f"), 16);
             });
         }
 

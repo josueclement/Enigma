@@ -7,6 +7,16 @@ namespace Enigma.Padding
     /// </summary>
     public sealed class Pkcs7Padding : IDataPadding
     {
+        static Pkcs7Padding()
+        {
+            Instance = new Pkcs7Padding();
+        }
+        
+        /// <summary>
+        /// Static instance
+        /// </summary>
+        public static Pkcs7Padding Instance { get; }
+        
         /// <summary>
         /// Pad data with PKCS#7
         /// </summary>

@@ -13,14 +13,14 @@ namespace UnitTests.Padding
         [TestCaseSource(nameof(DataSource))]
         public void Pad(Tuple<byte[], byte[]> values)
         {
-            byte[] padded = new AnsiX923Padding().Pad(values.Item1, 16);
+            byte[] padded = AnsiX923Padding.Instance.Pad(values.Item1, 16);
             Assert.That(padded, Is.EqualTo(values.Item2));
         }
 
         [TestCaseSource(nameof(DataSource))]
         public void Unpad(Tuple<byte[], byte[]> values)
         {
-            byte[] unpadded = new AnsiX923Padding().Unpad(values.Item2, 16);
+            byte[] unpadded = AnsiX923Padding.Instance.Unpad(values.Item2, 16);
             Assert.That(unpadded, Is.EqualTo(values.Item1));
         }
 
@@ -29,7 +29,7 @@ namespace UnitTests.Padding
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                new AnsiX923Padding().Pad(new byte[] { }, 0);
+                AnsiX923Padding.Instance.Pad(new byte[] { }, 0);
             });
         }
 
@@ -38,7 +38,7 @@ namespace UnitTests.Padding
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                new AnsiX923Padding().Unpad(new byte[] { }, 0);
+                AnsiX923Padding.Instance.Unpad(new byte[] { }, 0);
             });
         }
 
@@ -47,7 +47,7 @@ namespace UnitTests.Padding
         {
             Assert.Throws<PaddingException>(() =>
             {
-                new AnsiX923Padding().Unpad(Hex.Decode("000000000000000000000000000000"), 16);
+                AnsiX923Padding.Instance.Unpad(Hex.Decode("000000000000000000000000000000"), 16);
             });
         }
 

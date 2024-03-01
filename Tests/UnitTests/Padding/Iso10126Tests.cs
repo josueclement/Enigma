@@ -12,7 +12,7 @@ namespace UnitTests.Padding
         public void Pad(string dataStr)
         {
             byte[] data = Hex.Decode(dataStr);
-            byte[] padded = new Iso10126Padding().Pad(data, 16);
+            byte[] padded = Iso10126Padding.Instance.Pad(data, 16);
             Assert.That(padded.Length == 16 && padded[padded.Length - 1] == 0x0f);
         }
 
@@ -23,7 +23,7 @@ namespace UnitTests.Padding
             byte[] data = Hex.Decode(dataStr);
             byte[] padded = Hex.Decode(paddedStr);
 
-            byte[] calcData = new Iso10126Padding().Unpad(padded, 16);
+            byte[] calcData = Iso10126Padding.Instance.Unpad(padded, 16);
             Assert.That(calcData, Is.EqualTo(data));
         }
 
@@ -32,7 +32,7 @@ namespace UnitTests.Padding
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                new Iso10126Padding().Pad(new byte[] { }, 0);
+                Iso10126Padding.Instance.Pad(new byte[] { }, 0);
             });
         }
 
@@ -41,7 +41,7 @@ namespace UnitTests.Padding
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                new Iso10126Padding().Unpad(new byte[] { }, 0);
+                Iso10126Padding.Instance.Unpad(new byte[] { }, 0);
             });
         }
 
@@ -50,7 +50,7 @@ namespace UnitTests.Padding
         {
             Assert.Throws<PaddingException>(() =>
             {
-                new Iso10126Padding().Unpad(Hex.Decode("000000000000000000000000000000"), 16);
+                Iso10126Padding.Instance.Unpad(Hex.Decode("000000000000000000000000000000"), 16);
             });
         }
     }

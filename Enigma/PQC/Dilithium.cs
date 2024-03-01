@@ -228,7 +228,7 @@ namespace Enigma.PQC
             byte[] iv = Hex.Decode(ivStr);
             byte[] dec = AES.DecryptCBC(enc, key, iv);
 
-            byte[] data = new Pkcs7Padding().Unpad(dec, AES.BLOCK_SIZE);
+            byte[] data = Pkcs7Padding.Instance.Unpad(dec, AES.BLOCK_SIZE);
 
             DilithiumParameters parameters = GetParameters(type);
             DilithiumComponentsSizes sizes = DilithiumComponentsSizes.GetComponentsSizes(type);
@@ -372,7 +372,7 @@ namespace Enigma.PQC
             };
 
             byte[] data = privateKey.GetEncoded();
-            byte[] padded = new Pkcs7Padding().Pad(data, AES.BLOCK_SIZE);
+            byte[] padded = Pkcs7Padding.Instance.Pad(data, AES.BLOCK_SIZE);
             byte[] key = PBKDF2.GenerateKeyFromPassword(AES.KEY_SIZE, password, salt, 600_000);
             byte[] enc = AES.EncryptCBC(padded, key, iv);
             Array.Clear(key, 0, key.Length);

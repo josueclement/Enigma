@@ -438,7 +438,7 @@ namespace Enigma.FileEnc
         /// <param name="notifyProgression">Notify progression delegate</param>
         private static void SymEncryptAndPad(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int>? notifyProgression = null)
         {
-            IDataPadding padding = new Pkcs7Padding();
+            IDataPadding padding = Pkcs7Padding.Instance;
 
             bool padDone = false;
             int bytesRead;
@@ -489,7 +489,7 @@ namespace Enigma.FileEnc
         /// <param name="notifyProgression">Notify progression delegate</param>
         private static async Task SymEncryptAndPadAsync(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int>? notifyProgression = null)
         {
-            IDataPadding padding = new Pkcs7Padding();
+            IDataPadding padding = Pkcs7Padding.Instance;
 
             bool padDone = false;
             int bytesRead;
@@ -540,7 +540,7 @@ namespace Enigma.FileEnc
         /// <param name="notifyProgression">Notify progression delegate</param>
         private static void SymDecryptAndUnpad(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int>? notifyProgression = null)
         {
-            IDataPadding padding = new Pkcs7Padding();
+            IDataPadding padding = Pkcs7Padding.Instance;
 
             byte[] d1, d2;
             byte[] backup = new byte[] { };
@@ -587,7 +587,7 @@ namespace Enigma.FileEnc
         /// <param name="notifyProgression">Notify progression delegate</param>
         private static async Task SymDecryptAndUnpadAsync(Stream input, Stream output, byte[] chachaKey, byte[] chachaNonce, byte[] aesKey, byte[] aesIv, Action<int>? notifyProgression = null)
         {
-            IDataPadding padding = new Pkcs7Padding();
+            IDataPadding padding = Pkcs7Padding.Instance;
 
             byte[] d1, d2;
             byte[] backup = new byte[] { };

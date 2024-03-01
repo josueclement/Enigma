@@ -51,7 +51,7 @@ namespace Enigma.FileEnc
             BinaryHelper.WriteLV(output, Encoding.ASCII.GetBytes(keyName));
             BinaryHelper.WriteLV(output, encKeyData);
 
-            AES.EncryptCBC(input, output, key, iv, new Pkcs7Padding(), notifyProgression);
+            AES.EncryptCBC(input, output, key, iv, Pkcs7Padding.Instance, notifyProgression);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Enigma.FileEnc
             await BinaryHelper.WriteLVAsync(output, Encoding.ASCII.GetBytes(keyName)).ConfigureAwait(false);
             await BinaryHelper.WriteLVAsync(output, encKeyData).ConfigureAwait(false);
 
-            await AES.EncryptCBCAsync(input, output, key, iv, new Pkcs7Padding(), notifyProgression).ConfigureAwait(false);
+            await AES.EncryptCBCAsync(input, output, key, iv, Pkcs7Padding.Instance, notifyProgression).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace Enigma.FileEnc
             BinaryHelper.WriteLV(output, salt);
             BinaryHelper.WriteLV(output, iv);
 
-            AES.EncryptCBC(input, output, key, iv, new Pkcs7Padding(), notifyProgression);
+            AES.EncryptCBC(input, output, key, iv, Pkcs7Padding.Instance, notifyProgression);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Enigma.FileEnc
             await BinaryHelper.WriteLVAsync(output, salt).ConfigureAwait(false);
             await BinaryHelper.WriteLVAsync(output, iv).ConfigureAwait(false);
 
-            await AES.EncryptCBCAsync(input, output, key, iv, new Pkcs7Padding(), notifyProgression).ConfigureAwait(false);
+            await AES.EncryptCBCAsync(input, output, key, iv, Pkcs7Padding.Instance, notifyProgression).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace Enigma.FileEnc
                 iv = BinaryHelper.ReadLV(ms);
             }
 
-            AES.DecryptCBC(input, output, key, iv, new Pkcs7Padding(), notifyProgression);
+            AES.DecryptCBC(input, output, key, iv, Pkcs7Padding.Instance, notifyProgression);
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace Enigma.FileEnc
                 iv = await BinaryHelper.ReadLVAsync(ms).ConfigureAwait(false);
             }
 
-            await AES.DecryptCBCAsync(input, output, key, iv, new Pkcs7Padding(), notifyProgression).ConfigureAwait(false);
+            await AES.DecryptCBCAsync(input, output, key, iv, Pkcs7Padding.Instance, notifyProgression).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace Enigma.FileEnc
 
             byte[] key = PBKDF2.GenerateKeyFromPassword(AES.KEY_SIZE, password, salt, 60000);
 
-            AES.DecryptCBC(input, output, key, iv, new Pkcs7Padding(), notifyProgression);
+            AES.DecryptCBC(input, output, key, iv, Pkcs7Padding.Instance, notifyProgression);
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace Enigma.FileEnc
 
             byte[] key = PBKDF2.GenerateKeyFromPassword(AES.KEY_SIZE, password, salt, 60000);
 
-            await AES.DecryptCBCAsync(input, output, key, iv, new Pkcs7Padding(), notifyProgression).ConfigureAwait(false);
+            await AES.DecryptCBCAsync(input, output, key, iv, Pkcs7Padding.Instance, notifyProgression).ConfigureAwait(false);
         }
 
         /// <summary>
