@@ -4,11 +4,10 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Enigma.IO;
-using Enigma.Padding;
 using Enigma.SymKey;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.SymKey
+namespace UnitTests.SymKey
 {
     public class Salsa20Tests
     {
@@ -86,132 +85,6 @@ namespace CryptoToolkitUnitTests.SymKey
                 }
             }
             Assert.That(dec, Is.EqualTo(values.Item3));
-        }
-
-        [Test]
-        public void EncryptNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Encrypt(EmptyArr, null, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void EncryptNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Encrypt(EmptyArr, EmptyArr, null);
-            });
-        }
-
-        [Test]
-        public void EncryptNullData()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Encrypt(null, EmptyArr, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void DecryptNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Decrypt(EmptyArr, null, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void DecryptNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Decrypt(EmptyArr, EmptyArr, null);
-            });
-        }
-
-        [Test]
-        public void DecryptNullData()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Decrypt(null, EmptyArr, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void EncryptStreamNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Encrypt(new MemoryStream(), new MemoryStream(), null, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void EncryptStreamNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Encrypt(new MemoryStream(), new MemoryStream(), EmptyArr, null);
-            });
-        }
-
-        [Test]
-        public void EncryptStreamNullInput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Encrypt(null, new MemoryStream(), EmptyArr, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void EncryptStreamNullOutput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Encrypt(new MemoryStream(), null, EmptyArr, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void DecryptStreamNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Decrypt(new MemoryStream(), new MemoryStream(), null, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void DecryptStreamNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Decrypt(new MemoryStream(), new MemoryStream(), EmptyArr, null);
-            });
-        }
-
-        [Test]
-        public void DecryptStreamNullInput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Decrypt(null, new MemoryStream(), EmptyArr, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void DecryptStreamNullOutput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Salsa20.Decrypt(new MemoryStream(), null, EmptyArr, EmptyArr);
-            });
         }
 
         static IEnumerable<Tuple<byte[], byte[], byte[], byte[]>> DataSource()

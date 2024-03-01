@@ -16,14 +16,9 @@ namespace Enigma.KDF
         /// <param name="salt">Salt</param>
         /// <param name="iterations">Iterations</param>
         /// <returns>Pseudo-random key</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public static byte[] GenerateKeyFromPassword(int nbBytes, string password, byte[] salt, int iterations = 10000)
         {
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-            if (salt == null)
-                throw new ArgumentNullException(nameof(salt));
             if (iterations < 1)
                 throw new ArgumentException($"Invalid iterations {iterations}", nameof(iterations));
 

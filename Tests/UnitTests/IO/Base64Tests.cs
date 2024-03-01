@@ -5,7 +5,7 @@ using System.Text;
 using Enigma.IO;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.IO
+namespace UnitTests.IO
 {
     public class Base64Tests
     {
@@ -52,24 +52,6 @@ namespace CryptoToolkitUnitTests.IO
             Assert.Throws<Base64DecodeException>(() =>
             {
                 Base64.Decode(encoded);
-            });
-        }
-
-        [Test]
-        public void EncodeNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Base64.Encode(null);
-            });
-        }
-
-        [Test]
-        public void DecodeNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Base64.Decode(null);
             });
         }
 

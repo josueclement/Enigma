@@ -3,7 +3,7 @@ using Enigma.IO;
 using Enigma.Padding;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.Padding
+namespace UnitTests.Padding
 {
     public class NoPaddingTests
     {
@@ -12,7 +12,7 @@ namespace CryptoToolkitUnitTests.Padding
         public void Pad(string dataStr)
         {
             byte[] data = Hex.Decode(dataStr);
-            byte[] padded = new NoPadding().Pad(data, 16);
+            byte[] padded = NoPadding.Instance.Pad(data, 16);
             Assert.That(data == padded);
         }
 
@@ -22,7 +22,7 @@ namespace CryptoToolkitUnitTests.Padding
         {
             byte[] padded = Hex.Decode(paddedStr);
 
-            byte[] calcData = new NoPadding().Unpad(padded, 16);
+            byte[] calcData = NoPadding.Instance.Unpad(padded, 16);
             Assert.That(calcData, Is.EqualTo(padded));
         }
 
@@ -31,16 +31,7 @@ namespace CryptoToolkitUnitTests.Padding
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                new NoPadding().Pad(new byte[] { }, 0);
-            });
-        }
-
-        [Test]
-        public void PadNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new NoPadding().Pad(null, 16);
+                NoPadding.Instance.Pad(new byte[] { }, 0);
             });
         }
 
@@ -49,16 +40,7 @@ namespace CryptoToolkitUnitTests.Padding
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                new NoPadding().Unpad(new byte[] { }, 0);
-            });
-        }
-
-        [Test]
-        public void UnPadNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new NoPadding().Unpad(null, 16);
+                NoPadding.Instance.Unpad(new byte[] { }, 0);
             });
         }
     }

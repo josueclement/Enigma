@@ -29,16 +29,8 @@ namespace Enigma.SymKey
         /// <param name="key">Key</param>
         /// <param name="nonce">Nonce</param>
         /// <returns>Encrypted data</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Encrypt(byte[] data, byte[] key, byte[] nonce)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             byte[] enc = new byte[data.Length];
 
             ChaChaEngine engine = new ChaChaEngine();
@@ -58,18 +50,8 @@ namespace Enigma.SymKey
         /// <param name="nonce">Nonce</param>
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Encrypt(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             ChaChaEngine engine = new ChaChaEngine();
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(key, 0, key.Length), nonce, 0, nonce.Length);
             engine.Init(true, parameters);
@@ -85,8 +67,7 @@ namespace Enigma.SymKey
                     engine.ProcessBytes(buffer, 0, bytesRead, enc, 0);
                     output.Write(enc, 0, bytesRead);
 
-                    if (notifyProgression != null)
-                        notifyProgression(bytesRead);
+                    notifyProgression?.Invoke(bytesRead);
                 }
 
             } while (bytesRead == bufferSize);
@@ -101,18 +82,8 @@ namespace Enigma.SymKey
         /// <param name="nonce">Nonce</param>
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             ChaChaEngine engine = new ChaChaEngine();
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(key, 0, key.Length), nonce, 0, nonce.Length);
             engine.Init(true, parameters);
@@ -128,8 +99,7 @@ namespace Enigma.SymKey
                     engine.ProcessBytes(buffer, 0, bytesRead, enc, 0);
                     await output.WriteAsync(enc, 0, bytesRead).ConfigureAwait(false);
 
-                    if (notifyProgression != null)
-                        notifyProgression(bytesRead);
+                    notifyProgression?.Invoke(bytesRead);
                 }
 
             } while (bytesRead == bufferSize);
@@ -142,16 +112,8 @@ namespace Enigma.SymKey
         /// <param name="key">Key</param>
         /// <param name="nonce">Nonce</param>
         /// <returns>Decrypted data</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] Decrypt(byte[] data, byte[] key, byte[] nonce)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             byte[] dec = new byte[data.Length];
 
             ChaChaEngine engine = new ChaChaEngine();
@@ -171,18 +133,8 @@ namespace Enigma.SymKey
         /// <param name="nonce">Nonce</param>
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void Decrypt(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             ChaChaEngine engine = new ChaChaEngine();
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(key, 0, key.Length), nonce, 0, nonce.Length);
             engine.Init(false, parameters);
@@ -198,8 +150,7 @@ namespace Enigma.SymKey
                     engine.ProcessBytes(buffer, 0, bytesRead, dec, 0);
                     output.Write(dec, 0, bytesRead);
 
-                    if (notifyProgression != null)
-                        notifyProgression(bytesRead);
+                    notifyProgression?.Invoke(bytesRead);
                 }
 
             } while (bytesRead > 0);
@@ -214,18 +165,8 @@ namespace Enigma.SymKey
         /// <param name="nonce">Nonce</param>
         /// <param name="notifyProgression">Notify progression method</param>
         /// <param name="bufferSize">Buffer size</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static async Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce, Action<int>? notifyProgression = null, int bufferSize = 4096)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (nonce == null)
-                throw new ArgumentNullException(nameof(nonce));
-
             ChaChaEngine engine = new ChaChaEngine();
             ICipherParameters parameters = new ParametersWithIV(new KeyParameter(key, 0, key.Length), nonce, 0, nonce.Length);
             engine.Init(false, parameters);
@@ -241,8 +182,7 @@ namespace Enigma.SymKey
                     engine.ProcessBytes(buffer, 0, bytesRead, dec, 0);
                     await output.WriteAsync(dec, 0, bytesRead).ConfigureAwait(false);
 
-                    if (notifyProgression != null)
-                        notifyProgression(bytesRead);
+                    notifyProgression?.Invoke(bytesRead);
                 }
 
             } while (bytesRead > 0);

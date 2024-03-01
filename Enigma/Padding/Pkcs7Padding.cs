@@ -7,18 +7,25 @@ namespace Enigma.Padding
     /// </summary>
     public sealed class Pkcs7Padding : IDataPadding
     {
+        static Pkcs7Padding()
+        {
+            Instance = new Pkcs7Padding();
+        }
+        
+        /// <summary>
+        /// Static instance
+        /// </summary>
+        public static Pkcs7Padding Instance { get; }
+        
         /// <summary>
         /// Pad data with PKCS#7
         /// </summary>
         /// <param name="data">Data to pad</param>
         /// <param name="blockSize">Block size</param>
         /// <returns>Padded data</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public byte[] Pad(byte[] data, int blockSize)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
             if (blockSize < 1 || blockSize > byte.MaxValue)
                 throw new ArgumentException($"Invalid block size {blockSize}", nameof(blockSize));
 
@@ -38,13 +45,10 @@ namespace Enigma.Padding
         /// <param name="paddedData">Data to unpad</param>
         /// <param name="blockSize">Block size</param>
         /// <returns>Unpadded data</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="PaddingException"></exception>
         public byte[] Unpad(byte[] paddedData, int blockSize)
         {
-            if (paddedData == null)
-                throw new ArgumentNullException(nameof(paddedData));
             if (blockSize < 1 || blockSize > byte.MaxValue)
                 throw new ArgumentException($"Invalid block size {blockSize}", nameof(blockSize));
             if (paddedData.Length % blockSize != 0 || paddedData.Length < blockSize)

@@ -6,7 +6,7 @@ using Enigma.IO;
 using Enigma.KDF;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.KDF
+namespace UnitTests.KDF
 {
     public class PBKDF2Tests
     {

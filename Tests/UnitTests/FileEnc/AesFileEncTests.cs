@@ -12,7 +12,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoToolkitUnitTests.FileEnc
+namespace UnitTests.FileEnc
 {
     public class AesFileEncTests
     {
@@ -343,7 +343,7 @@ namespace CryptoToolkitUnitTests.FileEnc
 
                     string hexDec = Hex.Encode(dec);
                     Assert.That(hexDec.EndsWith("10101010101010101010101010101010"));
-                    byte[] unpad = new Pkcs7Padding().Unpad(dec, 16);
+                    byte[] unpad = Pkcs7Padding.Instance.Unpad(dec, 16);
                     Assert.That(unpad, Is.EqualTo(data));
                 }
             });
@@ -402,7 +402,7 @@ namespace CryptoToolkitUnitTests.FileEnc
 
                     string hexDec = Hex.Encode(dec);
                     Assert.That(hexDec.EndsWith("10101010101010101010101010101010"));
-                    byte[] unpad = new Pkcs7Padding().Unpad(dec, 16);
+                    byte[] unpad = Pkcs7Padding.Instance.Unpad(dec, 16);
                     Assert.That(unpad, Is.EqualTo(data));
                 }
             });
@@ -451,7 +451,7 @@ namespace CryptoToolkitUnitTests.FileEnc
 
                     string hexDec = Hex.Encode(dec);
                     Assert.That(hexDec.EndsWith("10101010101010101010101010101010"));
-                    byte[] unpad = new Pkcs7Padding().Unpad(dec, 16);
+                    byte[] unpad = Pkcs7Padding.Instance.Unpad(dec, 16);
                     Assert.That(unpad, Is.EqualTo(data));
                 }
             });
@@ -500,7 +500,7 @@ namespace CryptoToolkitUnitTests.FileEnc
 
                     string hexDec = Hex.Encode(dec);
                     Assert.That(hexDec.EndsWith("10101010101010101010101010101010"));
-                    byte[] unpad = new Pkcs7Padding().Unpad(dec, 16);
+                    byte[] unpad = Pkcs7Padding.Instance.Unpad(dec, 16);
                     Assert.That(unpad, Is.EqualTo(data));
                 }
             });

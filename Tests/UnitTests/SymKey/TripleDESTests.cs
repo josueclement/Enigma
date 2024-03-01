@@ -8,7 +8,7 @@ using Enigma.Padding;
 using Enigma.SymKey;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.SymKey
+namespace UnitTests.SymKey
 {
     public class TripleDESTests
     {
@@ -86,132 +86,6 @@ namespace CryptoToolkitUnitTests.SymKey
                 }
             }
             Assert.That(dec, Is.EqualTo(values.Item3));
-        }
-
-        [Test]
-        public void EncryptCBCNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.EncryptCBC(EmptyArr, null, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void EncryptCBCNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.EncryptCBC(EmptyArr, EmptyArr, null);
-            });
-        }
-
-        [Test]
-        public void EncryptCBCNullData()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.EncryptCBC(null, EmptyArr, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void DecryptCBCNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.DecryptCBC(EmptyArr, null, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void DecryptCBCNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.DecryptCBC(EmptyArr, EmptyArr, null);
-            });
-        }
-
-        [Test]
-        public void DecryptCBCNullData()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.DecryptCBC(null, EmptyArr, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void EncryptCBCStreamNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.EncryptCBC(new MemoryStream(), new MemoryStream(), null, EmptyArr, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void EncryptCBCStreamNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.EncryptCBC(new MemoryStream(), new MemoryStream(), EmptyArr, null, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void EncryptCBCStreamNullInput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.EncryptCBC(null, new MemoryStream(), EmptyArr, EmptyArr, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void EncryptCBCStreamNullOutput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.EncryptCBC(new MemoryStream(), null, EmptyArr, EmptyArr, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void DecryptCBCStreamNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.DecryptCBC(new MemoryStream(), new MemoryStream(), null, EmptyArr, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void DecryptCBCStreamNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.DecryptCBC(new MemoryStream(), new MemoryStream(), EmptyArr, null, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void DecryptCBCStreamNullInput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.DecryptCBC(null, new MemoryStream(), EmptyArr, EmptyArr, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void DecryptCBCStreamNullOutput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                TripleDES.DecryptCBC(new MemoryStream(), null, EmptyArr, EmptyArr, new NoPadding());
-            });
         }
 
         static IEnumerable<Tuple<byte[], byte[], byte[], byte[]>> DataSource()

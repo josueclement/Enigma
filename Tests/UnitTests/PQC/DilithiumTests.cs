@@ -8,12 +8,9 @@ namespace UnitTests.PQC
     internal class DilithiumTests
     {
         [Test]
-        [TestCase(Dilithium.DILITHIUM2)]
-        [TestCase(Dilithium.DILITHIUM2_AES)]
-        [TestCase(Dilithium.DILITHIUM3)]
-        [TestCase(Dilithium.DILITHIUM3_AES)]
-        [TestCase(Dilithium.DILITHIUM5)]
-        [TestCase(Dilithium.DILITHIUM5_AES)]
+        [TestCase("dilithium2")]
+        [TestCase("dilithium3")]
+        [TestCase("dilithium5")]
         public void SaveAndLoadPublicKey(string type)
         {
             Dilithium.GenerateKeyPair(type, out var publicKey, out _);
@@ -36,12 +33,9 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        [TestCase(Dilithium.DILITHIUM2)]
-        [TestCase(Dilithium.DILITHIUM2_AES)]
-        [TestCase(Dilithium.DILITHIUM3)]
-        [TestCase(Dilithium.DILITHIUM3_AES)]
-        [TestCase(Dilithium.DILITHIUM5)]
-        [TestCase(Dilithium.DILITHIUM5_AES)]
+        [TestCase("dilithium2")]
+        [TestCase("dilithium3")]
+        [TestCase("dilithium5")]
         public void SaveAndLoadPrivateKey(string type)
         {
             Dilithium.GenerateKeyPair(type, out _, out var privateKey);
@@ -64,12 +58,9 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        [TestCase(Dilithium.DILITHIUM2)]
-        [TestCase(Dilithium.DILITHIUM2_AES)]
-        [TestCase(Dilithium.DILITHIUM3)]
-        [TestCase(Dilithium.DILITHIUM3_AES)]
-        [TestCase(Dilithium.DILITHIUM5)]
-        [TestCase(Dilithium.DILITHIUM5_AES)]
+        [TestCase("dilithium2")]
+        [TestCase("dilithium3")]
+        [TestCase("dilithium5")]
         public void SaveAndLoadPrivateKeyWithPassword(string type)
         {
             Dilithium.GenerateKeyPair(type, out _, out var privateKey);
@@ -92,12 +83,9 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        [TestCase(Dilithium.DILITHIUM2)]
-        [TestCase(Dilithium.DILITHIUM2_AES)]
-        [TestCase(Dilithium.DILITHIUM3)]
-        [TestCase(Dilithium.DILITHIUM3_AES)]
-        [TestCase(Dilithium.DILITHIUM5)]
-        [TestCase(Dilithium.DILITHIUM5_AES)]
+        [TestCase("dilithium2")]
+        [TestCase("dilithium3")]
+        [TestCase("dilithium5")]
         public void SignAndVerify(string type)
         {
             Dilithium.GenerateKeyPair(type, out var publicKey, out var privateKey);
@@ -108,12 +96,9 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        [TestCase(Dilithium.DILITHIUM2)]
-        [TestCase(Dilithium.DILITHIUM2_AES)]
-        [TestCase(Dilithium.DILITHIUM3)]
-        [TestCase(Dilithium.DILITHIUM3_AES)]
-        [TestCase(Dilithium.DILITHIUM5)]
-        [TestCase(Dilithium.DILITHIUM5_AES)]
+        [TestCase("dilithium2")]
+        [TestCase("dilithium3")]
+        [TestCase("dilithium5")]
         public void SignAndVerifyWithWrongKey(string type)
         {
             Dilithium.GenerateKeyPair(type, out var publicKey, out _);
@@ -125,12 +110,9 @@ namespace UnitTests.PQC
         }
 
         [Test]
-        [TestCase(Dilithium.DILITHIUM2)]
-        [TestCase(Dilithium.DILITHIUM2_AES)]
-        [TestCase(Dilithium.DILITHIUM3)]
-        [TestCase(Dilithium.DILITHIUM3_AES)]
-        [TestCase(Dilithium.DILITHIUM5)]
-        [TestCase(Dilithium.DILITHIUM5_AES)]
+        [TestCase("dilithium2")]
+        [TestCase("dilithium3")]
+        [TestCase("dilithium5")]
         public void SignAndVerifyWithBadData(string type)
         {
             Dilithium.GenerateKeyPair(type, out var publicKey, out var privateKey);

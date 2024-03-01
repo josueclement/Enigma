@@ -8,7 +8,7 @@ using Enigma.Padding;
 using Enigma.SymKey;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.SymKey
+namespace UnitTests.SymKey
 {
     public class BlowfishTests
     {
@@ -86,132 +86,6 @@ namespace CryptoToolkitUnitTests.SymKey
                 }
             }
             Assert.That(dec, Is.EqualTo(values.Item3));
-        }
-
-        [Test]
-        public void EncryptCBCNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.EncryptCBC(EmptyArr, null, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void EncryptCBCNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.EncryptCBC(EmptyArr, EmptyArr, null);
-            });
-        }
-
-        [Test]
-        public void EncryptCBCNullData()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.EncryptCBC(null, EmptyArr, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void DecryptCBCNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.DecryptCBC(EmptyArr, null, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void DecryptCBCNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.DecryptCBC(EmptyArr, EmptyArr, null);
-            });
-        }
-
-        [Test]
-        public void DecryptCBCNullData()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.DecryptCBC(null, EmptyArr, EmptyArr);
-            });
-        }
-
-        [Test]
-        public void EncryptCBCStreamNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.EncryptCBC(new MemoryStream(), new MemoryStream(), null, EmptyArr, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void EncryptCBCStreamNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.EncryptCBC(new MemoryStream(), new MemoryStream(), EmptyArr, null, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void EncryptCBCStreamNullInput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.EncryptCBC(null, new MemoryStream(), EmptyArr, EmptyArr, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void EncryptCBCStreamNullOutput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.EncryptCBC(new MemoryStream(), null, EmptyArr, EmptyArr, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void DecryptCBCStreamNullKey()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.DecryptCBC(new MemoryStream(), new MemoryStream(), null, EmptyArr, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void DecryptCBCStreamNullIv()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.DecryptCBC(new MemoryStream(), new MemoryStream(), EmptyArr, null, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void DecryptCBCStreamNullInput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.DecryptCBC(null, new MemoryStream(), EmptyArr, EmptyArr, new NoPadding());
-            });
-        }
-
-        [Test]
-        public void DecryptCBCStreamNullOutput()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Blowfish.DecryptCBC(new MemoryStream(), null, EmptyArr, EmptyArr, new NoPadding());
-            });
         }
 
         static IEnumerable<Tuple<byte[], byte[], byte[], byte[]>> DataSource()

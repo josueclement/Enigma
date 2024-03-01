@@ -24,12 +24,8 @@ namespace Enigma.IO
         /// </summary>
         /// <param name="data">Data to encode</param>
         /// <returns>Hex string</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public static string Encode(byte[] data)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
             char[] ca = new char[data.Length * 2];
             byte b;
 
@@ -49,13 +45,9 @@ namespace Enigma.IO
         /// </summary>
         /// <param name="str">Hex string</param>
         /// <returns>Byte array</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="HexDecodeException"></exception>
         public static byte[] Decode(string str)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-
             if (str.Length % 2 != 0)
                 throw new HexDecodeException($"Invalid input string length {str.Length}: not a multiple of 2");
 

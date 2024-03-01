@@ -10,7 +10,7 @@ using System.Text;
 namespace Enigma.PubKey
 {
     /// <summary>
-    /// RSA helper class for key generation, data encrypt/decrypt and key load/save
+    /// RSA helper class for key generation, data encrypt/decrypt, sign/verify and key load/save
     /// </summary>
     public static class RSA
     {
@@ -19,44 +19,60 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="keySize">Key size in bits</param>
         public static RSACryptoServiceProvider GenerateKeyPair(int keySize = 4096)
-        {
-            return new RSACryptoServiceProvider(keySize);
-        }
+            => new RSACryptoServiceProvider(keySize);
 
         #region Encrypt / Decrypt data
 
         /// <summary>
         /// Encrypt data using RSACryptoServiceProvider
         /// </summary>
-        /// <param name="rsa">RSA Key</param>
+        /// <param name="publicKey">RSA public key</param>
         /// <param name="data">Data to encrypt</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static byte[] Encrypt(RSACryptoServiceProvider rsa, byte[] data)
-        {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
-            return rsa.Encrypt(data, true);
-        }
+        public static byte[] Encrypt(RSACryptoServiceProvider publicKey, byte[] data)
+            => publicKey.Encrypt(data, true);
 
         /// <summary>
         /// Decrypt data using RSACryptoServiceProvider
         /// </summary>
-        /// <param name="rsa">RSA Key</param>
+        /// <param name="privateKey">RSA private key</param>
         /// <param name="encrypted">Data to decrypt</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static byte[] Decrypt(RSACryptoServiceProvider rsa, byte[] encrypted)
-        {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (encrypted == null)
-                throw new ArgumentNullException(nameof(encrypted));
+        public static byte[] Decrypt(RSACryptoServiceProvider privateKey, byte[] encrypted)
+            => privateKey.Decrypt(encrypted, true);
 
-            return rsa.Decrypt(encrypted, true);
+        #endregion
+        
+        #region Sign / Verify data
+
+        /// <summary>
+        /// Sign data with a RSA private key
+        /// </summary>
+        /// <param name="privateKey">RSA private key</param>
+        /// <param name="data">Data to sign</param>
+        /// <param name="hashAlgorithmName">Hash algorithm name (will default to <see cref="HashAlgorithmName.SHA512"/> if null</param>
+        /// <param name="signaturePadding">Signature padding (will default to <see cref="RSASignaturePadding.Pkcs1"/> if null</param>
+        public static byte[] Sign(RSACryptoServiceProvider privateKey, byte[] data, HashAlgorithmName? hashAlgorithmName = null, RSASignaturePadding? signaturePadding = null)
+        {
+            var algorithmNameInternal = hashAlgorithmName ?? HashAlgorithmName.SHA512;
+            var signaturePaddingInternal = signaturePadding ?? RSASignaturePadding.Pkcs1;
+            return privateKey.SignData(data, algorithmNameInternal, signaturePaddingInternal);
         }
 
+        /// <summary>
+        /// Verifies signed data with a RSA public key
+        /// </summary>
+        /// <param name="publicKey">RSA public key</param>
+        /// <param name="data">Original data</param>
+        /// <param name="signature">Signature data</param>
+        /// <param name="hashAlgorithmName">Hash algorithm name (will default to <see cref="HashAlgorithmName.SHA512"/> if null</param>
+        /// <param name="signaturePadding">Signature padding (will default to <see cref="RSASignaturePadding.Pkcs1"/> if null</param>
+        public static bool Verify(RSACryptoServiceProvider publicKey, byte[] data, byte[] signature, HashAlgorithmName? hashAlgorithmName = null, RSASignaturePadding? signaturePadding = null)
+        {
+            var algorithmNameInternal = hashAlgorithmName ?? HashAlgorithmName.SHA512;
+            var signaturePaddingInternal = signaturePadding ?? RSASignaturePadding.Pkcs1;
+
+            return publicKey.VerifyData(data, signature, algorithmNameInternal, signaturePaddingInternal);
+        }
+        
         #endregion
 
         #region Save / Load PEM files
@@ -66,12 +82,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="input">Input stream</param>
         /// <param name="password">Password</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static RSACryptoServiceProvider LoadFromPEM(Stream input, string? password = null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-
             using (StreamReader sr = new StreamReader(input, Encoding.Default))
             {
                 PemReader pemReader;
@@ -111,12 +123,8 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="filePath">PEM file path</param>
         /// <param name="password">Password</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static RSACryptoServiceProvider LoadFromPEM(string filePath, string? password = null)
         {
-            if (filePath == null)
-                throw new ArgumentNullException(nameof(filePath));
-
             using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 return LoadFromPEM(fs, password);
@@ -126,20 +134,14 @@ namespace Enigma.PubKey
         /// <summary>
         /// Save a public RSA key to a PEM stream
         /// </summary>
-        /// <param name="rsa">Public key</param>
+        /// <param name="publicKey">RSA public key</param>
         /// <param name="output">Output stream</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void SavePublicKeyToPEM(RSACryptoServiceProvider rsa, Stream output)
+        public static void SavePublicKeyToPEM(RSACryptoServiceProvider publicKey, Stream output)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-
             using (StreamWriter sw = new StreamWriter(output, Encoding.Default))
             {
                 PemWriter pemWriter = new PemWriter(sw);
-                RsaKeyParameters rkp = DotNetUtilities.GetRsaPublicKey(rsa);
+                RsaKeyParameters rkp = DotNetUtilities.GetRsaPublicKey(publicKey);
                 pemWriter.WriteObject(rkp);
             }
         }
@@ -147,45 +149,29 @@ namespace Enigma.PubKey
         /// <summary>
         /// Save a public RSA key to a PEM file
         /// </summary>
-        /// <param name="rsa">Public key</param>
+        /// <param name="publicKey">RSA public key</param>
         /// <param name="outputFile">PEM output file</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void SavePublicKeyToPEM(RSACryptoServiceProvider rsa, string outputFile)
+        public static void SavePublicKeyToPEM(RSACryptoServiceProvider publicKey, string outputFile)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-
             using (FileStream fs = new FileStream(outputFile, FileMode.Create, FileAccess.Write))
             {
-                SavePublicKeyToPEM(rsa, fs);
+                SavePublicKeyToPEM(publicKey, fs);
             }
         }
 
         /// <summary>
         /// Save an encrypted private RSA key to a PEM stream
         /// </summary>
-        /// <param name="rsa">Private key</param>
+        /// <param name="privateKey">RSA private key</param>
         /// <param name="output">Output stream</param>
         /// <param name="password">Password</param>
         /// <param name="algorithm">Algorithm for PEM encryption</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void SavePrivateKeyToPEM(RSACryptoServiceProvider rsa, Stream output, string password, string algorithm = "AES-256-CBC")
+        public static void SavePrivateKeyToPEM(RSACryptoServiceProvider privateKey, Stream output, string password, string algorithm = "AES-256-CBC")
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-            if (algorithm == null)
-                throw new ArgumentNullException(nameof(algorithm));
-
             using (StreamWriter sw = new StreamWriter(output, Encoding.Default))
             {
                 PemWriter pemWriter = new PemWriter(sw);
-                AsymmetricCipherKeyPair ackp = DotNetUtilities.GetRsaKeyPair(rsa);
+                AsymmetricCipherKeyPair ackp = DotNetUtilities.GetRsaKeyPair(privateKey);
                 RsaPrivateCrtKeyParameters privKey = (RsaPrivateCrtKeyParameters)ackp.Private;
                 pemWriter.WriteObject(privKey, algorithm, password.ToCharArray(), new SecureRandom());
             }
@@ -194,45 +180,29 @@ namespace Enigma.PubKey
         /// <summary>
         /// Save an encrypted RSA key to a PEM file
         /// </summary>
-        /// <param name="rsa">Private key</param>
+        /// <param name="privateKey">RSA private key</param>
         /// <param name="outputFile">PEM output file</param>
         /// <param name="password">Password</param>
         /// <param name="algorithm">Algorithm</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void SavePrivateKeyToPEM(RSACryptoServiceProvider rsa, string outputFile, string password, string algorithm = "AES-256-CBC")
+        public static void SavePrivateKeyToPEM(RSACryptoServiceProvider privateKey, string outputFile, string password, string algorithm = "AES-256-CBC")
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-            if (password == null)
-                throw new ArgumentNullException(nameof(password));
-            if (algorithm == null)
-                throw new ArgumentNullException(nameof(algorithm));
-
             using (FileStream fs = new FileStream(outputFile, FileMode.Create, FileAccess.Write))
             {
-                SavePrivateKeyToPEM(rsa, fs, password, algorithm);
+                SavePrivateKeyToPEM(privateKey, fs, password, algorithm);
             }
         }
 
         /// <summary>
         /// Save a private RSA key to a PEM file
         /// </summary>
-        /// <param name="rsa">Private key</param>
+        /// <param name="privateKey">RSA private key</param>
         /// <param name="output">Output stream</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void SavePrivateKeyToPEM(RSACryptoServiceProvider rsa, Stream output)
+        public static void SavePrivateKeyToPEM(RSACryptoServiceProvider privateKey, Stream output)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-
             using (StreamWriter sw = new StreamWriter(output, Encoding.Default))
             {
                 PemWriter pemWriter = new PemWriter(sw);
-                AsymmetricCipherKeyPair ackp = DotNetUtilities.GetRsaKeyPair(rsa);
+                AsymmetricCipherKeyPair ackp = DotNetUtilities.GetRsaKeyPair(privateKey);
                 RsaPrivateCrtKeyParameters privKey = (RsaPrivateCrtKeyParameters)ackp.Private;
                 pemWriter.WriteObject(privKey);
             }
@@ -241,19 +211,13 @@ namespace Enigma.PubKey
         /// <summary>
         /// Save a private RSA key to a PEM file
         /// </summary>
-        /// <param name="rsa"></param>
+        /// <param name="privateKey"></param>
         /// <param name="outputFile"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void SavePrivateKeyToPEM(RSACryptoServiceProvider rsa, string outputFile)
+        public static void SavePrivateKeyToPEM(RSACryptoServiceProvider privateKey, string outputFile)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (outputFile == null)
-                throw new ArgumentNullException(nameof(outputFile));
-
             using (FileStream fs = new FileStream(outputFile, FileMode.Create, FileAccess.Write))
             {
-                SavePrivateKeyToPEM(rsa, fs);
+                SavePrivateKeyToPEM(privateKey, fs);
             }
         }
 
@@ -264,24 +228,20 @@ namespace Enigma.PubKey
         /// <summary>
         /// Save a RSA key in the Windows KeyStore
         /// </summary>
-        /// <param name="rsa">RSA key</param>
+        /// <param name="key">RSA key</param>
         /// <param name="containerName">Container name</param>
         /// <param name="csppf">CspProviderFlags</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void SaveInWinKeyStore(RSACryptoServiceProvider rsa, string containerName, CspProviderFlags csppf = CspProviderFlags.UseMachineKeyStore)
+        public static void SaveInWinKeyStore(RSACryptoServiceProvider key, string containerName, CspProviderFlags csppf = CspProviderFlags.UseMachineKeyStore)
         {
-            if (rsa == null)
-                throw new ArgumentNullException(nameof(rsa));
-            if (containerName == null)
-                throw new ArgumentNullException(nameof(containerName));
-
-            CspParameters cp = new CspParameters();
-            cp.KeyContainerName = containerName;
-            cp.Flags = csppf;
+            CspParameters cp = new CspParameters
+            {
+                KeyContainerName = containerName,
+                Flags = csppf
+            };
 
             using (RSACryptoServiceProvider winKSkey = new RSACryptoServiceProvider(cp))
             {
-                winKSkey.FromXmlString(rsa.ToXmlString(true));
+                winKSkey.FromXmlString(key.ToXmlString(true));
             }
         }
 
@@ -290,15 +250,13 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="containerName">Container name</param>
         /// <param name="csppf">CspProviderFlags</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static RSACryptoServiceProvider LoadFromWinKeyStore(string containerName, CspProviderFlags csppf = CspProviderFlags.UseMachineKeyStore)
         {
-            if (containerName == null)
-                throw new ArgumentNullException(nameof(containerName));
-
-            CspParameters cp = new CspParameters();
-            cp.KeyContainerName = containerName;
-            cp.Flags = csppf;
+            CspParameters cp = new CspParameters
+            {
+                KeyContainerName = containerName,
+                Flags = csppf
+            };
 
             return new RSACryptoServiceProvider(cp);
         }
@@ -308,15 +266,13 @@ namespace Enigma.PubKey
         /// </summary>
         /// <param name="containerName">Container name</param>
         /// <param name="csppf">CspProviderFlags</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public static void DeleteFromWinKeyStore(string containerName, CspProviderFlags csppf = CspProviderFlags.UseMachineKeyStore)
         {
-            if (containerName == null)
-                throw new ArgumentNullException(nameof(containerName));
-
-            CspParameters cp = new CspParameters();
-            cp.KeyContainerName = containerName;
-            cp.Flags = csppf;
+            CspParameters cp = new CspParameters
+            {
+                KeyContainerName = containerName,
+                Flags = csppf
+            };
             using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(cp))
             {
                 rsa.PersistKeyInCsp = false;

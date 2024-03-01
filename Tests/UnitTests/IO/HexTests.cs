@@ -5,7 +5,7 @@ using System.Text;
 using Enigma.IO;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.IO
+namespace UnitTests.IO
 {
     public class HexTests
     {
@@ -52,24 +52,6 @@ namespace CryptoToolkitUnitTests.IO
             Assert.Throws<HexDecodeException>(() =>
             {
                 Hex.Decode(encoded);
-            });
-        }
-
-        [Test]
-        public void EncodeNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Hex.Encode(null);
-            });
-        }
-
-        [Test]
-        public void DecodeNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Hex.Decode(null);
             });
         }
 

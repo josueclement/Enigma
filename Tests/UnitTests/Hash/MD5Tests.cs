@@ -7,7 +7,7 @@ using Enigma.Hash;
 using Enigma.IO;
 using NUnit.Framework;
 
-namespace CryptoToolkitUnitTests.Hash
+namespace UnitTests.Hash
 {
     public class MD5Tests
     {
@@ -48,15 +48,6 @@ namespace CryptoToolkitUnitTests.Hash
                 hash = await MD5.HashAsync(fs).ConfigureAwait(false);
             }
             Assert.That(Hex.Encode(hash), Is.EqualTo(hashStr));
-        }
-
-        [Test]
-        public void HashNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                Hex.Encode(null);
-            });
         }
 
         static IEnumerable<Tuple<byte[], string>> DataSource()
