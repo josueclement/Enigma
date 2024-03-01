@@ -711,6 +711,7 @@ namespace Enigma.IO
         /// <param name="stream">Input stream</param>
         public static async Task<byte[]> ReadLVAsync(Stream stream)
         {
+            // TODO: Should be calling the async method (AND THIS IS NOT THE ONLY PLACE !!)
             int valueLength = ReadInt32(stream);
             return await ReadBytesAsync(stream, valueLength).ConfigureAwait(false);
         }
