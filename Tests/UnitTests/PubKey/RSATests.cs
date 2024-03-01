@@ -6,6 +6,7 @@ using Org.BouncyCastle.OpenSsl;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace UnitTests.PubKey
 {
@@ -158,6 +159,35 @@ namespace UnitTests.PubKey
                 byte[] dec = RSA.Decrypt(rsa, values.Item2);
                 Assert.That(dec, Is.EqualTo(values.Item1));
             });
+        }
+
+        [Test]
+        public void SignVerify()
+        {
+            System.Security.Cryptography.RSACryptoServiceProvider publicKey = RSA.LoadFromPEM(@"data\PubKey\pub_key1.pem");
+            var privateKey = RSA.LoadFromPEM(@"data\PubKey\pk_key1.pem", "test1234");
+
+            string originalMessage = "This message will be signed and verified";
+            byte[] data = Encoding.UTF8.GetBytes(originalMessage);
+            byte[] signature = RSA.Sign(privateKey, data);
+            bool result = RSA.Verify(publicKey, data, signature);
+            
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void SignVerifyBadMessage()
+        {
+            System.Security.Cryptography.RSACryptoServiceProvider publicKey = RSA.LoadFromPEM(@"data\PubKey\pub_key1.pem");
+            var privateKey = RSA.LoadFromPEM(@"data\PubKey\pk_key1.pem", "test1234");
+
+            string originalMessage = "This message will be signed and verified";
+            byte[] data = Encoding.UTF8.GetBytes(originalMessage);
+            byte[] otherData = Encoding.UTF8.GetBytes("This is another message");
+            byte[] signature = RSA.Sign(privateKey, data);
+            bool result = RSA.Verify(publicKey, otherData, signature);
+            
+            Assert.That(result, Is.False);
         }
 
         static IEnumerable<Tuple<byte[], byte[]>> DataSource1()
