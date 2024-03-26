@@ -1,12 +1,17 @@
-﻿<Window x:Class="EnigmaUI.MainWindow"
+﻿<controls:CWindow x:Class="EnigmaUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Carbon.Controls;assembly=Carbon"
+        xmlns:vm="clr-namespace:EnigmaUI.ViewModel"
+        xmlns:editors="clr-namespace:Carbon.Controls.Editors;assembly=Carbon"
         xmlns:local="clr-namespace:EnigmaUI"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
+        Style="{StaticResource {x:Type controls:CWindow}}"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
 
     </Grid>
-</Window>
+</controls:CWindow>

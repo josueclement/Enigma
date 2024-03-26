@@ -9,4 +9,13 @@
         <Authors>Josué Clément</Authors>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Carbon" Version="0.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    </ItemGroup>
+
 </Project>
