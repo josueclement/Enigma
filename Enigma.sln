@@ -9,6 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{095FEBB4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "Tests\UnitTests\UnitTests.csproj", "{275FAEE7-3DF6-4113-B74F-7D15152D30CF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{561BF602-F99E-4008-AE19-57649B8E7559}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnigmaUI", "Apps\EnigmaUI\EnigmaUI.csproj", "{2E970EB4-267D-4C72-94F1-9D7062CD81CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +27,17 @@ Global
 		{275FAEE7-3DF6-4113-B74F-7D15152D30CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{275FAEE7-3DF6-4113-B74F-7D15152D30CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{275FAEE7-3DF6-4113-B74F-7D15152D30CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E970EB4-267D-4C72-94F1-9D7062CD81CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E970EB4-267D-4C72-94F1-9D7062CD81CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E970EB4-267D-4C72-94F1-9D7062CD81CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E970EB4-267D-4C72-94F1-9D7062CD81CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{275FAEE7-3DF6-4113-B74F-7D15152D30CF} = {095FEBB4-225E-4C4D-B661-41B4A76C4E68}
+		{2E970EB4-267D-4C72-94F1-9D7062CD81CD} = {561BF602-F99E-4008-AE19-57649B8E7559}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA932BF7-FC8B-4476-83A5-8C75FB17E447}
