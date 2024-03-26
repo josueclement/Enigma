@@ -11,7 +11,11 @@
         d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
         Style="{StaticResource {x:Type controls:CWindow}}"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <DockPanel>
+        <ItemsControl DockPanel.Dock="Left"
+                    Width="200"
+                    ItemsSource="{Binding NavigationService.NavigationItems}"/>
+        
+        <ContentControl Content="{Binding NavigationService.CurrentViewModel}" />
+    </DockPanel>
 </controls:CWindow>

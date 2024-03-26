@@ -1,4 +1,5 @@
 ﻿using Carbon.Controls;
+using EnigmaUI.ViewModel;
 
 namespace EnigmaUI;
 
@@ -7,8 +8,9 @@ namespace EnigmaUI;
 /// </summary>
 public partial class MainWindow : CWindow
 {
-    public MainWindow()
+    public MainWindow(MainWindowViewModel vm)
     {
         InitializeComponent();
+        DataContext = vm;
     }
 }

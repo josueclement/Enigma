@@ -3,9 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using System;
 using Carbon.Services;
+using EnigmaUI.Model;
+using EnigmaUI.Services;
+using EnigmaUI.Services.Interfaces;
 using EnigmaUI.ViewModel;
-using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
+using EnigmaUI.ViewModel.Pages;
 
 namespace EnigmaUI;
 
@@ -18,23 +20,18 @@ public class AppBootstrapper : WpfBootstrapper
     
     protected override Window? MainWindow => ServiceProvider?.GetService<MainWindow>();
     protected override Window? SplashScreenWindow => ServiceProvider?.GetService<SplashScreen>();
-
     protected override bool IsSplashScreenEnabled => false;
-
     protected override TimeSpan SplashScreenDuration => TimeSpan.FromSeconds(2);
     
     protected override void ConfigureServices(IServiceCollection services)
     {
         AddViewServices(services);
         AddViewModelServices(services);
+        AddModelServices(services);
+        
         services.AddSingleton<IWindowOverlayService, WindowOverlayService>();
         services.AddSingleton<IMessageBoxBuilderService, MessageBoxBuilderService>();
-        services.AddLogging(builder =>
-        {
-            builder.ClearProviders();
-            builder.SetMinimumLevel(LogLevel.Trace);
-            builder.AddNLog();
-        });
+        services.AddSingleton<INavigationService, NavigationService>();
 
         // Must be called after adding services
         base.ConfigureServices(services);
@@ -50,6 +47,12 @@ public class AppBootstrapper : WpfBootstrapper
     {
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<SplashScreenViewModel>();
+        services.AddSingleton<HomePageViewModel>();
+    }
+
+    private void AddModelServices(IServiceCollection services)
+    {
+        services.AddTransient<NavigationItem>();
     }
 
     private void AppBootstrapper_UnhandledException(object? sender, Exception e)
