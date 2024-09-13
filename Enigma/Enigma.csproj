@@ -4,20 +4,20 @@
 		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<Platforms>AnyCPU</Platforms>
-		<Version>1.4.0</Version>
+		<Version>1.5.0</Version>
 		<Authors>Josué Clément</Authors>
 		<Company />
 		<Copyright>Copyright © 2022 Josué Clément</Copyright>
 		<PackageProjectUrl>https://github.com/josueclement/Enigma</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/josueclement/Enigma.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<LangVersion>10.0</LangVersion>
+		<LangVersion>12.0</LangVersion>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="BouncyCastle.Cryptography" Version="2.3.0" />
+	  <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
 	</ItemGroup>
 
 </Project>
