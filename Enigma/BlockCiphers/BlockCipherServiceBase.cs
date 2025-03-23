@@ -34,7 +34,7 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
     /// <param name="forEncryption">True for encryption, False for decryption</param>
     /// <param name="key">Key</param>
     /// <param name="iv">IV</param>
-    /// <returns><see cref="IBufferedCipher"/></returns>
+    /// <returns>Cipher</returns>
     protected abstract BufferedBlockCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv);
 
     /// <summary>
@@ -62,27 +62,8 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
         await ProcessStreamAsync(input, output, cipher, padding);
     }
 
-    private const int BUFFER_SIZE = 32;
-
     private async Task ProcessStreamAsync(Stream input, Stream output, BufferedBlockCipher cipher, IPaddingService padding)
     {
-        var buffer = new byte[BUFFER_SIZE];
-        var outputBuffer = new byte[BUFFER_SIZE + BlockSize];
-            
-        int bytesRead;
-        while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length)) > 0)
-        {
-            var outputLen = cipher.ProcessBytes(buffer, 0, bytesRead, outputBuffer, 0);
-            if (outputLen > 0)
-            {
-                await output.WriteAsync(outputBuffer, 0, outputLen);
-            }
-        }
-            
-        var outputLenFinal = cipher.DoFinal(outputBuffer, 0);
-        if (outputLenFinal > 0)
-        {
-            await output.WriteAsync(outputBuffer, 0, outputLenFinal);
-        }
+        
     }
 }
