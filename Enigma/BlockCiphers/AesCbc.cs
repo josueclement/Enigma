@@ -21,7 +21,7 @@ public class AesCbc : BlockCipherServiceBase
     public override int BlockSize => 16;
 
     /// <inheritdoc />
-    protected override IBufferedCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv, IBlockCipherPadding padding)
+    protected override PaddedBufferedBlockCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv, IBlockCipherPadding padding)
     {
         var cipher = new PaddedBufferedBlockCipher(new CbcBlockCipher(new AesEngine()), padding);
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);

@@ -37,7 +37,7 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
     /// <param name="iv">IV</param>
     /// <param name="padding">Padding</param>
     /// <returns><see cref="IBufferedCipher"/></returns>
-    protected abstract IBufferedCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv, IBlockCipherPadding padding);
+    protected abstract PaddedBufferedBlockCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv, IBlockCipherPadding padding);
 
     /// <summary>
     /// Generate random key and IV
@@ -53,12 +53,38 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
     /// <inheritdoc />
     public async Task EncryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IBlockCipherPadding padding)
     {
-        
+        var cipher = BuildCipher(true, key, iv, padding);
+        await ProcessStreamAsync(input, output, cipher);
     }
 
     /// <inheritdoc />
     public async Task DecryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IBlockCipherPadding padding)
     {
-        
+        var cipher = BuildCipher(false, key, iv, padding);
+        await ProcessStreamAsync(input, output, cipher);
+    }
+
+    private const int BUFFER_SIZE = 32;
+
+    private async Task ProcessStreamAsync(Stream input, Stream output, PaddedBufferedBlockCipher cipher)
+    {
+        var buffer = new byte[BUFFER_SIZE];
+        var outputBuffer = new byte[BUFFER_SIZE + BlockSize];
+            
+        int bytesRead;
+        while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length)) > 0)
+        {
+            var outputLen = cipher.ProcessBytes(buffer, 0, bytesRead, outputBuffer, 0);
+            if (outputLen > 0)
+            {
+                await output.WriteAsync(outputBuffer, 0, outputLen);
+            }
+        }
+            
+        var outputLenFinal = cipher.DoFinal(outputBuffer, 0);
+        if (outputLenFinal > 0)
+        {
+            await output.WriteAsync(outputBuffer, 0, outputLenFinal);
+        }
     }
 }
