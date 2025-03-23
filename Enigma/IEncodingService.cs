@@ -10,12 +10,12 @@ public interface IEncodingService
     /// </summary>
     /// <param name="data">Data to encode</param>
     /// <returns>Encoded data</returns>
-    byte[] Encode(byte[] data);
+    string Encode(byte[] data);
     
     /// <summary>
     /// Decode data
     /// </summary>
     /// <param name="data">Data to decode</param>
     /// <returns>Decoded data</returns>
-    byte[] Decode(byte[] data);
+    byte[] Decode(string data);
 }

@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+using Org.BouncyCastle.Security;
 
 namespace Enigma.Utils;
 
@@ -12,12 +12,11 @@ public static class RandomUtils
     /// </summary>
     /// <param name="size">Number of bytes to generate</param>
     /// <returns>Random bytes</returns>
-    //TODO: replace with BouncyCastle utility if exists !
     public static byte[] GenerateRandomBytes(int size)
     {
-        using var provider = new RNGCryptoServiceProvider();
+        var sr = new SecureRandom();
         var bytes = new byte[size];
-        provider.GetBytes(bytes);
+        sr.NextBytes(bytes);
         return bytes;
     }
 }

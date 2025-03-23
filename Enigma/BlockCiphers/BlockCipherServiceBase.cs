@@ -42,7 +42,7 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
     /// </summary>
     /// <param name="key">Key</param>
     /// <param name="iv">IV</param>
-    public void GenerateRandomKeyIv(out byte[] key, out byte[] iv)
+    public void GenerateKeyIv(out byte[] key, out byte[] iv)
     {
         key = RandomUtils.GenerateRandomBytes(KeySize);
         iv = RandomUtils.GenerateRandomBytes(IvSize);
