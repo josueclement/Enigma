@@ -1,5 +1,6 @@
 using System.IO;
 using System.Threading.Tasks;
+using Org.BouncyCastle.Crypto.Paddings;
 
 namespace Enigma;
 
@@ -9,32 +10,15 @@ namespace Enigma;
 public interface IBlockCipherService
 {
     /// <summary>
-    /// Encrypt data
-    /// </summary>
-    /// <param name="data">Data to encrypt</param>
-    /// <param name="key">Key</param>
-    /// <param name="iv">IV</param>
-    /// <returns>Encrypted data</returns>
-    byte[] Encrypt(byte[] data, byte[] key, byte[] iv);
-    
-    /// <summary>
-    /// Decrypt data
-    /// </summary>
-    /// <param name="data">Data to decrypt</param>
-    /// <param name="key">Key</param>
-    /// <param name="iv">IV</param>
-    /// <returns>Decrypted data</returns>
-    byte[] Decrypt(byte[] data, byte[] key, byte[] iv);
-
-    /// <summary>
     /// Asynchronously encrypt stream
     /// </summary>
     /// <param name="input">Input stream</param>
     /// <param name="output">Output stream</param>
     /// <param name="key">Key</param>
     /// <param name="iv">IV</param>
+    /// <param name="padding">Padding</param>
     // TODO: Cancellation token
-    Task EncryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv);
+    Task EncryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IBlockCipherPadding padding);
     
     /// <summary>
     /// Asynchronously decrypt stream
@@ -43,6 +27,7 @@ public interface IBlockCipherService
     /// <param name="output">Output stream</param>
     /// <param name="key">Key</param>
     /// <param name="iv">IV</param>
+    /// <param name="padding">Padding</param>
     // TODO: Cancellation token
-    Task DecryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv);
+    Task DecryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IBlockCipherPadding padding);
 }

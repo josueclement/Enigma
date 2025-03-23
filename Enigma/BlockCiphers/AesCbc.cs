@@ -1,5 +1,6 @@
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Modes;
+using Org.BouncyCastle.Crypto.Paddings;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto;
 
@@ -20,10 +21,10 @@ public class AesCbc : BlockCipherServiceBase
     public override int BlockSize => 16;
 
     /// <inheritdoc />
-    protected override IBufferedCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv)
+    protected override IBufferedCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv, IBlockCipherPadding padding)
     {
-        var cipher = new BufferedBlockCipher(new CbcBlockCipher(new AesEngine()));
-        var parameters = new ParametersWithIV(new KeyParameter(key, 0, key.Length), iv, 0, iv.Length);
+        var cipher = new PaddedBufferedBlockCipher(new CbcBlockCipher(new AesEngine()), padding);
+        var parameters = new ParametersWithIV(new KeyParameter(key), iv);
         cipher.Init(forEncryption, parameters);
         return cipher;
     }

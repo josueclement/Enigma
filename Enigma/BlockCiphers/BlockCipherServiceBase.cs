@@ -1,7 +1,8 @@
+using Enigma.Utils;
+using Org.BouncyCastle.Crypto.Paddings;
 using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
-using Enigma.Utils;
 
 namespace Enigma.BlockCiphers;
 
@@ -34,8 +35,9 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
     /// <param name="forEncryption">True for encryption, False for decryption</param>
     /// <param name="key">Key</param>
     /// <param name="iv">IV</param>
+    /// <param name="padding">Padding</param>
     /// <returns><see cref="IBufferedCipher"/></returns>
-    protected abstract IBufferedCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv);
+    protected abstract IBufferedCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv, IBlockCipherPadding padding);
 
     /// <summary>
     /// Generate random key and IV
@@ -47,33 +49,15 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
         key = RandomUtils.GenerateRandomBytes(KeySize);
         iv = RandomUtils.GenerateRandomBytes(IvSize);
     }
-    
-    /// <inheritdoc />
-    public byte[] Encrypt(byte[] data, byte[] key, byte[] iv)
-    {
-        var cipher = BuildCipher(forEncryption: true, key, iv);
-        var enc = new byte[data.Length];
-        cipher.ProcessBytes(data, enc, 0);
-        return enc; 
-    }
 
     /// <inheritdoc />
-    public byte[] Decrypt(byte[] data, byte[] key, byte[] iv)
-    {
-        var cipher = BuildCipher(forEncryption: false, key, iv);
-        var dec = new byte[data.Length];
-        cipher.ProcessBytes(data, dec, 0);
-        return dec; 
-    }
-
-    /// <inheritdoc />
-    public async Task EncryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv)
+    public async Task EncryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IBlockCipherPadding padding)
     {
         
     }
 
     /// <inheritdoc />
-    public async Task DecryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv)
+    public async Task DecryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IBlockCipherPadding padding)
     {
         
     }
