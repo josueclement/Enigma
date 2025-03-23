@@ -12,7 +12,7 @@ public abstract class PaddingServiceBase : IPaddingService
     /// Abstract padding factory method
     /// </summary>
     /// <returns>Padding</returns>
-    protected abstract IBlockCipherPadding BuildPadding();
+    protected abstract IBlockCipherPadding BuildPadder();
     
     /// <inheritdoc />
     public byte[] Pad(byte[] data, int blockSize)
@@ -24,8 +24,8 @@ public abstract class PaddingServiceBase : IPaddingService
         var paddedData = new byte[data.Length + paddingLength];
         Array.Copy(data, 0, paddedData, 0, data.Length);
 
-        var padding = BuildPadding();
-        padding.AddPadding(paddedData, data.Length);
+        var padder = BuildPadder();
+        padder.AddPadding(paddedData, data.Length);
 
         return paddedData;
     }
@@ -38,8 +38,8 @@ public abstract class PaddingServiceBase : IPaddingService
         if (data.Length % blockSize != 0 || data.Length < blockSize)
             throw new ArgumentException($"Invalid padded data length {data.Length}");
 
-        var padding = BuildPadding();
-        var paddingLength = padding.PadCount(data);
+        var padder = BuildPadder();
+        var paddingLength = padder.PadCount(data);
 
         var unpaddedData = new byte[data.Length - paddingLength];
         Array.Copy(data, 0, unpaddedData, 0, data.Length - paddingLength);

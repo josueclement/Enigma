@@ -8,6 +8,6 @@ namespace Enigma.Padding;
 public class Pkcs7PaddingService : PaddingServiceBase
 {
     /// <inheritdoc />
-    protected override IBlockCipherPadding BuildPadding()
+    protected override IBlockCipherPadding BuildPadder()
         => new Org.BouncyCastle.Crypto.Paddings.Pkcs7Padding();
 }
