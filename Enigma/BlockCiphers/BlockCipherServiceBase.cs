@@ -1,5 +1,4 @@
 using Enigma.Utils;
-using Org.BouncyCastle.Crypto.Paddings;
 using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
@@ -35,9 +34,8 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
     /// <param name="forEncryption">True for encryption, False for decryption</param>
     /// <param name="key">Key</param>
     /// <param name="iv">IV</param>
-    /// <param name="padding">Padding</param>
     /// <returns><see cref="IBufferedCipher"/></returns>
-    protected abstract PaddedBufferedBlockCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv, IBlockCipherPadding padding);
+    protected abstract BufferedBlockCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv);
 
     /// <summary>
     /// Generate random key and IV
@@ -51,22 +49,22 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
     }
 
     /// <inheritdoc />
-    public async Task EncryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IBlockCipherPadding padding)
+    public async Task EncryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IPaddingService padding)
     {
-        var cipher = BuildCipher(true, key, iv, padding);
-        await ProcessStreamAsync(input, output, cipher);
+        var cipher = BuildCipher(true, key, iv);
+        await ProcessStreamAsync(input, output, cipher, padding);
     }
 
     /// <inheritdoc />
-    public async Task DecryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IBlockCipherPadding padding)
+    public async Task DecryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IPaddingService padding)
     {
-        var cipher = BuildCipher(false, key, iv, padding);
-        await ProcessStreamAsync(input, output, cipher);
+        var cipher = BuildCipher(false, key, iv);
+        await ProcessStreamAsync(input, output, cipher, padding);
     }
 
     private const int BUFFER_SIZE = 32;
 
-    private async Task ProcessStreamAsync(Stream input, Stream output, PaddedBufferedBlockCipher cipher)
+    private async Task ProcessStreamAsync(Stream input, Stream output, BufferedBlockCipher cipher, IPaddingService padding)
     {
         var buffer = new byte[BUFFER_SIZE];
         var outputBuffer = new byte[BUFFER_SIZE + BlockSize];

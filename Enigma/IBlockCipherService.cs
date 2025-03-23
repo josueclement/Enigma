@@ -1,6 +1,5 @@
 using System.IO;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto.Paddings;
 
 namespace Enigma;
 
@@ -18,7 +17,7 @@ public interface IBlockCipherService
     /// <param name="iv">IV</param>
     /// <param name="padding">Padding</param>
     // TODO: Cancellation token
-    Task EncryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IBlockCipherPadding padding);
+    Task EncryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IPaddingService padding);
     
     /// <summary>
     /// Asynchronously decrypt stream
@@ -29,5 +28,5 @@ public interface IBlockCipherService
     /// <param name="iv">IV</param>
     /// <param name="padding">Padding</param>
     // TODO: Cancellation token
-    Task DecryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IBlockCipherPadding padding);
+    Task DecryptStreamAsync(Stream input, Stream output, byte[] key, byte[] iv, IPaddingService padding);
 }
