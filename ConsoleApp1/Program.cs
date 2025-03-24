@@ -2,10 +2,9 @@
 using System.IO;
 using System.Text;
 using Enigma;
-using Enigma.BlockCiphers;
-using Enigma.Padding;
+using Enigma.DataEncoding;
+using Enigma.KDF;
 using Enigma.PublicKey;
-using Org.BouncyCastle.Utilities.Encoders;
 
 static class Program
 {
@@ -13,6 +12,10 @@ static class Program
     {
         try
         {
+            var pbkdf2 = new Pbkdf2Service();
+            var key = pbkdf2.GenerateKey(12, "test1234", [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+            string hexKey = new HexService().Encode(key);
+            
             var rsa = new RsaService();
             var keyPair = rsa.GenerateKeyPair(2048);
             
