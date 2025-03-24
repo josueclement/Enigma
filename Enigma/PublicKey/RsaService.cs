@@ -34,40 +34,4 @@ public class RsaService : PublicKeyServiceBase
         signer.Init(forSigning, key);
         return signer;
     }
-
-    // public void SaveKey(AsymmetricKeyParameter key, Stream output)
-    // {
-    //     using var writer = new StreamWriter(output, Encoding.UTF8);
-    //     var pemWriter = new PemWriter(writer);
-    //     pemWriter.WriteObject(key);
-    // }
-    //
-    // public void SavePrivateKey(AsymmetricKeyParameter privateKey, Stream output, string password, string algorithm = "AES-256-CBC")
-    // {
-    //     using var writer = new StreamWriter(output, Encoding.UTF8);
-    //     var pemWriter = new PemWriter(writer);
-    //     pemWriter.WriteObject(privateKey, algorithm, password.ToCharArray(), new SecureRandom());
-    // }
-    //
-    // public AsymmetricKeyParameter LoadKey(Stream input)
-    // {
-    //     using var reader = new StreamReader(input, Encoding.UTF8);
-    //     var pemReader = new PemReader(reader);
-    //     object obj = pemReader.ReadObject();
-    //
-    //     if (obj is AsymmetricCipherKeyPair ackp)
-    //     {
-    //         return ackp;
-    //     }
-    //
-    //     if (obj is RsaPrivateCrtKeyParameters rpckp)
-    //     {
-    //         return rpckp;
-    //     }
-    //
-    //     if (obj is RsaKeyParameters rkp)
-    //     {
-    //         return rkp;
-    //     }
-    // }
 }

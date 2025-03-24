@@ -31,7 +31,7 @@ public abstract class PublicKeyServiceBase : IPublicKeyService
     protected abstract ISigner BuildSigner(bool forSigning, AsymmetricKeyParameter key);
     
     /// <inheritdoc />
-    public AsymmetricCipherKeyPair GenerateKeyPair(int keySize)
+    public AsymmetricCipherKeyPair GenerateKeyPair(int keySize = 4096)
     {
         var generator = BuildKeyPairGenerator(keySize);
         return generator.GenerateKeyPair();
