@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace UnitTests.IO
 {
-    public class HexTests
+    public class HexServiceTests
     {
         [Test]
         public void EncodeEmpty()

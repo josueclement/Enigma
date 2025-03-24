@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace UnitTests.IO
 {
-    public class Base64Tests
+    public class Base64ServiceTests
     {
         [Test]
         public void EncodeEmpty()
