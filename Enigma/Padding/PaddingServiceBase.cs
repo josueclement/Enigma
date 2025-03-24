@@ -4,7 +4,7 @@ using Org.BouncyCastle.Crypto.Paddings;
 namespace Enigma.Padding;
 
 /// <summary>
-/// Padding base class
+/// Padding service base class
 /// </summary>
 public abstract class PaddingServiceBase : IPaddingService
 {

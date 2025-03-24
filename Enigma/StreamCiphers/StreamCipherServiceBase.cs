@@ -5,7 +5,7 @@ using Org.BouncyCastle.Crypto;
 namespace Enigma.StreamCiphers;
 
 /// <summary>
-/// Stream cipher base class
+/// Stream cipher service base class
 /// </summary>
 public abstract class StreamCipherServiceBase : IStreamCipherService
 {

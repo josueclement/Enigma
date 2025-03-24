@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Enigma.BlockCiphers;
 
 /// <summary>
-/// Block cipher base class
+/// Block cipher service base class
 /// </summary>
 public abstract class BlockCipherServiceBase : IBlockCipherService
 {
