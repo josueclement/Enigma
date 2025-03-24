@@ -11,7 +11,7 @@ static class Program
         {
             var padding = new Pkcs7PaddingService();
             var padded = padding.Pad([12,99,7], 16);
-            var unpadded = padding.UnPad(padded, 16);
+            var unpadded = padding.Unpad(padded, 16);
         }
         catch (Exception ex)
         {

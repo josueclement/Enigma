@@ -31,7 +31,7 @@ public abstract class PaddingServiceBase : IPaddingService
     }
 
     /// <inheritdoc />
-    public byte[] UnPad(byte[] data, int blockSize)
+    public byte[] Unpad(byte[] data, int blockSize)
     {
         if (blockSize is < 1 or > byte.MaxValue)
             throw new ArgumentException($"Invalid block size {blockSize}", nameof(blockSize));

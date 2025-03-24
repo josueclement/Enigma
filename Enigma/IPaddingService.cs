@@ -19,5 +19,5 @@ public interface IPaddingService
     /// <param name="data">Data to unpad</param>
     /// <param name="blockSize">Block size</param>
     /// <returns>Unpadded data</returns>
-    byte[] UnPad(byte[] data, int blockSize);
+    byte[] Unpad(byte[] data, int blockSize);
 }

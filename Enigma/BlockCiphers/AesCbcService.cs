@@ -8,7 +8,7 @@ namespace Enigma.BlockCiphers;
 /// <summary>
 /// AES-CBC encryption/decryption service
 /// </summary>
-public class AesCbc : BlockCipherServiceBase
+public class AesCbcService : BlockCipherServiceBase
 {
     /// <inheritdoc />
     public override int KeySize => 32;
@@ -20,7 +20,7 @@ public class AesCbc : BlockCipherServiceBase
     public override int BlockSize => 16;
 
     /// <inheritdoc />
-    protected override BufferedBlockCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv)
+    protected override IBufferedCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv)
     {
         var cipher = new BufferedBlockCipher(new CbcBlockCipher(new AesEngine()));
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
