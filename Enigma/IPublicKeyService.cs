@@ -46,8 +46,4 @@ public interface IPublicKeyService
     /// <param name="publicKey">Public key</param>
     /// <returns>True if signature is valid, otherwise false</returns>
     bool Verify(byte[] data, byte[] signature, AsymmetricKeyParameter publicKey);
-    
-    // void SaveKey(AsymmetricKeyParameter key, Stream output);
-    // void SavePrivateKey(AsymmetricKeyParameter PrivateKeyFactory, Stream output, string password, string algorithm);
-    // AsymmetricKeyParameter LoadKey(Stream input, string password);
 }

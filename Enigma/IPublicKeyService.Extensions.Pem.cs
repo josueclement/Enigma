@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using Enigma.PublicKey;
+﻿using Enigma.PublicKey;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Security;
+using System.IO;
+using System.Text;
+using System;
 
 namespace Enigma;
 
