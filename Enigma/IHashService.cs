@@ -19,6 +19,5 @@ public interface IHashService
     /// Asynchronously hash stream
     /// </summary>
     /// <param name="input">Input stream</param>
-    // TODO: Cancellation token
     Task<byte[]> HashAsync(Stream input);
 }

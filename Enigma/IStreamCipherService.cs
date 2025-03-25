@@ -15,7 +15,6 @@ public interface IStreamCipherService
     /// <param name="output">Output stream</param>
     /// <param name="key">Key</param>
     /// <param name="nonce">Nonce</param>
-    // TODO: Cancellation token
     Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce);
     
     /// <summary>
@@ -25,6 +24,5 @@ public interface IStreamCipherService
     /// <param name="output">Output stream</param>
     /// <param name="key">Key</param>
     /// <param name="nonce">Nonce</param>
-    // TODO: Cancellation token
     Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce);
 }

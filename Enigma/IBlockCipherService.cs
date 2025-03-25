@@ -16,7 +16,6 @@ public interface IBlockCipherService
     /// <param name="key">Key</param>
     /// <param name="iv">IV</param>
     /// <param name="padding">Padding</param>
-    // TODO: Cancellation token
     Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] iv, IPaddingService padding);
     
     /// <summary>
@@ -27,6 +26,5 @@ public interface IBlockCipherService
     /// <param name="key">Key</param>
     /// <param name="iv">IV</param>
     /// <param name="padding">Padding</param>
-    // TODO: Cancellation token
     Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] iv, IPaddingService padding);
 }
