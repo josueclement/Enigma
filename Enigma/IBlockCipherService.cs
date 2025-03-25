@@ -9,6 +9,13 @@ namespace Enigma;
 public interface IBlockCipherService
 {
     /// <summary>
+    /// Generate random key and IV
+    /// </summary>
+    /// <param name="key">Key</param>
+    /// <param name="iv">IV</param>
+    void GenerateKeyIv(out byte[] key, out byte[] iv);
+    
+    /// <summary>
     /// Asynchronously encrypt stream
     /// </summary>
     /// <param name="input">Input stream</param>

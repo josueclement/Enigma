@@ -1,3 +1,4 @@
+using Enigma.Utils;
 using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
@@ -32,6 +33,13 @@ public abstract class StreamCipherServiceBase : IStreamCipherService
     /// <param name="nonce">Nonce</param>
     /// <returns>Cipher</returns>
     protected abstract IStreamCipher BuildCipher(bool forEncryption, byte[] key, byte[] nonce);
+    
+    /// <inheritdoc />
+    public void GenerateKeyNonce(out byte[] key, out byte[] nonce)
+    {
+        key = RandomUtils.GenerateRandomBytes(KeySize);
+        nonce = RandomUtils.GenerateRandomBytes(NonceSize);
+    }
 
     /// <inheritdoc />
     public async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce)

@@ -9,6 +9,13 @@ namespace Enigma;
 public interface IStreamCipherService
 {
     /// <summary>
+    /// Generate random key and nonce
+    /// </summary>
+    /// <param name="key">Key</param>
+    /// <param name="nonce">Nonce</param>
+    void GenerateKeyNonce(out byte[] key, out byte[] nonce);
+    
+    /// <summary>
     /// Asynchronously encrypt stream
     /// </summary>
     /// <param name="input">Input stream</param>

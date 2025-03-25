@@ -41,11 +41,7 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
     /// <returns>Cipher</returns>
     protected abstract IBufferedCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv);
 
-    /// <summary>
-    /// Generate random key and IV
-    /// </summary>
-    /// <param name="key">Key</param>
-    /// <param name="iv">IV</param>
+    /// <inheritdoc />
     public void GenerateKeyIv(out byte[] key, out byte[] iv)
     {
         key = RandomUtils.GenerateRandomBytes(KeySize);
