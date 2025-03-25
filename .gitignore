@@ -363,4 +363,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Carbon/Carbon.xml
+
+Enigma/Enigma.xml
