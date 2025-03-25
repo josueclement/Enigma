@@ -13,12 +13,12 @@ public class Md5ServiceTests
     [Fact]
     public async Task HashStreamTest()
     {
-        var hasher = new Md5Service();
+        var srvc = new Md5Service();
         var hex = new HexService();
         
         var expectedHash = hex.Decode(await File.ReadAllTextAsync(@"Hash\md5.csv.txt", Encoding.ASCII));
         await using var input = new FileStream(@"Hash\md5.csv", FileMode.Open, FileAccess.Read);
-        var hash = await hasher.HashAsync(input);
+        var hash = await srvc.HashAsync(input);
         Assert.Equal(expectedHash, hash);
     }
 
@@ -26,8 +26,8 @@ public class Md5ServiceTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvTest(byte[] data, byte[] expectedHash)
     {
-        var hasher = new Md5Service();
-        var hash = hasher.Hash(data);
+        var srvc = new Md5Service();
+        var hash = srvc.Hash(data);
         Assert.Equal(expectedHash, hash);
     }
     
