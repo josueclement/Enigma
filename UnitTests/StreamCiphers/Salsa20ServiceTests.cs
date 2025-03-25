@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace UnitTests.StreamCiphers;
 
-public class ChaCha20ServiceTests
+public class Salsa20ServiceTests
 {
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvEncryptTest(byte[] key, byte[] nonce, byte[] data, byte[] encrypted)
     {
-        var srvc = new ChaCha20Service();
+        var srvc = new Salsa20Service();
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
 
@@ -25,7 +25,7 @@ public class ChaCha20ServiceTests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvDecryptTest(byte[] key, byte[] nonce, byte[] data, byte[] encrypted)
     {
-        var srvc = new ChaCha20Service();
+        var srvc = new Salsa20Service();
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();
 
@@ -37,7 +37,7 @@ public class ChaCha20ServiceTests
     {
         var hex = new HexService();
         
-        return File.ReadAllLines(@"StreamCiphers\chacha20.csv")
+        return File.ReadAllLines(@"StreamCiphers\salsa20.csv")
             .Skip(1)
             .Select(line =>
             {
