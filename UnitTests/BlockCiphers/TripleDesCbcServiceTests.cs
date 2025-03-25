@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace UnitTests.BlockCiphers;
 
-public class AesCbcServiceTests
+public class TripleDesCbcServiceTests
 {
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvEncryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
-        var srvc = new AesCbcService();
+        var srvc = new TripleDesCbcService();
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
 
@@ -26,7 +26,7 @@ public class AesCbcServiceTests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvDecryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
-        var srvc = new AesCbcService();
+        var srvc = new TripleDesCbcService();
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();
 
@@ -38,7 +38,7 @@ public class AesCbcServiceTests
     {
         var hex = new HexService();
         
-        return File.ReadAllLines(@"BlockCiphers\aes-cbc.csv")
+        return File.ReadAllLines(@"BlockCiphers\tripledes-cbc.csv")
             .Skip(1)
             .Select(line =>
             {
