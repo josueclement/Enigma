@@ -1,5 +1,5 @@
-﻿using System;
-using Org.BouncyCastle.Crypto.Paddings;
+﻿using Org.BouncyCastle.Crypto.Paddings;
+using System;
 
 namespace Enigma.Padding;
 

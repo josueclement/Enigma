@@ -1,6 +1,6 @@
+using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto;
 
 namespace Enigma.Hash;
 
@@ -9,11 +9,13 @@ namespace Enigma.Hash;
 /// </summary>
 public abstract class HashServiceBase : IHashService
 {
+    // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
     
     /// <summary>
     /// Gets hash size
     /// </summary>
+    // ReSharper disable once MemberCanBeProtected.Global
     public abstract int HashSize { get; }
     
     /// <summary>

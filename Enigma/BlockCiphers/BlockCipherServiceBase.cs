@@ -1,8 +1,8 @@
-using System;
 using Enigma.Utils;
 using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
+using System;
 
 namespace Enigma.BlockCiphers;
 
@@ -11,6 +11,7 @@ namespace Enigma.BlockCiphers;
 /// </summary>
 public abstract class BlockCipherServiceBase : IBlockCipherService
 {
+    // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
     
     /// <summary>
@@ -87,9 +88,9 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
             }
             else if (bytesRead > 0)
             {
-                byte[] smallBuffer = new byte[bytesRead];
+                var smallBuffer = new byte[bytesRead];
                 Array.Copy(buffer, 0, smallBuffer, 0, bytesRead);
-                byte[] padData = padding.Pad(smallBuffer, BlockSize);
+                var padData = padding.Pad(smallBuffer, BlockSize);
                 cipher.ProcessBytes(padData, enc, 0);
                 await output.WriteAsync(enc, 0, padData.Length).ConfigureAwait(false);
                 padDone = true;
@@ -116,8 +117,8 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
     {
         byte[]? backup = null;
         int bytesRead;
-        byte[] buffer = new byte[BUFFER_SIZE];
-        byte[] dec = new byte[BUFFER_SIZE];
+        var buffer = new byte[BUFFER_SIZE];
+        var dec = new byte[BUFFER_SIZE];
 
         do
         {
@@ -140,10 +141,10 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
                 else
                 {
                     dec = new byte[bytesRead];
-                    byte[] smallBuffer = new byte[bytesRead];
+                    var smallBuffer = new byte[bytesRead];
                     Array.Copy(buffer, 0, smallBuffer, 0, bytesRead);
                     cipher.ProcessBytes(smallBuffer, dec, 0);
-                    byte[] unpadData = padding.Unpad(dec, BlockSize);
+                    var unpadData = padding.Unpad(dec, BlockSize);
                     await output.WriteAsync(unpadData, 0, unpadData.Length).ConfigureAwait(false);
                 }
 
@@ -153,7 +154,7 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
             {
                 if (backup != null)
                 {
-                    byte[] unpadData = padding.Unpad(backup, BlockSize);
+                    var unpadData = padding.Unpad(backup, BlockSize);
                     await output.WriteAsync(unpadData, 0, unpadData.Length).ConfigureAwait(false);
                 }
             }

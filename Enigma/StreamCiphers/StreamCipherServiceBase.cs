@@ -1,6 +1,6 @@
+using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto;
 
 namespace Enigma.StreamCiphers;
 
@@ -9,6 +9,7 @@ namespace Enigma.StreamCiphers;
 /// </summary>
 public abstract class StreamCipherServiceBase : IStreamCipherService
 {
+    // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
     
     /// <summary>
