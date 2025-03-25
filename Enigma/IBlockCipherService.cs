@@ -9,6 +9,21 @@ namespace Enigma;
 public interface IBlockCipherService
 {
     /// <summary>
+    /// Key size
+    /// </summary>
+    int KeySize { get; }
+    
+    /// <summary>
+    /// IV size
+    /// </summary>
+    int IvSize { get; }
+    
+    /// <summary>
+    /// Block size
+    /// </summary>
+    int BlockSize { get; }
+    
+    /// <summary>
     /// Generate random key and IV
     /// </summary>
     /// <param name="key">Key</param>

@@ -9,6 +9,11 @@ namespace Enigma;
 public interface IHashService
 {
     /// <summary>
+    /// Hash size
+    /// </summary>
+    int HashSize { get; }
+    
+    /// <summary>
     /// Hash data
     /// </summary>
     /// <param name="data">Data to hash</param>

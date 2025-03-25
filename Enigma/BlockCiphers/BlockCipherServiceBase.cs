@@ -14,22 +14,13 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
     
-    /// <summary>
-    /// Gets key size
-    /// </summary>
-    // ReSharper disable once MemberCanBeProtected.Global
+    /// <inheritdoc />
     public abstract int KeySize { get; }
     
-    /// <summary>
-    /// Gets IV size
-    /// </summary>
-    // ReSharper disable once MemberCanBeProtected.Global
+    /// <inheritdoc />
     public abstract int IvSize { get; }
     
-    /// <summary>
-    /// Gets block size
-    /// </summary>
-    // ReSharper disable once MemberCanBeProtected.Global
+    /// <inheritdoc />
     public abstract int BlockSize { get; }
     
     /// <summary>

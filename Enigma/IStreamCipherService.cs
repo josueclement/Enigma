@@ -9,6 +9,16 @@ namespace Enigma;
 public interface IStreamCipherService
 {
     /// <summary>
+    /// Key size
+    /// </summary>
+    int KeySize { get; }
+    
+    /// <summary>
+    /// Nonce size
+    /// </summary>
+    int NonceSize { get; }
+    
+    /// <summary>
     /// Generate random key and nonce
     /// </summary>
     /// <param name="key">Key</param>

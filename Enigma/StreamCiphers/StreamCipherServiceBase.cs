@@ -13,16 +13,10 @@ public abstract class StreamCipherServiceBase : IStreamCipherService
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
     
-    /// <summary>
-    /// Gets key size
-    /// </summary>
-    // ReSharper disable once MemberCanBeProtected.Global
+    /// <inheritdoc />
     public abstract int KeySize { get; }
     
-    /// <summary>
-    /// Gets nonce size
-    /// </summary>
-    // ReSharper disable once MemberCanBeProtected.Global
+    /// <inheritdoc />
     public abstract int NonceSize { get; }
     
     /// <summary>

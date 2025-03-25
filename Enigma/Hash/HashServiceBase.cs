@@ -12,10 +12,7 @@ public abstract class HashServiceBase : IHashService
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
     
-    /// <summary>
-    /// Gets hash size
-    /// </summary>
-    // ReSharper disable once MemberCanBeProtected.Global
+    /// <inheritdoc />
     public abstract int HashSize { get; }
     
     /// <summary>
