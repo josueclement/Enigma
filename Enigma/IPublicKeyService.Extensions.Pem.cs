@@ -76,7 +76,10 @@ public static class IPublicKeyServicePemExtensions
 
         if (obj is AsymmetricCipherKeyPair keyPair)
             return keyPair.Private;
+        if (obj is AsymmetricKeyParameter key && key.IsPrivate)
+            return key;
         
-        throw new InvalidOperationException("No AsymmetricCipherKeyPair found in Pem");
+        throw new InvalidOperationException("No private key found in Pem");
     }
+    
 }
