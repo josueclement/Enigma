@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using Enigma;
-using Enigma.DataEncoding;
+﻿using Enigma.DataEncoding;
+using Enigma.Extensions;
 using Enigma.KDF;
 using Enigma.PublicKey;
+using System.IO;
+using System.Text;
+using System;
 
 static class Program
 {

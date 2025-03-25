@@ -1,8 +1,7 @@
-﻿using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using Enigma;
+﻿using Enigma.Extensions;
 using Enigma.PublicKey;
+using System.IO;
+using System.Text;
 
 namespace UnitTests.PublicKey;
 
