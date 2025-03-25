@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace UnitTests.Hash;
 
-public class Md5ServiceTests
+public class Sha512ServiceTests
 {
     [Fact]
     public async Task HashStreamTest()
     {
-        var srvc = new Md5Service();
+        var srvc = new Sha512Service();
         var hex = new HexService();
         
-        var expectedHash = hex.Decode(await File.ReadAllTextAsync(@"Hash\md5.csv.txt", Encoding.ASCII));
-        await using var input = new FileStream(@"Hash\md5.csv", FileMode.Open, FileAccess.Read);
+        var expectedHash = hex.Decode(await File.ReadAllTextAsync(@"Hash\sha512.csv.txt", Encoding.ASCII));
+        await using var input = new FileStream(@"Hash\sha512.csv", FileMode.Open, FileAccess.Read);
         var hash = await srvc.HashAsync(input);
         Assert.Equal(expectedHash, hash);
     }
@@ -26,7 +26,7 @@ public class Md5ServiceTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvTest(byte[] data, byte[] expectedHash)
     {
-        var srvc = new Md5Service();
+        var srvc = new Sha512Service();
         var hash = srvc.Hash(data);
         Assert.Equal(expectedHash, hash);
     }
@@ -35,7 +35,7 @@ public class Md5ServiceTests
     {
         var hex = new HexService();
         
-        return File.ReadAllLines(@"Hash\md5.csv")
+        return File.ReadAllLines(@"Hash\sha512.csv")
             .Skip(1)
             .Select(line =>
             {
