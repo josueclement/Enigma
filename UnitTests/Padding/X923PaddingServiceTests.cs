@@ -6,13 +6,13 @@ using System.Linq;
 
 namespace UnitTests.Padding;
 
-public class Pkcs7PaddingServiceTests
+public class X923PaddingServiceTests
 {
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public void CsvPadTest(byte[] data, byte[] paddedData)
     {
-        var srvc = new Pkcs7PaddingService();
+        var srvc = new X923PaddingService();
         var padded = srvc.Pad(data, 16);
         Assert.Equal(paddedData, padded);
     }
@@ -21,7 +21,7 @@ public class Pkcs7PaddingServiceTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvUnpadTest(byte[] data, byte[] paddedData)
     {
-        var srvc = new Pkcs7PaddingService();
+        var srvc = new X923PaddingService();
         var unpaddedData = srvc.Unpad(paddedData, 16);
         Assert.Equal(data, unpaddedData);
     }
@@ -30,7 +30,7 @@ public class Pkcs7PaddingServiceTests
     {
         var hex = new HexService();
         
-        return File.ReadAllLines(@"Padding\pkcs7.csv")
+        return File.ReadAllLines(@"Padding\x923.csv")
             .Skip(1)
             .Select(line =>
             {

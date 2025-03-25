@@ -70,7 +70,7 @@
       <None Update="BlockCiphers\tripledes-cbc.csv">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Padding\ansix923.csv">
+      <None Update="Padding\x923.csv">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Padding\iso7816.csv">
