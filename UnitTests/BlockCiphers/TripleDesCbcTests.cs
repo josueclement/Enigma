@@ -1,8 +1,6 @@
 ﻿using Enigma.DataEncoding;
 using Enigma.BlockCiphers;
 using Enigma.Padding;
-using Enigma;
-using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Parameters;
 using System.Collections.Generic;
 using System.IO;
@@ -13,14 +11,12 @@ namespace UnitTests.BlockCiphers;
 
 public class TripleDesCbcTests
 {
-    private IBlockCipherService GetService()
-        => new BlockCipherServiceFactory().CreateCbcBlockCipherService(() => new DesEdeEngine());
-    
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvEncryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
-        var service = GetService();
+        var engineFactory = new BlockCipherEngineFactory();
+        var service = new BlockCipherServiceFactory().CreateCbcBlockCipherService(engineFactory.CreateTripleDesEngine);
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
         var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
@@ -36,7 +32,8 @@ public class TripleDesCbcTests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvDecryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
-        var service = GetService();
+        var engineFactory = new BlockCipherEngineFactory();
+        var service = new BlockCipherServiceFactory().CreateCbcBlockCipherService(engineFactory.CreateTripleDesEngine);
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
         var padding = new PaddingServiceFactory().CreateNoPaddingService();
         

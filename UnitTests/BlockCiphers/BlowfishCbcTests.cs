@@ -1,8 +1,6 @@
 ﻿using Enigma.BlockCiphers;
 using Enigma.DataEncoding;
 using Enigma.Padding;
-using Enigma;
-using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Parameters;
 using System.Collections.Generic;
 using System.IO;
@@ -13,14 +11,12 @@ namespace UnitTests.BlockCiphers;
 
 public class BlowfishCbcTests
 {
-    private IBlockCipherService GetService()
-        => new BlockCipherServiceFactory().CreateCbcBlockCipherService(() => new BlowfishEngine());
-    
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvEncryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
-        var service = GetService();
+        var engineFactory = new BlockCipherEngineFactory();
+        var service = new BlockCipherServiceFactory().CreateCbcBlockCipherService(engineFactory.CreateBlowfishEngine);
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
         var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
@@ -36,7 +32,8 @@ public class BlowfishCbcTests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvDecryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
-        var service = GetService();
+        var engineFactory = new BlockCipherEngineFactory();
+        var service = new BlockCipherServiceFactory().CreateCbcBlockCipherService(engineFactory.CreateBlowfishEngine);
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
         var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
