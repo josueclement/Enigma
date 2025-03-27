@@ -3,12 +3,12 @@ using System.IO;
 using System.Threading.Tasks;
 using Org.BouncyCastle.Crypto;
 
-namespace Enigma;
+namespace Enigma.Hash;
 
 /// <summary>
 /// Hash service
 /// </summary>
-public class HashService
+public class HashService : IHashService
 {
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
@@ -23,11 +23,7 @@ public class HashService
         _digestFactory = digestFactory;
     }
     
-    /// <summary>
-    /// Hash data
-    /// </summary>
-    /// <param name="data">Data to hash</param>
-    /// <returns>Hash</returns>
+    /// <inheritdoc />
     public byte[] Hash(byte[] data)
     {
         var digest = _digestFactory();
@@ -39,11 +35,7 @@ public class HashService
         return hash;
     }
 
-    /// <summary>
-    /// Asynchronously hash input stream data
-    /// </summary>
-    /// <param name="input">Input stream</param>
-    /// <returns>Hash</returns>
+    /// <inheritdoc />
     public async Task<byte[]> HashAsync(Stream input)
     {
         var digest = _digestFactory();
