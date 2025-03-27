@@ -10,29 +10,29 @@ namespace Enigma.BlockCiphers;
 public interface IBlockCipherServiceFactory
 {
     /// <summary>
-    /// Create ECB block cipher service
+    /// Create a block cipher service with Electronic Code Book (ECB) mode
     /// </summary>
-    /// <param name="cipherFactory">Cipher factory</param>
-    IBlockCipherService CreateEcbBlockCipherService(Func<IBlockCipher> cipherFactory);
+    /// <param name="engineFactory">Engine factory</param>
+    IBlockCipherService CreateEcbBlockCipherService(Func<IBlockCipher> engineFactory);
     
     /// <summary>
-    /// Create CBC block cipher service
+    /// Create a block cipher service with Cipher-Block-Chaining (CBC) mode
     /// </summary>
-    /// <param name="cipherFactory">Cipher factory</param>
-    IBlockCipherService CreateCbcBlockCipherService(Func<IBlockCipher> cipherFactory);
+    /// <param name="engineFactory">Engine factory</param>
+    IBlockCipherService CreateCbcBlockCipherService(Func<IBlockCipher> engineFactory);
     
     /// <summary>
-    /// Create CTR block cipher service
+    /// Create a block cipher service with Segmented Integer Counter (SIC) mode
     /// </summary>
-    /// <param name="cipherFactory">Cipher factory</param>
-    IBlockCipherService CreateCtrBlockCipherService(Func<IBlockCipher> cipherFactory);
+    /// <param name="engineFactory">Engine factory</param>
+    IBlockCipherService CreateSicBlockCipherService(Func<IBlockCipher> engineFactory);
     
     /// <summary>
-    /// Create a block cipher service with CFB mode
+    /// Create a block cipher service with Cipher-FeedBack (CFB) mode
     /// </summary>
-    /// <param name="cipherFactory">Cipher factory</param>
+    /// <param name="engineFactory">Engine factory</param>
     /// <param name="bitBlockSize">Bit block size</param>
-    IBlockCipherService CreateCfbBlockCipherService(Func<IBlockCipher> cipherFactory, int bitBlockSize);
+    IBlockCipherService CreateCfbBlockCipherService(Func<IBlockCipher> engineFactory, int bitBlockSize);
 }
 
 /// <summary>
@@ -41,18 +41,18 @@ public interface IBlockCipherServiceFactory
 public class BlockCipherServiceFactory : IBlockCipherServiceFactory
 {
     /// <inheritdoc />
-    public IBlockCipherService CreateEcbBlockCipherService(Func<IBlockCipher> cipherFactory)
-        => new BlockCipherService(() => new BufferedBlockCipher(new EcbBlockCipher(cipherFactory())));
+    public IBlockCipherService CreateEcbBlockCipherService(Func<IBlockCipher> engineFactory)
+        => new BlockCipherService(() => new BufferedBlockCipher(new EcbBlockCipher(engineFactory())));
 
     /// <inheritdoc />
-    public IBlockCipherService CreateCbcBlockCipherService(Func<IBlockCipher> cipherFactory)
-        => new BlockCipherService(() => new BufferedBlockCipher(new CbcBlockCipher(cipherFactory())));
+    public IBlockCipherService CreateCbcBlockCipherService(Func<IBlockCipher> engineFactory)
+        => new BlockCipherService(() => new BufferedBlockCipher(new CbcBlockCipher(engineFactory())));
 
     /// <inheritdoc />
-    public IBlockCipherService CreateCtrBlockCipherService(Func<IBlockCipher> cipherFactory)
-        => new BlockCipherService(() => new BufferedBlockCipher(new SicBlockCipher(cipherFactory())));
+    public IBlockCipherService CreateSicBlockCipherService(Func<IBlockCipher> engineFactory)
+        => new BlockCipherService(() => new BufferedBlockCipher(new SicBlockCipher(engineFactory())));
 
     /// <inheritdoc />
-    public IBlockCipherService CreateCfbBlockCipherService(Func<IBlockCipher> cipherFactory, int bitBlockSize = 128)
-        => new BlockCipherService(() => new BufferedBlockCipher(new CfbBlockCipher(cipherFactory(), bitBlockSize)));
+    public IBlockCipherService CreateCfbBlockCipherService(Func<IBlockCipher> engineFactory, int bitBlockSize = 128)
+        => new BlockCipherService(() => new BufferedBlockCipher(new CfbBlockCipher(engineFactory(), bitBlockSize)));
 }
