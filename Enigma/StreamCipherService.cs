@@ -13,6 +13,14 @@ public class StreamCipherService
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
     
+    /// <summary>
+    /// Asynchronously encrypt
+    /// </summary>
+    /// <param name="input">Input stream</param>
+    /// <param name="output">Output stream</param>
+    /// <param name="cipher">Cipher</param>
+    /// <param name="key">Key</param>
+    /// <param name="nonce">Nonce</param>
     public async Task EncryptAsync(Stream input, Stream output, IStreamCipher cipher, byte[] key, byte[] nonce)
     {
         var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
@@ -35,6 +43,14 @@ public class StreamCipherService
         } while (bytesRead == BUFFER_SIZE);
     }
 
+    /// <summary>
+    /// Asynchronously decrypt
+    /// </summary>
+    /// <param name="input">Input stream</param>
+    /// <param name="output">Output stream</param>
+    /// <param name="cipher">Cipher</param>
+    /// <param name="key">Key</param>
+    /// <param name="nonce">Nonce</param>
     public async Task DecryptAsync(Stream input, Stream output, IStreamCipher cipher, byte[] key, byte[] nonce)
     {
         var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
