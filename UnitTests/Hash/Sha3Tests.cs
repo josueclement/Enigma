@@ -14,12 +14,12 @@ public class Sha3Tests
     [Fact]
     public async Task HashStreamTest()
     {
-        var service = new HashService();
+        var service = new HashService(() => new Sha3Digest(512));
         var hex = new HexService();
         
         var expectedHash = hex.Decode(await File.ReadAllTextAsync(@"Hash\sha3.csv.txt", Encoding.ASCII));
         await using var input = new FileStream(@"Hash\sha3.csv", FileMode.Open, FileAccess.Read);
-        var hash = await service.HashAsync(input, new Sha3Digest(512));
+        var hash = await service.HashAsync(input);
         
         Assert.Equal(expectedHash, hash);
     }
@@ -28,9 +28,9 @@ public class Sha3Tests
     [MemberData(nameof(GetCsvValues))]
     public void CsvTest(byte[] data, byte[] expectedHash)
     {
-        var service = new HashService();
+        var service = new HashService(() => new Sha3Digest(512));
         
-        var hash = service.Hash(data, new Sha3Digest(512));
+        var hash = service.Hash(data);
         
         Assert.Equal(expectedHash, hash);
     }

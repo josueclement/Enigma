@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Org.BouncyCastle.Crypto;
 
@@ -11,15 +12,25 @@ public class HashService
 {
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
+
+    private readonly Func<IDigest> _digestFactory;
+    
+    /// <summary>
+    /// Constructor for <see cref="HashService"/>
+    /// </summary>
+    public HashService(Func<IDigest> digestFactory)
+    {
+        _digestFactory = digestFactory;
+    }
     
     /// <summary>
     /// Hash data
     /// </summary>
     /// <param name="data">Data to hash</param>
-    /// <param name="digest">Digest algorithm</param>
     /// <returns>Hash</returns>
-    public byte[] Hash(byte[] data, IDigest digest)
+    public byte[] Hash(byte[] data)
     {
+        var digest = _digestFactory();
         var hash = new byte[digest.GetDigestSize()];
 
         digest.BlockUpdate(data, 0, data.Length);
@@ -32,10 +43,10 @@ public class HashService
     /// Asynchronously hash input stream data
     /// </summary>
     /// <param name="input">Input stream</param>
-    /// <param name="digest">Digest algorithm</param>
     /// <returns>Hash</returns>
-    public async Task<byte[]> HashAsync(Stream input, IDigest digest)
+    public async Task<byte[]> HashAsync(Stream input)
     {
+        var digest = _digestFactory();
         var hash = new byte[digest.GetDigestSize()];
 
         int bytesRead;
