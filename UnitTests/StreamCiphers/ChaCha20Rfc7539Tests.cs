@@ -1,5 +1,6 @@
 ﻿using Enigma.DataEncoding;
-using Enigma.StreamCiphers;
+using Enigma;
+using Org.BouncyCastle.Crypto.Engines;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace UnitTests.StreamCiphers;
 
-public class ChaCha20ServiceTests
+public class ChaCha20Rfc7539Tests
 {
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvEncryptTest(byte[] key, byte[] nonce, byte[] data, byte[] encrypted)
     {
-        var srvc = new ChaCha20Service();
+        var service = new StreamCipherService();
+        
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
 
-        await srvc.EncryptAsync(msInput, msOutput, key, nonce);
+        await service.EncryptAsync(msInput, msOutput, new ChaCha7539Engine(), key, nonce);
+        
         Assert.Equal(encrypted, msOutput.ToArray());
     }
     
@@ -25,11 +28,13 @@ public class ChaCha20ServiceTests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvDecryptTest(byte[] key, byte[] nonce, byte[] data, byte[] encrypted)
     {
-        var srvc = new ChaCha20Service();
+        var service = new StreamCipherService();
+        
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();
 
-        await srvc.DecryptAsync(msInput, msOutput, key, nonce);
+        await service.DecryptAsync(msInput, msOutput, new ChaCha7539Engine(), key, nonce);
+        
         Assert.Equal(data, msOutput.ToArray()); 
     }
     
@@ -37,7 +42,7 @@ public class ChaCha20ServiceTests
     {
         var hex = new HexService();
         
-        return File.ReadAllLines(@"StreamCiphers\chacha20.csv")
+        return File.ReadAllLines(@"StreamCiphers\chacha20rfc7539.csv")
             .Skip(1)
             .Select(line =>
             {

@@ -1,23 +1,26 @@
 ﻿using Enigma.DataEncoding;
-using Enigma.StreamCiphers;
+using Enigma;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Org.BouncyCastle.Crypto.Engines;
 
 namespace UnitTests.StreamCiphers;
 
-public class Salsa20ServiceTests
+public class Salsa20Tests
 {
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvEncryptTest(byte[] key, byte[] nonce, byte[] data, byte[] encrypted)
     {
-        var srvc = new Salsa20Service();
+        var service = new StreamCipherService();
+        
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
 
-        await srvc.EncryptAsync(msInput, msOutput, key, nonce);
+        await service.EncryptAsync(msInput, msOutput, new Salsa20Engine(), key, nonce);
+        
         Assert.Equal(encrypted, msOutput.ToArray());
     }
     
@@ -25,11 +28,13 @@ public class Salsa20ServiceTests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvDecryptTest(byte[] key, byte[] nonce, byte[] data, byte[] encrypted)
     {
-        var srvc = new Salsa20Service();
+        var service = new StreamCipherService();
+        
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();
 
-        await srvc.DecryptAsync(msInput, msOutput, key, nonce);
+        await service.DecryptAsync(msInput, msOutput, new Salsa20Engine(), key, nonce);
+        
         Assert.Equal(data, msOutput.ToArray()); 
     }
     
