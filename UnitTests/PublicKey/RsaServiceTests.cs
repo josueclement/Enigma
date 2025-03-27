@@ -1,10 +1,5 @@
 ﻿using Enigma.Extensions;
 using Enigma.PublicKey;
-using Org.BouncyCastle.Crypto.Encodings;
-using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.Crypto.Generators;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Security;
 using System.IO;
 using System.Text;
 
@@ -12,14 +7,10 @@ namespace UnitTests.PublicKey;
 
 public class RsaServiceTests
 {
-    IAsymmetricBlockCipher GetCipher() => new Pkcs1Encoding(new RsaEngine());
-    IAsymmetricCipherKeyPairGenerator GetKeyPairGenerator() => new RsaKeyPairGenerator();
-    ISigner GetSigner() => SignerUtilities.GetSigner("SHA256withRSA");
-    
     [Fact]
     public void LoadPublicKey()
     {
-        var service = new PublicKeyService(GetCipher, GetKeyPairGenerator, GetSigner);
+        var service = new PublicKeyServiceFactory().CreateRsaPublicKeyService();
 
         using var input = new FileStream(@"PublicKey\pub_key1.pem", FileMode.Open, FileAccess.Read);
         var key = service.LoadKey(input);
@@ -30,7 +21,7 @@ public class RsaServiceTests
     [Fact]
     public void LoadPrivateKey()
     {
-        var service = new PublicKeyService(GetCipher, GetKeyPairGenerator, GetSigner);
+        var service = new PublicKeyServiceFactory().CreateRsaPublicKeyService();
         
         using var input = new FileStream(@"PublicKey\pk_key1.pem", FileMode.Open, FileAccess.Read);
         var key = service.LoadPrivateKey(input, "test1234");
@@ -41,7 +32,7 @@ public class RsaServiceTests
     [Fact]
     public void SignVerify()
     {
-        var service = new PublicKeyService(GetCipher, GetKeyPairGenerator, GetSigner);
+        var service = new PublicKeyServiceFactory().CreateRsaPublicKeyService();
         
         using var inputPrivate = new FileStream(@"PublicKey\pk_key1.pem", FileMode.Open, FileAccess.Read);
         var privateKey = service.LoadPrivateKey(inputPrivate, "test1234");
@@ -57,7 +48,7 @@ public class RsaServiceTests
     [Fact]
     public void SignVerifyBadMessage()
     {
-        var service = new PublicKeyService(GetCipher, GetKeyPairGenerator, GetSigner);
+        var service = new PublicKeyServiceFactory().CreateRsaPublicKeyService();
         
         using var inputPrivate = new FileStream(@"PublicKey\pk_key1.pem", FileMode.Open, FileAccess.Read);
         var privateKey = service.LoadPrivateKey(inputPrivate, "test1234");
