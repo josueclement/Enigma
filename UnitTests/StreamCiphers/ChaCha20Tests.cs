@@ -1,7 +1,5 @@
 ﻿using Enigma.DataEncoding;
 using Enigma.StreamCiphers;
-using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.Crypto;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,14 +9,11 @@ namespace UnitTests.StreamCiphers;
 
 public class ChaCha20Tests
 {
-    private IStreamCipher GetCipher()
-        => new ChaChaEngine();
-    
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvEncryptTest(byte[] key, byte[] nonce, byte[] data, byte[] encrypted)
     {
-        var service = new StreamCipherService(GetCipher);
+        var service = new StreamCipherServiceFactory().CreateChaCha20();
         
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
@@ -32,7 +27,7 @@ public class ChaCha20Tests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvDecryptTest(byte[] key, byte[] nonce, byte[] data, byte[] encrypted)
     {
-        var service = new StreamCipherService(GetCipher);
+        var service = new StreamCipherServiceFactory().CreateChaCha20();
         
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();
