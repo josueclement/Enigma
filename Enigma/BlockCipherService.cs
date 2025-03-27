@@ -1,59 +1,26 @@
-using Enigma.Utils;
-using Org.BouncyCastle.Crypto;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using System;
+using Org.BouncyCastle.Crypto;
 
-namespace Enigma.BlockCiphers;
+namespace Enigma;
 
 /// <summary>
-/// Block cipher service base class
+/// Block cipher service
 /// </summary>
-public abstract class BlockCipherServiceBase : IBlockCipherService
+public class BlockCipherService
 {
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
     
-    /// <inheritdoc />
-    public abstract int KeySize { get; }
-    
-    /// <inheritdoc />
-    public abstract int IvSize { get; }
-    
-    /// <inheritdoc />
-    public abstract int BlockSize { get; }
-    
     /// <summary>
-    /// Abstract cipher factory method
+    /// Asynchronously encrypt
     /// </summary>
-    /// <param name="forEncryption">True for encryption, False for decryption</param>
-    /// <param name="key">Key</param>
-    /// <param name="iv">IV</param>
-    /// <returns>Cipher</returns>
-    protected abstract IBufferedCipher BuildCipher(bool forEncryption, byte[] key, byte[] iv);
-
-    /// <inheritdoc />
-    public void GenerateKeyIv(out byte[] key, out byte[] iv)
-    {
-        key = RandomUtils.GenerateRandomBytes(KeySize);
-        iv = RandomUtils.GenerateRandomBytes(IvSize);
-    }
-
-    /// <inheritdoc />
-    public async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] iv, IPaddingService padding)
-    {
-        var cipher = BuildCipher(true, key, iv);
-        await EncryptStreamAsync(input, output, cipher, padding).ConfigureAwait(false);
-    }
-
-    /// <inheritdoc />
-    public async Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] iv, IPaddingService padding)
-    {
-        var cipher = BuildCipher(false, key, iv);
-        await DecryptStreamAsync(input, output, cipher, padding).ConfigureAwait(false);
-    }
-
-    private async Task EncryptStreamAsync(
+    /// <param name="input">Input stream</param>
+    /// <param name="output">Output stream</param>
+    /// <param name="cipher">Cipher</param>
+    /// <param name="padding">Padding</param>
+    public async Task EncryptAsync(
         Stream input,
         Stream output,
         IBufferedCipher cipher,
@@ -77,7 +44,7 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
             {
                 var smallBuffer = new byte[bytesRead];
                 Array.Copy(buffer, 0, smallBuffer, 0, bytesRead);
-                var padData = padding.Pad(smallBuffer, BlockSize);
+                var padData = padding.Pad(smallBuffer, cipher.GetBlockSize());
                 cipher.ProcessBytes(padData, enc, 0);
                 await output.WriteAsync(enc, 0, padData.Length).ConfigureAwait(false);
                 padDone = true;
@@ -90,13 +57,20 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
         if (!padDone)
         {
             buffer = [];
-            var padData = padding.Pad(buffer, BlockSize);
+            var padData = padding.Pad(buffer, cipher.GetBlockSize());
             cipher.ProcessBytes(padData, enc, 0);
             await output.WriteAsync(enc, 0, padData.Length).ConfigureAwait(false);
         } 
     }
 
-    private async Task DecryptStreamAsync(
+    /// <summary>
+    /// Asynchronously decrypt
+    /// </summary>
+    /// <param name="input">Input stream</param>
+    /// <param name="output">Output stream</param>
+    /// <param name="cipher">Cipher</param>
+    /// <param name="padding">Padding</param>
+    public async Task DecryptAsync(
         Stream input,
         Stream output,
         IBufferedCipher cipher,
@@ -131,7 +105,7 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
                     var smallBuffer = new byte[bytesRead];
                     Array.Copy(buffer, 0, smallBuffer, 0, bytesRead);
                     cipher.ProcessBytes(smallBuffer, dec, 0);
-                    var unpadData = padding.Unpad(dec, BlockSize);
+                    var unpadData = padding.Unpad(dec, cipher.GetBlockSize());
                     await output.WriteAsync(unpadData, 0, unpadData.Length).ConfigureAwait(false);
                 }
 
@@ -141,7 +115,7 @@ public abstract class BlockCipherServiceBase : IBlockCipherService
             {
                 if (backup != null)
                 {
-                    var unpadData = padding.Unpad(backup, BlockSize);
+                    var unpadData = padding.Unpad(backup, cipher.GetBlockSize());
                     await output.WriteAsync(unpadData, 0, unpadData.Length).ConfigureAwait(false);
                 }
             }

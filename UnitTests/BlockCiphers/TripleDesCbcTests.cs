@@ -1,6 +1,8 @@
-﻿using Enigma.BlockCiphers;
-using Enigma.DataEncoding;
+﻿using Enigma.DataEncoding;
+using Enigma.Extensions;
 using Enigma.Padding;
+using Enigma;
+using Org.BouncyCastle.Crypto.Engines;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,17 +10,19 @@ using System.Threading.Tasks;
 
 namespace UnitTests.BlockCiphers;
 
-public class DesCbcServiceTests
+public class TripleDesCbcTests
 {
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvEncryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
-        var srvc = new DesCbcService();
+        var service = new BlockCipherService();
+        
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
 
-        await srvc.EncryptAsync(msInput, msOutput, key, iv, new NoPaddingService());
+        await service.EncryptCbcAsync(msInput, msOutput, new DesEdeEngine(), key, iv, new NoPaddingService());
+        
         Assert.Equal(encrypted, msOutput.ToArray());
     }
     
@@ -26,11 +30,13 @@ public class DesCbcServiceTests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvDecryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
-        var srvc = new DesCbcService();
+        var service = new BlockCipherService();
+        
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();
 
-        await srvc.DecryptAsync(msInput, msOutput, key, iv, new NoPaddingService());
+        await service.DecryptCbcAsync(msInput, msOutput, new DesEdeEngine(), key, iv, new NoPaddingService());
+        
         Assert.Equal(data, msOutput.ToArray()); 
     }
     
@@ -38,7 +44,7 @@ public class DesCbcServiceTests
     {
         var hex = new HexService();
         
-        return File.ReadAllLines(@"BlockCiphers\des-cbc.csv")
+        return File.ReadAllLines(@"BlockCiphers\tripledes-cbc.csv")
             .Skip(1)
             .Select(line =>
             {
