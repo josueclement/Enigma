@@ -9,11 +9,9 @@ namespace Enigma.BlockCiphers;
 /// Block cipher service
 /// </summary>
 /// <param name="cipherFactory">Cipher factory</param>
-public class BlockCipherService(Func<IBufferedCipher> cipherFactory) : IBlockCipherService
+/// <param name="bufferSize">Buffer size</param>
+public class BlockCipherService(Func<IBufferedCipher> cipherFactory, int bufferSize = 4096) : IBlockCipherService
 {
-    // ReSharper disable once InconsistentNaming
-    private const int BUFFER_SIZE = 4096;
-    
     /// <inheritdoc />
     public async Task EncryptAsync(Stream input, Stream output, ICipherParameters cipherParameters, IPaddingService padding)
     {
@@ -22,14 +20,14 @@ public class BlockCipherService(Func<IBufferedCipher> cipherFactory) : IBlockCip
         
         var padDone = false;
         int bytesRead;
-        var buffer = new byte[BUFFER_SIZE];
-        var enc = new byte[BUFFER_SIZE];
+        var buffer = new byte[bufferSize];
+        var enc = new byte[bufferSize];
 
         do
         {
-            bytesRead = await input.ReadAsync(buffer, 0, BUFFER_SIZE).ConfigureAwait(false);
+            bytesRead = await input.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false);
 
-            if (bytesRead == BUFFER_SIZE)
+            if (bytesRead == bufferSize)
             {
                 cipher.ProcessBytes(buffer, enc, 0);
                 await output.WriteAsync(enc, 0, bytesRead).ConfigureAwait(false);
@@ -43,10 +41,7 @@ public class BlockCipherService(Func<IBufferedCipher> cipherFactory) : IBlockCip
                 await output.WriteAsync(enc, 0, padData.Length).ConfigureAwait(false);
                 padDone = true;
             }
-
-            // if (notifyProgression != null && bytesRead > 0)
-            //     notifyProgression(bytesRead);
-        } while (bytesRead == BUFFER_SIZE);
+        } while (bytesRead == bufferSize);
 
         if (!padDone)
         {
@@ -65,22 +60,22 @@ public class BlockCipherService(Func<IBufferedCipher> cipherFactory) : IBlockCip
         
         byte[]? backup = null;
         int bytesRead;
-        var buffer = new byte[BUFFER_SIZE];
-        var dec = new byte[BUFFER_SIZE];
+        var buffer = new byte[bufferSize];
+        var dec = new byte[bufferSize];
 
         do
         {
-            bytesRead = await input.ReadAsync(buffer, 0, BUFFER_SIZE).ConfigureAwait(false);
+            bytesRead = await input.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false);
 
             if (bytesRead > 0)
             {
-                if (backup != null)
+                if (backup is not null)
                 {
                     await output.WriteAsync(backup, 0, backup.Length).ConfigureAwait(false);
                     backup = null;
                 }
 
-                if (bytesRead == BUFFER_SIZE)
+                if (bytesRead == bufferSize)
                 {
                     cipher.ProcessBytes(buffer, dec, 0);
                     backup = new byte[bytesRead];
@@ -95,17 +90,15 @@ public class BlockCipherService(Func<IBufferedCipher> cipherFactory) : IBlockCip
                     var unpadData = padding.Unpad(dec, cipher.GetBlockSize());
                     await output.WriteAsync(unpadData, 0, unpadData.Length).ConfigureAwait(false);
                 }
-
-                // notifyProgression?.Invoke(bytesRead);
             }
             else
             {
-                if (backup != null)
+                if (backup is not null)
                 {
                     var unpadData = padding.Unpad(backup, cipher.GetBlockSize());
                     await output.WriteAsync(unpadData, 0, unpadData.Length).ConfigureAwait(false);
                 }
             }
-        } while (bytesRead == BUFFER_SIZE); 
+        } while (bytesRead == bufferSize); 
     }
 }

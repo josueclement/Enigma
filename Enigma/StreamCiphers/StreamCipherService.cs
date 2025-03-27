@@ -10,11 +10,9 @@ namespace Enigma.StreamCiphers;
 /// Stream cipher service
 /// </summary>
 /// <param name="cipherFactory">Cipher factory</param>
-public class StreamCipherService(Func<IStreamCipher> cipherFactory) : IStreamCipherService
+/// <param name="bufferSize">Buffer size</param>
+public class StreamCipherService(Func<IStreamCipher> cipherFactory, int bufferSize = 4096) : IStreamCipherService
 {
-    // ReSharper disable once InconsistentNaming
-    private const int BUFFER_SIZE = 4096;
-    
     /// <inheritdoc />
     public async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce)
     {
@@ -23,20 +21,18 @@ public class StreamCipherService(Func<IStreamCipher> cipherFactory) : IStreamCip
         cipher.Init(true, parameters);
         
         int bytesRead;
-        var buffer = new byte[BUFFER_SIZE];
-        var enc = new byte[BUFFER_SIZE];
+        var buffer = new byte[bufferSize];
+        var enc = new byte[bufferSize];
         do
         {
-            bytesRead = await input.ReadAsync(buffer, 0, BUFFER_SIZE).ConfigureAwait(false);
+            bytesRead = await input.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false);
             if (bytesRead > 0)
             {
                 cipher.ProcessBytes(buffer, 0, bytesRead, enc, 0);
                 await output.WriteAsync(enc, 0, bytesRead).ConfigureAwait(false);
-
-                // notifyProgression?.Invoke(bytesRead);
             }
 
-        } while (bytesRead == BUFFER_SIZE);
+        } while (bytesRead == bufferSize);
     }
 
     /// <inheritdoc />
@@ -47,19 +43,17 @@ public class StreamCipherService(Func<IStreamCipher> cipherFactory) : IStreamCip
         cipher.Init(false, parameters);
         
         int bytesRead;
-        var buffer = new byte[BUFFER_SIZE];
-        var dec = new byte[BUFFER_SIZE];
+        var buffer = new byte[bufferSize];
+        var dec = new byte[bufferSize];
         do
         {
-            bytesRead = await input.ReadAsync(buffer, 0, BUFFER_SIZE).ConfigureAwait(false);
+            bytesRead = await input.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false);
             if (bytesRead > 0)
             {
                 cipher.ProcessBytes(buffer, 0, bytesRead, dec, 0);
                 await output.WriteAsync(dec, 0, bytesRead).ConfigureAwait(false);
-
-                // notifyProgression?.Invoke(bytesRead);
             }
 
-        } while (bytesRead == BUFFER_SIZE);
+        } while (bytesRead == bufferSize);
     }
 }
