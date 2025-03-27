@@ -1,14 +1,14 @@
-﻿using Org.BouncyCastle.Crypto;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using System;
+using Org.BouncyCastle.Crypto;
 
-namespace Enigma;
+namespace Enigma.BlockCiphers;
 
 /// <summary>
 /// Block cipher service
 /// </summary>
-public class BlockCipherService
+public class BlockCipherService : IBlockCipherService
 {
     private readonly Func<IBufferedCipher> _cipherFactory;
 
@@ -23,18 +23,8 @@ public class BlockCipherService
         _cipherFactory = cipherFactory;
     }
     
-    /// <summary>
-    /// Asynchronously encrypt
-    /// </summary>
-    /// <param name="input">Input stream</param>
-    /// <param name="output">Output stream</param>
-    /// <param name="cipherParameters">Cipher parameters</param>
-    /// <param name="padding">Padding</param>
-    public async Task EncryptAsync(
-        Stream input,
-        Stream output,
-        ICipherParameters cipherParameters,
-        IPaddingService padding)
+    /// <inheritdoc />
+    public async Task EncryptAsync(Stream input, Stream output, ICipherParameters cipherParameters, IPaddingService padding)
     {
         var cipher = _cipherFactory();
         cipher.Init(forEncryption: true, cipherParameters);
@@ -76,18 +66,8 @@ public class BlockCipherService
         } 
     }
 
-    /// <summary>
-    /// Asynchronously decrypt
-    /// </summary>
-    /// <param name="input">Input stream</param>
-    /// <param name="output">Output stream</param>
-    /// <param name="cipherParameters">Cipher parameters</param>
-    /// <param name="padding">Padding</param>
-    public async Task DecryptAsync(
-        Stream input,
-        Stream output,
-        ICipherParameters cipherParameters,
-        IPaddingService padding)
+    /// <inheritdoc />
+    public async Task DecryptAsync(Stream input, Stream output, ICipherParameters cipherParameters, IPaddingService padding)
     {
         var cipher = _cipherFactory();
         cipher.Init(forEncryption: false, cipherParameters);

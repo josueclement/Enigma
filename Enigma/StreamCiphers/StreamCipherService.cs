@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 
-namespace Enigma;
+namespace Enigma.StreamCiphers;
 
 /// <summary>
 /// Stream cipher service
 /// </summary>
-public class StreamCipherService
+public class StreamCipherService : IStreamCipherService
 {
     private readonly Func<IStreamCipher> _cipherFactory;
 
@@ -24,13 +24,7 @@ public class StreamCipherService
         _cipherFactory = cipherFactory;
     }
     
-    /// <summary>
-    /// Asynchronously encrypt
-    /// </summary>
-    /// <param name="input">Input stream</param>
-    /// <param name="output">Output stream</param>
-    /// <param name="key">Key</param>
-    /// <param name="nonce">Nonce</param>
+    /// <inheritdoc />
     public async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce)
     {
         var cipher = _cipherFactory();
@@ -54,13 +48,7 @@ public class StreamCipherService
         } while (bytesRead == BUFFER_SIZE);
     }
 
-    /// <summary>
-    /// Asynchronously decrypt
-    /// </summary>
-    /// <param name="input">Input stream</param>
-    /// <param name="output">Output stream</param>
-    /// <param name="key">Key</param>
-    /// <param name="nonce">Nonce</param>
+    /// <inheritdoc />
     public async Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce)
     {
         var cipher = _cipherFactory();
