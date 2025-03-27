@@ -8,6 +8,7 @@ namespace Enigma.BlockCiphers;
 /// <summary>
 /// Block cipher service
 /// </summary>
+/// <param name="cipherFactory">Cipher factory</param>
 public class BlockCipherService(Func<IBufferedCipher> cipherFactory) : IBlockCipherService
 {
     // ReSharper disable once InconsistentNaming

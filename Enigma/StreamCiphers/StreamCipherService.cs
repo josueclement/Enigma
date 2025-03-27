@@ -9,6 +9,7 @@ namespace Enigma.StreamCiphers;
 /// <summary>
 /// Stream cipher service
 /// </summary>
+/// <param name="cipherFactory">Cipher factory</param>
 public class StreamCipherService(Func<IStreamCipher> cipherFactory) : IStreamCipherService
 {
     // ReSharper disable once InconsistentNaming

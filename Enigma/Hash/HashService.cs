@@ -8,6 +8,7 @@ namespace Enigma.Hash;
 /// <summary>
 /// Hash service
 /// </summary>
+/// <param name="digestFactory">Digest factory</param>
 public class HashService(Func<IDigest> digestFactory) : IHashService
 {
     // ReSharper disable once InconsistentNaming

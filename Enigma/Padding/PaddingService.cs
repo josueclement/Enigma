@@ -6,6 +6,7 @@ namespace Enigma.Padding;
 /// <summary>
 /// Padding service
 /// </summary>
+/// <param name="paddingFactory">Padding factory</param>
 public class PaddingService(Func<IBlockCipherPadding> paddingFactory) : IPaddingService
 {
     /// <inheritdoc />
