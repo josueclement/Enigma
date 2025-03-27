@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
@@ -10,19 +11,29 @@ namespace Enigma;
 /// </summary>
 public class StreamCipherService
 {
+    private readonly Func<IStreamCipher> _cipherFactory;
+
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
+
+    /// <summary>
+    /// Constructor for <see cref="StreamCipherService"/>
+    /// </summary>
+    public StreamCipherService(Func<IStreamCipher> cipherFactory)
+    {
+        _cipherFactory = cipherFactory;
+    }
     
     /// <summary>
     /// Asynchronously encrypt
     /// </summary>
     /// <param name="input">Input stream</param>
     /// <param name="output">Output stream</param>
-    /// <param name="cipher">Cipher</param>
     /// <param name="key">Key</param>
     /// <param name="nonce">Nonce</param>
-    public async Task EncryptAsync(Stream input, Stream output, IStreamCipher cipher, byte[] key, byte[] nonce)
+    public async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce)
     {
+        var cipher = _cipherFactory();
         var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
         cipher.Init(true, parameters);
         
@@ -48,11 +59,11 @@ public class StreamCipherService
     /// </summary>
     /// <param name="input">Input stream</param>
     /// <param name="output">Output stream</param>
-    /// <param name="cipher">Cipher</param>
     /// <param name="key">Key</param>
     /// <param name="nonce">Nonce</param>
-    public async Task DecryptAsync(Stream input, Stream output, IStreamCipher cipher, byte[] key, byte[] nonce)
+    public async Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce)
     {
+        var cipher = _cipherFactory();
         var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
         cipher.Init(false, parameters);
         
