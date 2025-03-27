@@ -8,15 +8,15 @@ public interface IStreamCipherServiceFactory
     /// <summary>
     /// Create ChaCha20Rfc7539 stream cipher service
     /// </summary>
-    IStreamCipherService CreateChaCha20Rfc7539();
+    IStreamCipherService CreateChaCha20Rfc7539StreamCipherService();
     
     /// <summary>
     /// Create ChaCha20 stream cipher service
     /// </summary>
-    IStreamCipherService CreateChaCha20();
+    IStreamCipherService CreateChaCha20StreamCipherService();
     
     /// <summary>
     /// Create Salsa20 stream cipher service
     /// </summary>
-    IStreamCipherService CreateSalsa20();
+    IStreamCipherService CreateSalsa20StreamCipherService();
 }

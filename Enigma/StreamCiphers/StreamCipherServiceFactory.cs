@@ -8,14 +8,14 @@ namespace Enigma.StreamCiphers;
 public class StreamCipherServiceFactory : IStreamCipherServiceFactory
 {
     /// <inheritdoc />
-    public IStreamCipherService CreateChaCha20Rfc7539()
+    public IStreamCipherService CreateChaCha20Rfc7539StreamCipherService()
         => new StreamCipherService(() => new ChaCha7539Engine());
 
     /// <inheritdoc />
-    public IStreamCipherService CreateChaCha20()
+    public IStreamCipherService CreateChaCha20StreamCipherService()
         => new StreamCipherService(() => new ChaChaEngine());
 
     /// <inheritdoc />
-    public IStreamCipherService CreateSalsa20()
+    public IStreamCipherService CreateSalsa20StreamCipherService()
         => new StreamCipherService(() => new Salsa20Engine());
 }
