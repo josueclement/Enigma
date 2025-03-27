@@ -22,11 +22,12 @@ public class AesCbcTests
     {
         var service = GetService();
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
+        var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
 
-        await service.EncryptAsync(msInput, msOutput, parameters, new NoPaddingService());
+        await service.EncryptAsync(msInput, msOutput, parameters, padding);
         
         Assert.Equal(encrypted, msOutput.ToArray());
     }
@@ -37,11 +38,12 @@ public class AesCbcTests
     {
         var service = GetService();
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
+        var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();
 
-        await service.DecryptAsync(msInput, msOutput, parameters, new NoPaddingService());
+        await service.DecryptAsync(msInput, msOutput, parameters, padding);
         
         Assert.Equal(data, msOutput.ToArray()); 
     }

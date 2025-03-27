@@ -1,6 +1,5 @@
 ﻿using Enigma.DataEncoding;
 using Enigma.Padding;
-using Org.BouncyCastle.Crypto.Paddings;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,7 +12,7 @@ public class X923PaddingTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvPadTest(byte[] data, byte[] paddedData)
     {
-        var service = new PaddingService(() => new X923Padding());
+        var service = new PaddingServiceFactory().CreateX923PaddingService();
         
         var padded = service.Pad(data, 16);
         
@@ -24,7 +23,7 @@ public class X923PaddingTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvUnpadTest(byte[] data, byte[] paddedData)
     {
-        var service = new PaddingService(() => new X923Padding());
+        var service = new PaddingServiceFactory().CreateX923PaddingService();
         
         var unpaddedData = service.Unpad(paddedData, 16);
         
