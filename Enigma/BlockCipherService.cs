@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto;
+using System;
 
 namespace Enigma;
 
@@ -10,22 +10,35 @@ namespace Enigma;
 /// </summary>
 public class BlockCipherService
 {
+    private readonly Func<IBufferedCipher> _cipherFactory;
+
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
+    
+    /// <summary>
+    /// Constructor for <see cref="BlockCipherService"/>
+    /// </summary>
+    public BlockCipherService(Func<IBufferedCipher> cipherFactory)
+    {
+        _cipherFactory = cipherFactory;
+    }
     
     /// <summary>
     /// Asynchronously encrypt
     /// </summary>
     /// <param name="input">Input stream</param>
     /// <param name="output">Output stream</param>
-    /// <param name="cipher">Cipher</param>
+    /// <param name="cipherParameters">Cipher parameters</param>
     /// <param name="padding">Padding</param>
     public async Task EncryptAsync(
         Stream input,
         Stream output,
-        IBufferedCipher cipher,
+        ICipherParameters cipherParameters,
         IPaddingService padding)
     {
+        var cipher = _cipherFactory();
+        cipher.Init(forEncryption: true, cipherParameters);
+        
         var padDone = false;
         int bytesRead;
         var buffer = new byte[BUFFER_SIZE];
@@ -68,14 +81,17 @@ public class BlockCipherService
     /// </summary>
     /// <param name="input">Input stream</param>
     /// <param name="output">Output stream</param>
-    /// <param name="cipher">Cipher</param>
+    /// <param name="cipherParameters">Cipher parameters</param>
     /// <param name="padding">Padding</param>
     public async Task DecryptAsync(
         Stream input,
         Stream output,
-        IBufferedCipher cipher,
+        ICipherParameters cipherParameters,
         IPaddingService padding)
     {
+        var cipher = _cipherFactory();
+        cipher.Init(forEncryption: false, cipherParameters);
+        
         byte[]? backup = null;
         int bytesRead;
         var buffer = new byte[BUFFER_SIZE];

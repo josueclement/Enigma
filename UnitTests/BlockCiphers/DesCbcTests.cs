@@ -1,8 +1,10 @@
 ﻿using Enigma.DataEncoding;
-using Enigma.Extensions;
 using Enigma.Padding;
 using Enigma;
 using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto.Modes;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Crypto;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,16 +14,20 @@ namespace UnitTests.BlockCiphers;
 
 public class DesCbcTests
 {
+    private IBufferedCipher GetCipher()
+        => new BufferedBlockCipher(new CbcBlockCipher(new DesEngine()));
+    
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvEncryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
-        var service = new BlockCipherService();
+        var service = new BlockCipherService(GetCipher);
+        var parameters = new ParametersWithIV(new KeyParameter(key), iv);
         
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
 
-        await service.EncryptCbcAsync(msInput, msOutput, new DesEngine(), key, iv, new NoPaddingService());
+        await service.EncryptAsync(msInput, msOutput, parameters, new NoPaddingService());
         
         Assert.Equal(encrypted, msOutput.ToArray());
     }
@@ -30,12 +36,13 @@ public class DesCbcTests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvDecryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
-        var service = new BlockCipherService();
+        var service = new BlockCipherService(GetCipher);
+        var parameters = new ParametersWithIV(new KeyParameter(key), iv);
         
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();
 
-        await service.DecryptCbcAsync(msInput, msOutput, new DesEngine(), key, iv, new NoPaddingService());
+        await service.DecryptAsync(msInput, msOutput, parameters, new NoPaddingService());
         
         Assert.Equal(data, msOutput.ToArray()); 
     }
