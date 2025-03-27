@@ -1,6 +1,5 @@
 ﻿using Enigma.DataEncoding;
 using Enigma.Hash;
-using Org.BouncyCastle.Crypto.Digests;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,7 +13,7 @@ public class Sha3Tests
     [Fact]
     public async Task HashStreamTest()
     {
-        var service = new HashService(() => new Sha3Digest(512));
+        var service = new HashServiceFactory().CreateSha3HashService();
         var hex = new HexService();
         
         var expectedHash = hex.Decode(await File.ReadAllTextAsync(@"Hash\sha3.csv.txt", Encoding.ASCII));
@@ -28,7 +27,7 @@ public class Sha3Tests
     [MemberData(nameof(GetCsvValues))]
     public void CsvTest(byte[] data, byte[] expectedHash)
     {
-        var service = new HashService(() => new Sha3Digest(512));
+        var service = new HashServiceFactory().CreateSha3HashService();
         
         var hash = service.Hash(data);
         
