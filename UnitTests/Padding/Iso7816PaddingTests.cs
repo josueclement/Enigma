@@ -1,19 +1,22 @@
 ﻿using Enigma.DataEncoding;
 using Enigma.Padding;
+using Org.BouncyCastle.Crypto.Paddings;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace UnitTests.Padding;
 
-public class Pkcs7PaddingServiceTests
+public class Iso7816PaddingTests
 {
     [Theory]
     [MemberData(nameof(GetCsvValues))]
     public void CsvPadTest(byte[] data, byte[] paddedData)
     {
-        var srvc = new Pkcs7PaddingService();
-        var padded = srvc.Pad(data, 16);
+        var service = new PaddingService(() => new ISO7816d4Padding());
+        
+        var padded = service.Pad(data, 16);
+        
         Assert.Equal(paddedData, padded);
     }
     
@@ -21,8 +24,10 @@ public class Pkcs7PaddingServiceTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvUnpadTest(byte[] data, byte[] paddedData)
     {
-        var srvc = new Pkcs7PaddingService();
-        var unpaddedData = srvc.Unpad(paddedData, 16);
+        var service = new PaddingService(() => new ISO7816d4Padding());
+        
+        var unpaddedData = service.Unpad(paddedData, 16);
+        
         Assert.Equal(data, unpaddedData);
     }
     
@@ -30,7 +35,7 @@ public class Pkcs7PaddingServiceTests
     {
         var hex = new HexService();
         
-        return File.ReadAllLines(@"Padding\pkcs7.csv")
+        return File.ReadAllLines(@"Padding\iso7816.csv")
             .Skip(1)
             .Select(line =>
             {

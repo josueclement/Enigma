@@ -1,18 +1,23 @@
-﻿using Org.BouncyCastle.Crypto.Paddings;
+using Org.BouncyCastle.Crypto.Paddings;
 using System;
 
 namespace Enigma.Padding;
 
 /// <summary>
-/// Padding service base class
+/// Padding service
 /// </summary>
-public abstract class PaddingServiceBase : IPaddingService
+public class PaddingService : IPaddingService
 {
+    private readonly Func<IBlockCipherPadding> _paddingFactory;
+
     /// <summary>
-    /// Abstract padding factory method
+    /// Constructor for <see cref="PaddingService"/>
     /// </summary>
-    /// <returns>Padding</returns>
-    protected abstract IBlockCipherPadding BuildPadder();
+    /// <param name="paddingFactory">Padding factory</param>
+    public PaddingService(Func<IBlockCipherPadding> paddingFactory)
+    {
+        _paddingFactory = paddingFactory;
+    }
     
     /// <inheritdoc />
     public byte[] Pad(byte[] data, int blockSize)
@@ -24,7 +29,7 @@ public abstract class PaddingServiceBase : IPaddingService
         var paddedData = new byte[data.Length + paddingLength];
         Array.Copy(data, 0, paddedData, 0, data.Length);
 
-        var padder = BuildPadder();
+        var padder = _paddingFactory();
         padder.AddPadding(paddedData, data.Length);
 
         return paddedData;
@@ -38,7 +43,7 @@ public abstract class PaddingServiceBase : IPaddingService
         if (data.Length % blockSize != 0 || data.Length < blockSize)
             throw new ArgumentException($"Invalid padded data length {data.Length}");
 
-        var padder = BuildPadder();
+        var padder = _paddingFactory();
         var paddingLength = padder.PadCount(data);
 
         var unpaddedData = new byte[data.Length - paddingLength];
