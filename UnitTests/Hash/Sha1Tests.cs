@@ -1,5 +1,6 @@
 ﻿using Enigma.DataEncoding;
-using Enigma.Hash;
+using Enigma;
+using Org.BouncyCastle.Crypto.Digests;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,17 +9,18 @@ using System.Threading.Tasks;
 
 namespace UnitTests.Hash;
 
-public class Sha512ServiceTests
+public class Sha1Tests
 {
     [Fact]
     public async Task HashStreamTest()
     {
-        var srvc = new Sha512Service();
+        var service = new HashService();
         var hex = new HexService();
         
-        var expectedHash = hex.Decode(await File.ReadAllTextAsync(@"Hash\sha512.csv.txt", Encoding.ASCII));
-        await using var input = new FileStream(@"Hash\sha512.csv", FileMode.Open, FileAccess.Read);
-        var hash = await srvc.HashAsync(input);
+        var expectedHash = hex.Decode(await File.ReadAllTextAsync(@"Hash\sha1.csv.txt", Encoding.ASCII));
+        await using var input = new FileStream(@"Hash\sha1.csv", FileMode.Open, FileAccess.Read);
+        var hash = await service.HashAsync(input, new Sha1Digest());
+        
         Assert.Equal(expectedHash, hash);
     }
 
@@ -26,8 +28,10 @@ public class Sha512ServiceTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvTest(byte[] data, byte[] expectedHash)
     {
-        var srvc = new Sha512Service();
-        var hash = srvc.Hash(data);
+        var service = new HashService();
+        
+        var hash = service.Hash(data, new Sha1Digest());
+        
         Assert.Equal(expectedHash, hash);
     }
     
@@ -35,7 +39,7 @@ public class Sha512ServiceTests
     {
         var hex = new HexService();
         
-        return File.ReadAllLines(@"Hash\sha512.csv")
+        return File.ReadAllLines(@"Hash\sha1.csv")
             .Skip(1)
             .Select(line =>
             {
