@@ -1,32 +1,22 @@
-﻿using System;
+﻿using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto;
+using System;
 
 namespace Enigma.BlockCiphers;
 
 /// <summary>
 /// Block cipher service
 /// </summary>
-public class BlockCipherService : IBlockCipherService
+public class BlockCipherService(Func<IBufferedCipher> cipherFactory) : IBlockCipherService
 {
-    private readonly Func<IBufferedCipher> _cipherFactory;
-
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
-    
-    /// <summary>
-    /// Constructor for <see cref="BlockCipherService"/>
-    /// </summary>
-    public BlockCipherService(Func<IBufferedCipher> cipherFactory)
-    {
-        _cipherFactory = cipherFactory;
-    }
     
     /// <inheritdoc />
     public async Task EncryptAsync(Stream input, Stream output, ICipherParameters cipherParameters, IPaddingService padding)
     {
-        var cipher = _cipherFactory();
+        var cipher = cipherFactory();
         cipher.Init(forEncryption: true, cipherParameters);
         
         var padDone = false;
@@ -69,7 +59,7 @@ public class BlockCipherService : IBlockCipherService
     /// <inheritdoc />
     public async Task DecryptAsync(Stream input, Stream output, ICipherParameters cipherParameters, IPaddingService padding)
     {
-        var cipher = _cipherFactory();
+        var cipher = cipherFactory();
         cipher.Init(forEncryption: false, cipherParameters);
         
         byte[]? backup = null;

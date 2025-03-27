@@ -1,33 +1,23 @@
-﻿using System;
+﻿using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Parameters;
+using System;
 
 namespace Enigma.StreamCiphers;
 
 /// <summary>
 /// Stream cipher service
 /// </summary>
-public class StreamCipherService : IStreamCipherService
+public class StreamCipherService(Func<IStreamCipher> cipherFactory) : IStreamCipherService
 {
-    private readonly Func<IStreamCipher> _cipherFactory;
-
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
-
-    /// <summary>
-    /// Constructor for <see cref="StreamCipherService"/>
-    /// </summary>
-    public StreamCipherService(Func<IStreamCipher> cipherFactory)
-    {
-        _cipherFactory = cipherFactory;
-    }
     
     /// <inheritdoc />
     public async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce)
     {
-        var cipher = _cipherFactory();
+        var cipher = cipherFactory();
         var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
         cipher.Init(true, parameters);
         
@@ -51,7 +41,7 @@ public class StreamCipherService : IStreamCipherService
     /// <inheritdoc />
     public async Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce)
     {
-        var cipher = _cipherFactory();
+        var cipher = cipherFactory();
         var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
         cipher.Init(false, parameters);
         

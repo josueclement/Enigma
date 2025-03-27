@@ -1,32 +1,22 @@
-﻿using System;
+﻿using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto;
+using System;
 
 namespace Enigma.Hash;
 
 /// <summary>
 /// Hash service
 /// </summary>
-public class HashService : IHashService
+public class HashService(Func<IDigest> digestFactory) : IHashService
 {
     // ReSharper disable once InconsistentNaming
     private const int BUFFER_SIZE = 4096;
 
-    private readonly Func<IDigest> _digestFactory;
-    
-    /// <summary>
-    /// Constructor for <see cref="HashService"/>
-    /// </summary>
-    public HashService(Func<IDigest> digestFactory)
-    {
-        _digestFactory = digestFactory;
-    }
-    
     /// <inheritdoc />
     public byte[] Hash(byte[] data)
     {
-        var digest = _digestFactory();
+        var digest = digestFactory();
         var hash = new byte[digest.GetDigestSize()];
 
         digest.BlockUpdate(data, 0, data.Length);
@@ -38,7 +28,7 @@ public class HashService : IHashService
     /// <inheritdoc />
     public async Task<byte[]> HashAsync(Stream input)
     {
-        var digest = _digestFactory();
+        var digest = digestFactory();
         var hash = new byte[digest.GetDigestSize()];
 
         int bytesRead;

@@ -1,12 +1,11 @@
 ﻿using Enigma.DataEncoding;
-using Enigma;
+using Enigma.StreamCiphers;
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Enigma.StreamCiphers;
 
 namespace UnitTests.StreamCiphers;
 

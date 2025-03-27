@@ -1,11 +1,14 @@
-﻿using System;
+﻿using System.Threading.Tasks;
+using System;
 
 namespace ConsoleApp1;
 
 internal static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
+        await Task.CompletedTask;
+        
         try
         {
             

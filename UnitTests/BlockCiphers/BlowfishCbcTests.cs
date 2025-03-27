@@ -1,6 +1,6 @@
-﻿using Enigma.DataEncoding;
+﻿using Enigma.BlockCiphers;
+using Enigma.DataEncoding;
 using Enigma.Padding;
-using Enigma;
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Parameters;
@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Enigma.BlockCiphers;
 
 namespace UnitTests.BlockCiphers;
 

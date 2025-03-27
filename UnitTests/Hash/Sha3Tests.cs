@@ -1,12 +1,11 @@
 ﻿using Enigma.DataEncoding;
-using Enigma;
+using Enigma.Hash;
 using Org.BouncyCastle.Crypto.Digests;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Enigma.Hash;
 
 namespace UnitTests.Hash;
 
