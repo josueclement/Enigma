@@ -8,13 +8,12 @@
 		<Authors>Josué Clément</Authors>
 		<Copyright>Copyright © 2025 Josué Clément</Copyright>
 		<Product>Enigma</Product>
-		<Version>2.0.0</Version>
+		<Version>3.0.0</Version>
 		<PackageProjectUrl>https://github.com/josueclement/Enigma</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/josueclement/Enigma.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>Enigma.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<!-- Readme for the NuGet package -->
