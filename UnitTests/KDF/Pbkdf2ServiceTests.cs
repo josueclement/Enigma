@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Enigma.DataEncoding;
+using Enigma.KDF;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Enigma.DataEncoding;
-using Enigma.KDF;
 
 namespace UnitTests.KDF;
 

@@ -1,4 +1,4 @@
-﻿namespace Enigma.Padding;
+namespace Enigma.Padding;
 
 /// <summary>
 /// No padding service

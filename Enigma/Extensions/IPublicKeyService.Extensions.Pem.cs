@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using Enigma.PublicKey;
+﻿using Enigma.PublicKey;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Security;
+using System.IO;
+using System.Text;
+using System;
 
 namespace Enigma.Extensions;
 
@@ -53,7 +53,7 @@ public static class IPublicKeyServicePemExtensions
     {
         using var reader = new StreamReader(input, Encoding.UTF8);
         var pemReader = new PemReader(reader);
-        object obj = pemReader.ReadObject();
+        var obj = pemReader.ReadObject();
 
         if (obj is AsymmetricKeyParameter key)
             return key;
@@ -72,11 +72,11 @@ public static class IPublicKeyServicePemExtensions
     {
         using var reader = new StreamReader(input, Encoding.UTF8);
         var pemReader = new PemReader(reader, new PemPasswordFinder(password));
-        object obj = pemReader.ReadObject();
+        var obj = pemReader.ReadObject();
 
         if (obj is AsymmetricCipherKeyPair keyPair)
             return keyPair.Private;
-        if (obj is AsymmetricKeyParameter key && key.IsPrivate)
+        if (obj is AsymmetricKeyParameter { IsPrivate: true } key)
             return key;
         
         throw new InvalidOperationException("No private key found in Pem");

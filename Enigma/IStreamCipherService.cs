@@ -4,29 +4,18 @@ using System.Threading.Tasks;
 namespace Enigma;
 
 /// <summary>
-/// Definition for stream ciphers services
+/// Definition for stream cipher services
 /// </summary>
 public interface IStreamCipherService
 {
     /// <summary>
-    /// Key size
+    /// Get key and nonce size
     /// </summary>
-    int KeySize { get; }
+    /// <returns>(key size, nonce size)</returns>
+    (int keySizeInBytes, int nonceSizeInBytes) GetKeyNonceSize();
     
     /// <summary>
-    /// Nonce size
-    /// </summary>
-    int NonceSize { get; }
-    
-    /// <summary>
-    /// Generate random key and nonce
-    /// </summary>
-    /// <param name="key">Key</param>
-    /// <param name="nonce">Nonce</param>
-    void GenerateKeyNonce(out byte[] key, out byte[] nonce);
-    
-    /// <summary>
-    /// Asynchronously encrypt stream
+    /// Asynchronously encrypt
     /// </summary>
     /// <param name="input">Input stream</param>
     /// <param name="output">Output stream</param>
@@ -35,11 +24,11 @@ public interface IStreamCipherService
     Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce);
     
     /// <summary>
-    /// Asynchronously decrypt stream
+    /// Asynchronously decrypt
     /// </summary>
     /// <param name="input">Input stream</param>
     /// <param name="output">Output stream</param>
     /// <param name="key">Key</param>
-    /// <param name="nonce">Nonce</param>
+    /// <param name="nonce">Nonce</param> 
     Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce);
 }
