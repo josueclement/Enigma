@@ -23,7 +23,7 @@ public class TripleDesCbcTests
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
 
-        await service.EncryptAsync(msInput, msOutput, parameters, padding);
+        await service.EncryptAsync(msInput, msOutput, parameters);
         
         Assert.Equal(encrypted, msOutput.ToArray());
     }
@@ -40,7 +40,7 @@ public class TripleDesCbcTests
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();
 
-        await service.DecryptAsync(msInput, msOutput, parameters, padding);
+        await service.DecryptAsync(msInput, msOutput, parameters);
         
         Assert.Equal(data, msOutput.ToArray()); 
     }
