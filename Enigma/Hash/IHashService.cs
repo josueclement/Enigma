@@ -1,7 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Enigma;
+namespace Enigma.Hash;
 
 /// <summary>
 /// Definition for hash service

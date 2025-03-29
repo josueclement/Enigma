@@ -1,4 +1,4 @@
-﻿namespace Enigma;
+﻿namespace Enigma.Hash;
 
 /// <summary>
 /// Definition for hash service factory

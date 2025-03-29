@@ -1,4 +1,4 @@
-﻿namespace Enigma;
+﻿namespace Enigma.PublicKey;
 
 /// <summary>
 /// Definition for public-key service factory

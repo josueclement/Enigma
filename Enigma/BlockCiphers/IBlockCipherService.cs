@@ -1,13 +1,12 @@
-using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
+using Org.BouncyCastle.Crypto;
 
-namespace Enigma;
+namespace Enigma.BlockCiphers;
 
 /// <summary>
 /// Definition for block cipher services
 /// </summary>
-// TODO: move interfaces into their directories
 public interface IBlockCipherService
 {
     /// <summary>

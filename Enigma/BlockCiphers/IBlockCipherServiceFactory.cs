@@ -1,8 +1,8 @@
-using Org.BouncyCastle.Crypto.Paddings;
-using Org.BouncyCastle.Crypto;
 using System;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Paddings;
 
-namespace Enigma;
+namespace Enigma.BlockCiphers;
 
 /// <summary>
 /// Definition for block cipher service factory

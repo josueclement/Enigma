@@ -1,4 +1,4 @@
-namespace Enigma;
+namespace Enigma.DataEncoding;
 
 /// <summary>
 /// Definition for encoding services

@@ -1,6 +1,6 @@
 using Org.BouncyCastle.Crypto;
 
-namespace Enigma;
+namespace Enigma.PublicKey;
 
 /// <summary>
 /// Definition for public-key services

@@ -1,4 +1,4 @@
-﻿namespace Enigma;
+﻿namespace Enigma.StreamCiphers;
 
 /// <summary>
 /// Definition for stream cipher service factory
