@@ -9,13 +9,6 @@ namespace Enigma;
 public interface IHashService
 {
     /// <summary>
-    /// Hash data
-    /// </summary>
-    /// <param name="data">Data to hash</param>
-    /// <returns>Hash</returns>
-    byte[] Hash(byte[] data);
-    
-    /// <summary>
     /// Asynchronously hash input stream data
     /// </summary>
     /// <param name="input">Input stream</param>
