@@ -1,20 +1,13 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Enigma;
+namespace Enigma.Hash;
 
 /// <summary>
 /// Definition for hash service
 /// </summary>
 public interface IHashService
 {
-    /// <summary>
-    /// Hash data
-    /// </summary>
-    /// <param name="data">Data to hash</param>
-    /// <returns>Hash</returns>
-    byte[] Hash(byte[] data);
-    
     /// <summary>
     /// Asynchronously hash input stream data
     /// </summary>

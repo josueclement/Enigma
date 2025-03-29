@@ -1,4 +1,4 @@
-namespace Enigma;
+namespace Enigma.Padding;
 
 /// <summary>
 /// Definition for padding services

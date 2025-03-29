@@ -55,10 +55,11 @@ public static class IPublicKeyServicePemExtensions
         var pemReader = new PemReader(reader);
         var obj = pemReader.ReadObject();
 
-        if (obj is AsymmetricKeyParameter key)
-            return key;
-        
-        throw new InvalidOperationException("No AsymmetricKeyParameter found in Pem");
+        return obj switch
+        {
+            AsymmetricKeyParameter key => key,
+            _ => throw new InvalidOperationException("No AsymmetricKeyParameter found in Pem")
+        };
     }
 
     /// <summary>
@@ -74,12 +75,12 @@ public static class IPublicKeyServicePemExtensions
         var pemReader = new PemReader(reader, new PemPasswordFinder(password));
         var obj = pemReader.ReadObject();
 
-        if (obj is AsymmetricCipherKeyPair keyPair)
-            return keyPair.Private;
-        if (obj is AsymmetricKeyParameter { IsPrivate: true } key)
-            return key;
-        
-        throw new InvalidOperationException("No private key found in Pem");
+        return obj switch
+        {
+            AsymmetricCipherKeyPair keyPair => keyPair.Private,
+            AsymmetricKeyParameter { IsPrivate: true } key => key,
+            _ => throw new InvalidOperationException("No private key found in Pem")
+        };
     }
     
 }

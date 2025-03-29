@@ -1,4 +1,4 @@
-﻿namespace Enigma;
+﻿namespace Enigma.PublicKey;
 
 /// <summary>
 /// Definition for public-key service factory
@@ -9,5 +9,5 @@ public interface IPublicKeyServiceFactory
     /// Create a RSA public-key service
     /// </summary>
     /// <param name="signerAlgorithm">Signer algorithm</param>
-    public IPublicKeyService CreateRsaPublicKeyService(string signerAlgorithm);
+    public IPublicKeyService CreateRsaService(string signerAlgorithm);
 }

@@ -15,7 +15,7 @@ public class PublicKeyServiceFactory : IPublicKeyServiceFactory
     /// </summary>
     /// <param name="signerAlgorithm"></param>
     /// <returns></returns>
-    public IPublicKeyService CreateRsaPublicKeyService(string signerAlgorithm = "SHA256withRSA")
+    public IPublicKeyService CreateRsaService(string signerAlgorithm = "SHA256withRSA")
         => new PublicKeyService(
             cipherFactory: () => new Pkcs1Encoding(new RsaEngine()),
             keyPairGeneratorFactory: () => new RsaKeyPairGenerator(),

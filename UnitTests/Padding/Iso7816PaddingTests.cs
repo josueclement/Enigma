@@ -12,7 +12,7 @@ public class Iso7816PaddingTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvPadTest(byte[] data, byte[] paddedData)
     {
-        var service = new PaddingServiceFactory().CreateIso7816PaddingService();
+        var service = new PaddingServiceFactory().CreateIso7816Service();
         
         var padded = service.Pad(data, 16);
         
@@ -23,7 +23,7 @@ public class Iso7816PaddingTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvUnpadTest(byte[] data, byte[] paddedData)
     {
-        var service = new PaddingServiceFactory().CreateIso7816PaddingService();
+        var service = new PaddingServiceFactory().CreateIso7816Service();
         
         var unpaddedData = service.Unpad(paddedData, 16);
         
