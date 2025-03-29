@@ -40,7 +40,7 @@ internal static class Program
             // var service = new BlockCipherServiceFactory().CreateCbcBlockCipherService(engineFactory.CreateAesEngine);
 
             // var service = new BlockCipherService(() => CipherUtilities.GetCipher("AES/CBC/NoPadding"));
-            var service = new BlockCipherService(() => CipherUtilities.GetCipher("AES/CBC/PKCS7Padding"));
+            var service = new BlockCipherService("AES/CBC/PKCS7Padding");
 
             // Get the key and IV sizes
             var (keySizeInBytes, ivSizeInBytes) = service.GetKeyIvSize();
