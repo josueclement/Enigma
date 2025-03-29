@@ -1,4 +1,4 @@
-﻿namespace Enigma;
+﻿namespace Enigma.StreamCiphers;
 
 /// <summary>
 /// Definition for stream cipher service factory
@@ -8,15 +8,15 @@ public interface IStreamCipherServiceFactory
     /// <summary>
     /// Create ChaCha20Rfc7539 stream cipher service
     /// </summary>
-    IStreamCipherService CreateChaCha20Rfc7539StreamCipherService();
+    IStreamCipherService CreateChaCha7539Service();
     
     /// <summary>
     /// Create ChaCha20 stream cipher service
     /// </summary>
-    IStreamCipherService CreateChaCha20StreamCipherService();
+    IStreamCipherService CreateChaCha20Service();
     
     /// <summary>
     /// Create Salsa20 stream cipher service
     /// </summary>
-    IStreamCipherService CreateSalsa20StreamCipherService();
+    IStreamCipherService CreateSalsa20Service();
 }

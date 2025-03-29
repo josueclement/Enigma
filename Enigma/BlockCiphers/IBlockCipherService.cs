@@ -2,7 +2,7 @@ using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Enigma;
+namespace Enigma.BlockCiphers;
 
 /// <summary>
 /// Definition for block cipher services
@@ -21,8 +21,7 @@ public interface IBlockCipherService
     /// <param name="input">Input stream</param>
     /// <param name="output">Output stream</param>
     /// <param name="cipherParameters">Cipher parameters</param>
-    /// <param name="padding">Padding</param>
-    Task EncryptAsync(Stream input, Stream output, ICipherParameters cipherParameters, IPaddingService padding);
+    Task EncryptAsync(Stream input, Stream output, ICipherParameters cipherParameters);
     
     /// <summary>
     /// Asynchronously decrypt
@@ -30,6 +29,5 @@ public interface IBlockCipherService
     /// <param name="input">Input stream</param>
     /// <param name="output">Output stream</param>
     /// <param name="cipherParameters">Cipher parameters</param>
-    /// <param name="padding">Padding</param> 
-    Task DecryptAsync(Stream input, Stream output, ICipherParameters cipherParameters, IPaddingService padding);
+    Task DecryptAsync(Stream input, Stream output, ICipherParameters cipherParameters);
 }

@@ -13,35 +13,19 @@ namespace Enigma.Hash;
 public class HashService(Func<IDigest> digestFactory, int bufferSize = 4096) : IHashService
 {
     /// <inheritdoc />
-    public byte[] Hash(byte[] data)
-    {
-        var digest = digestFactory();
-        var hash = new byte[digest.GetDigestSize()];
-
-        digest.BlockUpdate(data, 0, data.Length);
-        digest.DoFinal(hash, 0);
-
-        return hash;
-    }
-
-    /// <inheritdoc />
     public async Task<byte[]> HashAsync(Stream input)
     {
         var digest = digestFactory();
-        var hash = new byte[digest.GetDigestSize()];
-
-        int bytesRead;
         var buffer = new byte[bufferSize];
-
-        do
-        {
-            bytesRead = await input.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false);
-            if (bytesRead > 0)
-                digest.BlockUpdate(buffer, 0, bytesRead);
-        } while (bytesRead == bufferSize);
-
+        int bytesRead;
+    
+        while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) > 0)
+            digest.BlockUpdate(buffer, 0, bytesRead);
+    
+        var hash = new byte[digest.GetDigestSize()];
+    
         digest.DoFinal(hash, 0);
-
+    
         return hash;
     }
 }

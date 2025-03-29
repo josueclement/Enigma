@@ -12,18 +12,18 @@ public class PaddingServiceFactory : IPaddingServiceFactory
         => new NoPaddingService();
 
     /// <inheritdoc />
-    public IPaddingService CreatePkcs7PaddingService()
+    public IPaddingService CreatePkcs7Service()
         => new PaddingService(() => new Pkcs7Padding());
 
     /// <inheritdoc />
-    public IPaddingService CreateIso7816PaddingService()
+    public IPaddingService CreateIso7816Service()
         => new PaddingService(() => new ISO7816d4Padding());
 
     /// <inheritdoc />
-    public IPaddingService CreateIso10126PaddingService()
+    public IPaddingService CreateIso10126Service()
         => new PaddingService(() => new ISO10126d2Padding());
 
     /// <inheritdoc />
-    public IPaddingService CreateX923PaddingService()
+    public IPaddingService CreateX923Service()
         => new PaddingService(() => new X923Padding());
 }

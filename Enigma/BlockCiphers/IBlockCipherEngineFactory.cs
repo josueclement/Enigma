@@ -1,6 +1,6 @@
 ﻿using Org.BouncyCastle.Crypto;
 
-namespace Enigma;
+namespace Enigma.BlockCiphers;
 
 /// <summary>
 /// Definition for block cipher engine factory

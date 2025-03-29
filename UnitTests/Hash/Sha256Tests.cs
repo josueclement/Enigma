@@ -13,7 +13,7 @@ public class Sha256Tests
     [Fact]
     public async Task HashStreamTest()
     {
-        var service = new HashServiceFactory().CreateSha256HashService();
+        var service = new HashServiceFactory().CreateSha256Service();
         var hex = new HexService();
         
         var expectedHash = hex.Decode(await File.ReadAllTextAsync(@"Hash\sha256.csv.txt", Encoding.ASCII));
@@ -25,11 +25,12 @@ public class Sha256Tests
 
     [Theory]
     [MemberData(nameof(GetCsvValues))]
-    public void CsvTest(byte[] data, byte[] expectedHash)
+    public async Task CsvTest(byte[] data, byte[] expectedHash)
     {
-        var service = new HashServiceFactory().CreateSha256HashService();
+        var service = new HashServiceFactory().CreateSha256Service();
         
-        var hash = service.Hash(data);
+        using var input = new MemoryStream(data);
+        var hash = await service.HashAsync(input);
         
         Assert.Equal(expectedHash, hash);
     }

@@ -1,4 +1,5 @@
 using Org.BouncyCastle.Crypto.Modes;
+using Org.BouncyCastle.Crypto.Paddings;
 using Org.BouncyCastle.Crypto;
 using System;
 
@@ -10,18 +11,26 @@ namespace Enigma.BlockCiphers;
 public class BlockCipherServiceFactory : IBlockCipherServiceFactory
 {
     /// <inheritdoc />
-    public IBlockCipherService CreateEcbBlockCipherService(Func<IBlockCipher> engineFactory, int bufferSize = 4096)
+    public IBlockCipherService CreateEcbService(Func<IBlockCipher> engineFactory, int bufferSize = 4096)
         => new BlockCipherService(() => new BufferedBlockCipher(new EcbBlockCipher(engineFactory())), bufferSize);
+    
+    /// <inheritdoc />
+    public IBlockCipherService CreateEcbService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize = 4096)
+        => new BlockCipherService(() => new PaddedBufferedBlockCipher(new EcbBlockCipher(engineFactory()), paddingFactory()), bufferSize);
 
     /// <inheritdoc />
-    public IBlockCipherService CreateCbcBlockCipherService(Func<IBlockCipher> engineFactory, int bufferSize = 4096)
+    public IBlockCipherService CreateCbcService(Func<IBlockCipher> engineFactory, int bufferSize = 4096)
         => new BlockCipherService(() => new BufferedBlockCipher(new CbcBlockCipher(engineFactory())), bufferSize);
 
     /// <inheritdoc />
-    public IBlockCipherService CreateSicBlockCipherService(Func<IBlockCipher> engineFactory, int bufferSize = 4096)
+    public IBlockCipherService CreateCbcService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize = 4096)
+        => new BlockCipherService(() => new PaddedBufferedBlockCipher(new CbcBlockCipher(engineFactory()), paddingFactory()), bufferSize);
+
+    /// <inheritdoc />
+    public IBlockCipherService CreateSicService(Func<IBlockCipher> engineFactory, int bufferSize = 4096)
         => new BlockCipherService(() => new BufferedBlockCipher(new SicBlockCipher(engineFactory())), bufferSize);
 
     /// <inheritdoc />
-    public IBlockCipherService CreateCfbBlockCipherService(Func<IBlockCipher> engineFactory, int bitBlockSize = 128, int bufferSize = 4096)
-        => new BlockCipherService(() => new BufferedBlockCipher(new CfbBlockCipher(engineFactory(), bitBlockSize)), bufferSize);
+    public IBlockCipherService CreateSicService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize = 4096)
+        => new BlockCipherService(() => new PaddedBufferedBlockCipher(new SicBlockCipher(engineFactory()), paddingFactory()), bufferSize);
 }

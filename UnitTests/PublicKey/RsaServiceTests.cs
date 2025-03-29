@@ -10,7 +10,7 @@ public class RsaServiceTests
     [Fact]
     public void LoadPublicKey()
     {
-        var service = new PublicKeyServiceFactory().CreateRsaPublicKeyService();
+        var service = new PublicKeyServiceFactory().CreateRsaService();
 
         using var input = new FileStream(@"PublicKey\pub_key1.pem", FileMode.Open, FileAccess.Read);
         var key = service.LoadKey(input);
@@ -21,7 +21,7 @@ public class RsaServiceTests
     [Fact]
     public void LoadPrivateKey()
     {
-        var service = new PublicKeyServiceFactory().CreateRsaPublicKeyService();
+        var service = new PublicKeyServiceFactory().CreateRsaService();
         
         using var input = new FileStream(@"PublicKey\pk_key1.pem", FileMode.Open, FileAccess.Read);
         var key = service.LoadPrivateKey(input, "test1234");
@@ -32,7 +32,7 @@ public class RsaServiceTests
     [Fact]
     public void SignVerify()
     {
-        var service = new PublicKeyServiceFactory().CreateRsaPublicKeyService();
+        var service = new PublicKeyServiceFactory().CreateRsaService();
         
         using var inputPrivate = new FileStream(@"PublicKey\pk_key1.pem", FileMode.Open, FileAccess.Read);
         var privateKey = service.LoadPrivateKey(inputPrivate, "test1234");
@@ -48,7 +48,7 @@ public class RsaServiceTests
     [Fact]
     public void SignVerifyBadMessage()
     {
-        var service = new PublicKeyServiceFactory().CreateRsaPublicKeyService();
+        var service = new PublicKeyServiceFactory().CreateRsaService();
         
         using var inputPrivate = new FileStream(@"PublicKey\pk_key1.pem", FileMode.Open, FileAccess.Read);
         var privateKey = service.LoadPrivateKey(inputPrivate, "test1234");

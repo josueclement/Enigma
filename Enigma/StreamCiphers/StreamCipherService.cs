@@ -38,20 +38,7 @@ public class StreamCipherService(Func<IStreamCipher> cipherFactory, int bufferSi
         var cipher = cipherFactory();
         var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
         cipher.Init(true, parameters);
-        
-        int bytesRead;
-        var buffer = new byte[bufferSize];
-        var enc = new byte[bufferSize];
-        do
-        {
-            bytesRead = await input.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false);
-            if (bytesRead > 0)
-            {
-                cipher.ProcessBytes(buffer, 0, bytesRead, enc, 0);
-                await output.WriteAsync(enc, 0, bytesRead).ConfigureAwait(false);
-            }
-
-        } while (bytesRead == bufferSize);
+        await ProcessStreamsAsync(input, output, cipher).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
@@ -60,19 +47,19 @@ public class StreamCipherService(Func<IStreamCipher> cipherFactory, int bufferSi
         var cipher = cipherFactory();
         var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
         cipher.Init(false, parameters);
-        
-        int bytesRead;
-        var buffer = new byte[bufferSize];
-        var dec = new byte[bufferSize];
-        do
-        {
-            bytesRead = await input.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false);
-            if (bytesRead > 0)
-            {
-                cipher.ProcessBytes(buffer, 0, bytesRead, dec, 0);
-                await output.WriteAsync(dec, 0, bytesRead).ConfigureAwait(false);
-            }
+        await ProcessStreamsAsync(input, output, cipher).ConfigureAwait(false);
+    }
 
-        } while (bytesRead == bufferSize);
+    private async Task ProcessStreamsAsync(Stream input, Stream output, IStreamCipher cipher)
+    {
+        var buffer = new byte[bufferSize];
+        var outputBuffer = new byte[bufferSize];
+        int bytesRead;
+    
+        while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) > 0)
+        {
+            cipher.ProcessBytes(buffer, 0, bytesRead, outputBuffer, 0);
+            await output.WriteAsync(outputBuffer, 0, bytesRead).ConfigureAwait(false);
+        }
     }
 }

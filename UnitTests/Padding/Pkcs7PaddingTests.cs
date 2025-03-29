@@ -12,7 +12,7 @@ public class Pkcs7PaddingTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvPadTest(byte[] data, byte[] paddedData)
     {
-        var service = new PaddingServiceFactory().CreatePkcs7PaddingService();
+        var service = new PaddingServiceFactory().CreatePkcs7Service();
         
         var padded = service.Pad(data, 16);
         
@@ -23,7 +23,7 @@ public class Pkcs7PaddingTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvUnpadTest(byte[] data, byte[] paddedData)
     {
-        var service = new PaddingServiceFactory().CreatePkcs7PaddingService();
+        var service = new PaddingServiceFactory().CreatePkcs7Service();
         
         var unpaddedData = service.Unpad(paddedData, 16);
         
