@@ -28,10 +28,7 @@ internal static class Program
             );
 
             // Or specify a different padding scheme explicitly
-            var paddedCipher2 = new PaddedBufferedBlockCipher(
-                new EcbBlockCipher(new AesEngine()),
-                new Pkcs7Padding()
-            );
+            var paddedCipher2 = new PaddedBufferedBlockCipher(new EcbBlockCipher(new AesEngine()), new Pkcs7Padding());
             
             var test = new BufferedBlockCipher(new EcbBlockCipher(new AesEngine()));
             
