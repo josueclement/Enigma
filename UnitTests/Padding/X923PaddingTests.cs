@@ -12,7 +12,7 @@ public class X923PaddingTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvPadTest(byte[] data, byte[] paddedData)
     {
-        var service = new PaddingServiceFactory().CreateX923PaddingService();
+        var service = new PaddingServiceFactory().CreateX923Service();
         
         var padded = service.Pad(data, 16);
         
@@ -23,7 +23,7 @@ public class X923PaddingTests
     [MemberData(nameof(GetCsvValues))]
     public void CsvUnpadTest(byte[] data, byte[] paddedData)
     {
-        var service = new PaddingServiceFactory().CreateX923PaddingService();
+        var service = new PaddingServiceFactory().CreateX923Service();
         
         var unpaddedData = service.Unpad(paddedData, 16);
         

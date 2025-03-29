@@ -14,19 +14,41 @@ Thanks to the BouncyCastle team for their outstanding work on `BouncyCastle.Cryp
 
 ## Block ciphers
 
-| Class                     | Description                                                  |
-|---------------------------|--------------------------------------------------------------|
-| BlockCipherService        | Service for symmetric block cipher encryption/decryption     |
-| BlockCipherServiceFactory | Factory class that creates block cipher services with a mode |
-| BlockCipherEngineFactory  | Factory class that creates block cipher engines              |
+Classes :
+
+- `BlockCipherService`: Service for encryption/decryption with block ciphers
+- `BlockCipherServiceFactory`: IBlockCipherService factory
+- `BlockCipherEngineFactory`: IBlockCipher factory
+- `BlockCipherPaddingFactory`: IBlockCipherPadding factory
+
+Create block cipher service with algorithm name :
 
 ```csharp
-// Create a block cipher service for AES-CBC
-var engineFactory = new BlockCipherEngineFactory();
-var service = new BlockCipherServiceFactory().CreateCbcBlockCipherService(engineFactory.CreateAesEngine);
+// AES-CBC without padding
+var service = new BlockCipherService("AES/CBC/NoPadding");
 
-// Create a PKCS7 padding service
-var padding = new PaddingServiceFactory().CreatePkcs7PaddingService();
+// AES-CBC with PKCS7 padding
+var service = new BlockCipherService("AES/CBC/PKCS7Padding");
+```
+
+Create block cipher service with factories :
+
+```csharp
+// AES-CBC without padding
+var engineFactory = new BlockCipherEngineFactory();
+var service = new BlockCipherServiceFactory().CreateCbcService(engineFactory.CreateAesEngine);
+
+// AES-CBC with PKCS7 padding
+var engineFactory = new BlockCipherEngineFactory();
+var paddingFactory = new BlockCipherPaddingFactory();
+var service = new BlockCipherServiceFactory().CreateCbcService(engineFactory.CreateAesEngine, paddingFactory.CreatePkcs7Padding);
+```
+
+Full example :
+
+```csharp
+// Create a block cipher service for AES/CBC/PKCS7Padding
+var service = new BlockCipherService("AES/CBC/PKCS7Padding");
 
 // Get the key and IV sizes
 var (keySizeInBytes, ivSizeInBytes) = service.GetKeyIvSize();
@@ -41,14 +63,14 @@ var data = Encoding.UTF8.GetBytes("This is a secret message !");
 // Encrypt
 using var inputEnc = new MemoryStream(data);
 using var outputEnc = new MemoryStream();
-await service.EncryptAsync(inputEnc, outputEnc, parameters, padding);
+await service.EncryptAsync(inputEnc, outputEnc, parameters);
 
 var encrypted = outputEnc.ToArray();
 
 // Decrypt
 using var inputDec = new MemoryStream(encrypted);
 using var outputDec = new MemoryStream();
-await service.DecryptAsync(inputDec, outputDec, parameters, padding);
+await service.DecryptAsync(inputDec, outputDec, parameters);
 
 var decrypted = outputDec.ToArray();
 ```
@@ -57,14 +79,16 @@ var decrypted = outputDec.ToArray();
 
 ## Stream ciphers
 
-| Class                      | Description                                               |
-|----------------------------|-----------------------------------------------------------|
-| StreamCipherService        | Service for symmetric stream cipher encryption/decryption |
-| StreamCipherServiceFactory | Factory class that creates stream cipher services         |
+Classes :
+
+- `StreamCipherService`: Service for encryption/decryption with stream ciphers
+- `StreamCipherServiceFactory`: IStreamCipherService factory
+
+Full example :
 
 ```csharp
 // Create a stream cipher service for ChaCha7539
-var service = new StreamCipherServiceFactory().CreateChaCha20Rfc7539StreamCipherService();
+var service = new StreamCipherServiceFactory().CreateChaCha7539Service();
 
 // Get the key and nonce sizes
 var (keySizeInBytes, nonceSizeInBytes) = service.GetKeyNonceSize();
@@ -94,14 +118,16 @@ var decrypted = outputDec.ToArray();
 
 ## Public-key
 
-| Class                   | Description                                                        |
-|-------------------------|--------------------------------------------------------------------|
-| PublicKeyService        | Service for public-key encryption/decryption and signing/verifying |
-| PublicKeyServiceFactory | Factory class that creates public-key services                     |
+Classes :
+
+- `PublicKeyService`: Service for public-key encryption/decryption and signing/verifying
+- `PublicKeyServiceFactory`: IPublicKeyService factory
+
+Full example :
 
 ```csharp
 // Create RSA public-key service
-var service = new PublicKeyServiceFactory().CreateRsaPublicKeyService();
+var service = new PublicKeyServiceFactory().CreateRsaService();
 
 // Generate 4096-bits key pair
 var keyPair = service.GenerateKeyPair(4096);
@@ -137,10 +163,12 @@ var privateKey = service.LoadPrivateKey(privateInput, "yourpassword");
 
 ## Data encoding
 
-| Class         | Description                               |
-|---------------|-------------------------------------------|
-| Base64Service | Service for base64 encoding/decoding      |
-| HexService    | Service for hexadecimal encoding/decoding |
+Classes :
+
+- `Base64Service`: Service for base64 encoding/decoding
+- `HexService`: Service for hexadecimal encoding/decoding
+
+Full example :
 
 ```csharp
 var data = Encoding.UTF8.GetBytes("This is some data");
@@ -160,16 +188,18 @@ var base64Decoded = base64.Decode(base64Encoded);
 
 ## Hash
 
-| Class              | Description                              |
-|--------------------|------------------------------------------|
-| HashService        | Hash service                             |
-| HashServiceFactory | Factory class that creates hash services |
+Classes :
+
+- `HashService`: Hash service
+- `HashServiceFactory`: IHashService factory
+
+Full example :
 
 ```csharp
 var data = Encoding.UTF8.GetBytes("Data to hash");
 
 // Create SHA3 hash service
-var service = new HashServiceFactory().CreateSha3HashService();
+var service = new HashServiceFactory().CreateSha3Service();
 
 // Hash data
 using var input = new MemoryStream(data);
@@ -180,9 +210,11 @@ var hash = await service.HashAsync(input);
 
 ## KDF
 
-| Class         | Description                                    |
-|---------------|------------------------------------------------|
-| Pbkdf2Service | Password-based key derivation function service |
+Classes :
+
+- `Pbkdf2Service`: Password-based key derivation function service
+
+Full example :
 
 ```csharp
 var service = new Pbkdf2Service();
@@ -197,17 +229,19 @@ var key = service.GenerateKey(size: 32, password: "yourpassword", salt, iteratio
 
 ## Padding
 
-| Class                 | Description                                  |
-|-----------------------|----------------------------------------------|
-| NoPaddingService      | No-padding service                           |
-| PaddingService        | Padding service                              |
-| PaddingServiceFactory | Factory class that creates a padding service |
+Classes :
+
+- `NoPaddingService`: No-padding service
+- `PaddingService`: Padding service
+- `PaddingServiceFactory`: IPaddingService factory
+
+Full example :
 
 ```csharp
 var data = Encoding.UTF8.GetBytes("Data to pad");
 
 // Create a PKCS7 padding service
-var service = new PaddingServiceFactory().CreatePkcs7PaddingService();
+var service = new PaddingServiceFactory().CreatePkcs7Service();
 
 // Pad/unpad data with a 16 bytes block size
 var padded = service.Pad(data, blockSize: 16);

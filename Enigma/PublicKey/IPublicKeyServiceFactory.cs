@@ -9,5 +9,5 @@ public interface IPublicKeyServiceFactory
     /// Create a RSA public-key service
     /// </summary>
     /// <param name="signerAlgorithm">Signer algorithm</param>
-    public IPublicKeyService CreateRsaPublicKeyService(string signerAlgorithm);
+    public IPublicKeyService CreateRsaService(string signerAlgorithm);
 }

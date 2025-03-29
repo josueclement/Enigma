@@ -1,6 +1,6 @@
+using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto;
 
 namespace Enigma.BlockCiphers;
 
