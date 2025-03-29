@@ -16,9 +16,8 @@ public class DesEcbTests
     public async Task CsvEncryptTest(byte[] key, byte[] data, byte[] encrypted)
     {
         var engineFactory = new BlockCipherEngineFactory();
-        var service = new BlockCipherServiceFactory().CreateEcbBlockCipherService(engineFactory.CreateDesEngine);
+        var service = new BlockCipherServiceFactory().CreateEcbService(engineFactory.CreateDesEngine);
         var parameters = new KeyParameter(key);
-        var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
@@ -33,9 +32,8 @@ public class DesEcbTests
     public async Task CsvDecryptTest(byte[] key, byte[] data, byte[] encrypted)
     {
         var engineFactory = new BlockCipherEngineFactory();
-        var service = new BlockCipherServiceFactory().CreateEcbBlockCipherService(engineFactory.CreateDesEngine);
+        var service = new BlockCipherServiceFactory().CreateEcbService(engineFactory.CreateDesEngine);
         var parameters = new KeyParameter(key);
-        var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();

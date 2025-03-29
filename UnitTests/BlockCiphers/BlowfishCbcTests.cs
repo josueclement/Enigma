@@ -16,9 +16,8 @@ public class BlowfishCbcTests
     public async Task CsvEncryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
         var engineFactory = new BlockCipherEngineFactory();
-        var service = new BlockCipherServiceFactory().CreateCbcBlockCipherService(engineFactory.CreateBlowfishEngine);
+        var service = new BlockCipherServiceFactory().CreateCbcService(engineFactory.CreateBlowfishEngine);
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
-        var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
@@ -33,9 +32,8 @@ public class BlowfishCbcTests
     public async Task CsvDecryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
         var engineFactory = new BlockCipherEngineFactory();
-        var service = new BlockCipherServiceFactory().CreateCbcBlockCipherService(engineFactory.CreateBlowfishEngine);
+        var service = new BlockCipherServiceFactory().CreateCbcService(engineFactory.CreateBlowfishEngine);
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
-        var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();

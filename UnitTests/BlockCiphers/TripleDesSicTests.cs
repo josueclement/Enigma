@@ -16,9 +16,8 @@ public class TripleDesSicTests
     public async Task CsvEncryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
         var engineFactory = new BlockCipherEngineFactory();
-        var service = new BlockCipherServiceFactory().CreateSicBlockCipherService(engineFactory.CreateTripleDesEngine);
+        var service = new BlockCipherServiceFactory().CreateSicService(engineFactory.CreateTripleDesEngine);
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
-        var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
@@ -33,9 +32,8 @@ public class TripleDesSicTests
     public async Task CsvDecryptTest(byte[] key, byte[] iv, byte[] data, byte[] encrypted)
     {
         var engineFactory = new BlockCipherEngineFactory();
-        var service = new BlockCipherServiceFactory().CreateSicBlockCipherService(engineFactory.CreateTripleDesEngine);
+        var service = new BlockCipherServiceFactory().CreateSicService(engineFactory.CreateTripleDesEngine);
         var parameters = new ParametersWithIV(new KeyParameter(key), iv);
-        var padding = new PaddingServiceFactory().CreateNoPaddingService();
         
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();

@@ -13,7 +13,7 @@ public class ChaCha20Tests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvEncryptTest(byte[] key, byte[] nonce, byte[] data, byte[] encrypted)
     {
-        var service = new StreamCipherServiceFactory().CreateChaCha20StreamCipherService();
+        var service = new StreamCipherServiceFactory().CreateChaCha20Service();
         
         using var msInput = new MemoryStream(data);
         using var msOutput = new MemoryStream();
@@ -27,7 +27,7 @@ public class ChaCha20Tests
     [MemberData(nameof(GetCsvValues))]
     public async Task CsvDecryptTest(byte[] key, byte[] nonce, byte[] data, byte[] encrypted)
     {
-        var service = new StreamCipherServiceFactory().CreateChaCha20StreamCipherService();
+        var service = new StreamCipherServiceFactory().CreateChaCha20Service();
         
         using var msInput = new MemoryStream(encrypted);
         using var msOutput = new MemoryStream();
