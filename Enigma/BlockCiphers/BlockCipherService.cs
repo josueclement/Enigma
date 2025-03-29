@@ -40,21 +40,7 @@ public class BlockCipherService(Func<IBufferedCipher> cipherFactory, int bufferS
     {
         var cipher = cipherFactory();
         cipher.Init(forEncryption: true, cipherParameters);
-        
-        var buffer = new byte[bufferSize];
-        byte[] outputBuffer;
-        int bytesRead;
-    
-        while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) > 0)
-        {
-            outputBuffer = cipher.ProcessBytes(buffer, 0, bytesRead);
-            if (outputBuffer is { Length: > 0 })
-                await output.WriteAsync(outputBuffer, 0, outputBuffer.Length).ConfigureAwait(false);
-        }
-    
-        outputBuffer = cipher.DoFinal();
-        if (outputBuffer is { Length: > 0 })
-            await output.WriteAsync(outputBuffer, 0, outputBuffer.Length).ConfigureAwait(false);
+        await ProcessStreamsAsync(input, output, cipher).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
@@ -62,7 +48,11 @@ public class BlockCipherService(Func<IBufferedCipher> cipherFactory, int bufferS
     {
         var cipher = cipherFactory();
         cipher.Init(forEncryption: false, cipherParameters);
-        
+        await ProcessStreamsAsync(input, output, cipher).ConfigureAwait(false);
+    }
+
+    private async Task ProcessStreamsAsync(Stream input, Stream output, IBufferedCipher cipher)
+    {
         var buffer = new byte[bufferSize];
         byte[] outputBuffer;
         int bytesRead;
@@ -76,6 +66,6 @@ public class BlockCipherService(Func<IBufferedCipher> cipherFactory, int bufferS
     
         outputBuffer = cipher.DoFinal();
         if (outputBuffer is { Length: > 0 })
-            await output.WriteAsync(outputBuffer, 0, outputBuffer.Length).ConfigureAwait(false);
+            await output.WriteAsync(outputBuffer, 0, outputBuffer.Length).ConfigureAwait(false); 
     }
 }
