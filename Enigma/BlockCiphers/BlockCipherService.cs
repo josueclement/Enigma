@@ -11,6 +11,7 @@ namespace Enigma.BlockCiphers;
 /// </summary>
 /// <param name="cipherFactory">Cipher factory</param>
 /// <param name="bufferSize">Buffer size</param>
+// TODO: 2 ctors (cipherFactory like now + algorithmname with utilities)
 public class BlockCipherService(Func<IBufferedCipher> cipherFactory, int bufferSize = 4096) : IBlockCipherService
 {
     /// <inheritdoc />

@@ -7,6 +7,7 @@ namespace Enigma;
 /// <summary>
 /// Definition for block cipher services
 /// </summary>
+// TODO: move interfaces into their directories
 public interface IBlockCipherService
 {
     /// <summary>

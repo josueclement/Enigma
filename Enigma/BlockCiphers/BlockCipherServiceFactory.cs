@@ -7,6 +7,7 @@ namespace Enigma.BlockCiphers;
 /// <summary>
 /// Block cipher service factory
 /// </summary>
+// TODO: Add padding parameter nullable and when null no padding like now
 public class BlockCipherServiceFactory : IBlockCipherServiceFactory
 {
     /// <inheritdoc />
