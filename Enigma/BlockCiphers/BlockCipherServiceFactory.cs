@@ -11,26 +11,26 @@ namespace Enigma.BlockCiphers;
 public class BlockCipherServiceFactory : IBlockCipherServiceFactory
 {
     /// <inheritdoc />
-    public IBlockCipherService CreateEcbService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding>? paddingFactory = null, int bufferSize = 4096)
-    {
-        return paddingFactory is null ?
-            new BlockCipherService(() => new BufferedBlockCipher(new EcbBlockCipher(engineFactory())), bufferSize) :
-            new BlockCipherService(() => new PaddedBufferedBlockCipher(new EcbBlockCipher(engineFactory()), paddingFactory()), bufferSize);
-    }
+    public IBlockCipherService CreateEcbService(Func<IBlockCipher> engineFactory, int bufferSize = 4096)
+        => new BlockCipherService(() => new BufferedBlockCipher(new EcbBlockCipher(engineFactory())), bufferSize);
+    
+    /// <inheritdoc />
+    public IBlockCipherService CreateEcbService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize = 4096)
+        => new BlockCipherService(() => new PaddedBufferedBlockCipher(new EcbBlockCipher(engineFactory()), paddingFactory()), bufferSize);
 
     /// <inheritdoc />
-    public IBlockCipherService CreateCbcService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding>? paddingFactory = null, int bufferSize = 4096)
-    {
-        return paddingFactory is null ?
-            new BlockCipherService(() => new BufferedBlockCipher(new CbcBlockCipher(engineFactory())), bufferSize) :
-            new BlockCipherService(() => new PaddedBufferedBlockCipher(new CbcBlockCipher(engineFactory()), paddingFactory()), bufferSize);
-    }
+    public IBlockCipherService CreateCbcService(Func<IBlockCipher> engineFactory, int bufferSize = 4096)
+        => new BlockCipherService(() => new BufferedBlockCipher(new CbcBlockCipher(engineFactory())), bufferSize);
 
     /// <inheritdoc />
-    public IBlockCipherService CreateSicService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding>? paddingFactory = null, int bufferSize = 4096)
-    {
-        return paddingFactory is null ?
-            new BlockCipherService(() => new BufferedBlockCipher(new SicBlockCipher(engineFactory())), bufferSize) :
-            new BlockCipherService(() => new PaddedBufferedBlockCipher(new SicBlockCipher(engineFactory()), paddingFactory()), bufferSize);
-    }
+    public IBlockCipherService CreateCbcService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize = 4096)
+        => new BlockCipherService(() => new PaddedBufferedBlockCipher(new CbcBlockCipher(engineFactory()), paddingFactory()), bufferSize);
+
+    /// <inheritdoc />
+    public IBlockCipherService CreateSicService(Func<IBlockCipher> engineFactory, int bufferSize = 4096)
+        => new BlockCipherService(() => new BufferedBlockCipher(new SicBlockCipher(engineFactory())), bufferSize);
+
+    /// <inheritdoc />
+    public IBlockCipherService CreateSicService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize = 4096)
+        => new BlockCipherService(() => new PaddedBufferedBlockCipher(new SicBlockCipher(engineFactory()), paddingFactory()), bufferSize);
 }
