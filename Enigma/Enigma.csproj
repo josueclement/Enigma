@@ -9,7 +9,7 @@
 		<Copyright>Copyright © 2025 Josué Clément</Copyright>
 		<PackageId>Enigma.Cryptography</PackageId>
 		<Title>Enigma cryptography library</Title>
-		<Version>3.1.0</Version>
+		<Version>3.1.1</Version>
 		<Description>.NET cryptography library based on BouncyCastle.Cryptography</Description>
 		<PackageTags>enigma cryptography bouncycastle open-source</PackageTags>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
@@ -25,7 +25,6 @@
 	<!-- Readme for the NuGet package -->
 	<PropertyGroup>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageReadmeFile>LICENSE.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
