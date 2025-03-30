@@ -2,16 +2,22 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0;net8.0;net9.0;net472</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<LangVersion>13</LangVersion>
 		<Authors>Josué Clément</Authors>
 		<Copyright>Copyright © 2025 Josué Clément</Copyright>
-		<Product>Enigma</Product>
+		<PackageId>Enigma.Cryptography</PackageId>
+		<Title>Enigma cryptography library</Title>
 		<Version>3.1.0</Version>
+		<Description>.NET cryptography library based on BouncyCastle.Cryptography</Description>
+		<PackageTags>enigma cryptography bouncycastle open-source</PackageTags>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageProjectUrl>https://github.com/josueclement/Enigma</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/josueclement/Enigma.git</RepositoryUrl>
+		<RepositoryUrl>https://github.com/josueclement/Enigma</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
@@ -19,10 +25,12 @@
 	<!-- Readme for the NuGet package -->
 	<PropertyGroup>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReadmeFile>LICENSE.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\LICENSE.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
