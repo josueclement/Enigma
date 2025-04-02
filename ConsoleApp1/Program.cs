@@ -24,49 +24,26 @@ internal static class Program
 
         try
         {
-            // var service = new ModuleLatticeBasedDsaServiceFactory().CreateMlDsa65Service();
-            //
-            // var kp = service.GenerateKeyPair();
-            //
-            // using var pubOutput = new MemoryStream();
-            // PemUtils.SaveKey(kp.Public, pubOutput);
-            // var pub = pubOutput.ToArray();
-            //
-            // using var priOutput = new MemoryStream();
-            // // PemUtils.SavePrivateKey(kp.Private, priOutput, "test1234");
-            // PemUtils.SaveKey(kp.Private, priOutput);
-            // var pri = priOutput.ToArray();
-            //
-            // using var pubInput = new MemoryStream(pub);
-            // var pubRead = PemUtils.LoadKey(pubInput);
-            //
-            // using var priInput = new MemoryStream(pri);
-            // var priRead = PemUtils.LoadKey(priInput);
+            var service = new ModuleLatticeBasedKemServiceFactory().CreateKem1024();
+            
+            var kp = service.GenerateKeyPair();
 
-            var random = new SecureRandom();
-            // Generate ML-KEM-512 key pair.
-            var kpg = new MLKemKeyPairGenerator();
-            kpg.Init(new MLKemKeyGenerationParameters(random, MLKemParameters.ml_kem_1024));
-            var kp = kpg.GenerateKeyPair();
+            var (encapsulation, secret) = service.Encapsulate(kp.Public);
+            var secretDec = service.Decapsulate(kp.Private, encapsulation);
             
-            // Generate an encapsulation to the public key and store the secret.
-            var encapsulator = KemUtilities.GetEncapsulator("ML-KEM-1024");
-            encapsulator.Init(kp.Public);
-            byte[] encapsulation = new byte[encapsulator.EncapsulationLength];
-            byte[] encapSecret = new byte[encapsulator.SecretLength];
-            encapsulator.Encapsulate(encapsulation, 0, encapsulation.Length, encapSecret, 0, encapSecret.Length);
+            using var pubOutput = new MemoryStream();
+            PemUtils.SaveKey(kp.Public, pubOutput);
+            var pub = pubOutput.ToArray();
             
-            // Extract the secret using the private key.
-            var decapsulator = KemUtilities.GetDecapsulator("ML-KEM-1024");
-            decapsulator.Init(kp.Private);
-            byte[] decapSecret = new byte[decapsulator.SecretLength];
-            decapsulator.Decapsulate(encapsulation, 0, encapsulation.Length, decapSecret, 0, decapSecret.Length);
+            using var priOutput = new MemoryStream();
+            PemUtils.SavePrivateKey(kp.Private, priOutput, "test1234");
+            var pri = priOutput.ToArray();
             
-            // Check we got the same secret on both sides.
-            if (Arrays.AreEqual(encapSecret, decapSecret))
-            {
-                Console.WriteLine("Shared secret generated successfully: " + Hex.ToHexString(encapSecret));
-            }
+            using var pubInput = new MemoryStream(pub);
+            var pubRead = PemUtils.LoadKey(pubInput);
+            
+            using var priInput = new MemoryStream(pri);
+            var priRead = PemUtils.LoadPrivateKey(priInput, "test1234");
         }
         catch (Exception ex)
         {

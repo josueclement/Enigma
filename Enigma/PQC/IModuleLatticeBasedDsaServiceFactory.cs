@@ -8,15 +8,15 @@ public interface IModuleLatticeBasedDsaServiceFactory
     /// <summary>
     /// Create ML-DSA 44 service
     /// </summary>
-    IModuleLatticeBasedDsaService CreateMlDsa44Service();
+    IModuleLatticeBasedDsaService CreateDsa44Service();
     
     /// <summary>
     /// Create ML-DSA 65 service
     /// </summary>
-    IModuleLatticeBasedDsaService CreateMlDsa65Service();
+    IModuleLatticeBasedDsaService CreateDsa65Service();
     
     /// <summary>
     /// Create ML-DSA 87 service
     /// </summary>
-    IModuleLatticeBasedDsaService CreateMlDsa87Service();
+    IModuleLatticeBasedDsaService CreateDsa87Service();
 }

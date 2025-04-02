@@ -8,14 +8,14 @@ namespace Enigma.PQC;
 public class ModuleLatticeBasedDsaServiceFactory : IModuleLatticeBasedDsaServiceFactory
 {
     /// <inheritdoc />
-    public IModuleLatticeBasedDsaService CreateMlDsa44Service()
+    public IModuleLatticeBasedDsaService CreateDsa44Service()
         => new ModuleLatticeBasedDsaService(() => MLDsaParameters.ml_dsa_44);
     
     /// <inheritdoc />
-    public IModuleLatticeBasedDsaService CreateMlDsa65Service()
+    public IModuleLatticeBasedDsaService CreateDsa65Service()
         => new ModuleLatticeBasedDsaService(() => MLDsaParameters.ml_dsa_65);
     
     /// <inheritdoc />
-    public IModuleLatticeBasedDsaService CreateMlDsa87Service()
+    public IModuleLatticeBasedDsaService CreateDsa87Service()
         => new ModuleLatticeBasedDsaService(() => MLDsaParameters.ml_dsa_87);
 }
