@@ -1,27 +1,24 @@
-﻿using Enigma.PQC;
+﻿using System;
+using System.IO;
+using System.Text;
 using Enigma.PublicKey;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Security;
-using System.IO;
-using System.Text;
-using System;
 
-namespace Enigma.Extensions;
+namespace Enigma.Utils;
 
 /// <summary>
-/// PEM extensions for <see cref="IModuleLatticeBasedDsaService"/>
+/// Pem utilities
 /// </summary>
-// ReSharper disable once InconsistentNaming
-public static class IModuleLatticeBasedDsaServicePemExtensions
+public static class PemUtils
 {
-    /// <summary>
+   /// <summary>
     /// Save key in PEM format
     /// </summary>
-    /// <param name="service">ML-DSA service</param>
     /// <param name="key">Key to save</param>
     /// <param name="output">Output stream</param>
-    public static void SaveKey(this IModuleLatticeBasedDsaService service, AsymmetricKeyParameter key, Stream output)
+    public static void SaveKey(AsymmetricKeyParameter key, Stream output)
     {
         using var writer = new StreamWriter(output, Encoding.UTF8);
         var pemWriter = new PemWriter(writer);
@@ -31,12 +28,11 @@ public static class IModuleLatticeBasedDsaServicePemExtensions
     /// <summary>
     /// Encrypt and save private key in PEM format
     /// </summary>
-    /// <param name="service">ML-DSA service</param>
     /// <param name="privateKey">Private key to save</param>
     /// <param name="output">Output stream</param>
     /// <param name="password">Password for key encryption</param>
     /// <param name="algorithm">Algorithm for key encryption</param>
-    public static void SavePrivateKey(this IModuleLatticeBasedDsaService service, AsymmetricKeyParameter privateKey, Stream output,
+    public static void SavePrivateKey(AsymmetricKeyParameter privateKey, Stream output,
         string password, string algorithm = "AES-256-CBC")
     {
         using var writer = new StreamWriter(output, Encoding.UTF8);
@@ -47,10 +43,9 @@ public static class IModuleLatticeBasedDsaServicePemExtensions
     /// <summary>
     /// Load key from PEM
     /// </summary>
-    /// <param name="service">ML-DSA service</param>
     /// <param name="input">Input stream</param>
     /// <returns>Key</returns>
-    public static AsymmetricKeyParameter LoadKey(this IModuleLatticeBasedDsaService service, Stream input)
+    public static AsymmetricKeyParameter LoadKey(Stream input)
     {
         using var reader = new StreamReader(input, Encoding.UTF8);
         var pemReader = new PemReader(reader);
@@ -66,11 +61,10 @@ public static class IModuleLatticeBasedDsaServicePemExtensions
     /// <summary>
     /// Load private key from PEM
     /// </summary>
-    /// <param name="service">ML-DSA service</param>
     /// <param name="input">Input stream</param>
     /// <param name="password">Password for key decryption</param>
     /// <returns>Key</returns>
-    public static AsymmetricKeyParameter LoadPrivateKey(this IModuleLatticeBasedDsaService service, Stream input, string password)
+    public static AsymmetricKeyParameter LoadPrivateKey(Stream input, string password)
     {
         using var reader = new StreamReader(input, Encoding.UTF8);
         var pemReader = new PemReader(reader, new PemPasswordFinder(password));
@@ -82,5 +76,5 @@ public static class IModuleLatticeBasedDsaServicePemExtensions
             AsymmetricKeyParameter { IsPrivate: true } key => key,
             _ => throw new InvalidOperationException("No private key found in Pem")
         };
-    }
+    } 
 }

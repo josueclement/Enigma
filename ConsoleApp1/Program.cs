@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using Enigma.PQC;
-using Enigma.Extensions;
+using Enigma.Utils;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Signers;
@@ -25,9 +25,9 @@ internal static class Program
             var service = new ModuleLatticeBasedDsaServiceFactory().CreateMlDsa87Service();
 
             await using var inputPublic = new FileStream(@"C:\Temp\mldsa_public.pem", FileMode.Open, FileAccess.Read);
-            var publicKey = service.LoadKey(inputPublic);
+            var publicKey = PemUtils.LoadKey(inputPublic);
             await using var inputPrivate = new FileStream(@"C:\Temp\mldsa_private.pem", FileMode.Open, FileAccess.Read);
-            var privateKey = service.LoadPrivateKey(inputPrivate, "test1234");
+            var privateKey = PemUtils.LoadPrivateKey(inputPrivate, "test1234");
                 
             // Sign/verify data
             var signature = service.Sign(data, privateKey);
