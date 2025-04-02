@@ -17,10 +17,7 @@ internal static class Program
         {
             var data = "This is a message to sign and verify"u8.ToArray();
 
-            var service = new ModuleLatticeBasedDsaService(
-                keyPairGeneratorFactory: () => new MLDsaKeyPairGenerator(),
-                parametersFactory: () => MLDsaParameters.ml_dsa_65,
-                signerFactory: () => new MLDsaSigner(MLDsaParameters.ml_dsa_65, false));
+            var service = new ModuleLatticeBasedDsaServiceFactory().CreateMlDsa87Service();
 
             var keyPair = service.GenerateKeyPair();
                 

@@ -1,5 +1,4 @@
-﻿using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Crypto;
+﻿using Org.BouncyCastle.Crypto;
 
 namespace Enigma.PQC;
 
