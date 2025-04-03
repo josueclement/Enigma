@@ -11,8 +11,8 @@ namespace Enigma.PQC;
 /// Module-Lattice-Based key-encapsulation mechanism (ML-KEM) service
 /// </summary>
 /// <param name="parametersFactory">Parameters factory</param>
-public class ModuleLatticeBasedKemService(
-    Func<MLKemParameters> parametersFactory) : IModuleLatticeBasedKemService
+public class MLKemService(
+    Func<MLKemParameters> parametersFactory) : IMLKemService
 {
     /// <inheritdoc />
     public AsymmetricCipherKeyPair GenerateKeyPair()

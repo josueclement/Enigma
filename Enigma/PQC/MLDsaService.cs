@@ -11,8 +11,8 @@ namespace Enigma.PQC;
 /// Module-Lattice-Based digital signature algorithm (ML-DSA) service
 /// </summary>
 /// <param name="parametersFactory">Parameters factory</param>
-public class ModuleLatticeBasedDsaService(
-    Func<MLDsaParameters> parametersFactory) : IModuleLatticeBasedDsaService
+public class MLDsaService(
+    Func<MLDsaParameters> parametersFactory) : IMLDsaService
 {
     /// <inheritdoc />
     public AsymmetricCipherKeyPair GenerateKeyPair()

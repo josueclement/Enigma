@@ -5,7 +5,7 @@ namespace Enigma.PQC;
 /// <summary>
 /// Definition for Module-Lattice-Based key-encapsulation mechanism (ML-KEM) service
 /// </summary>
-public interface IModuleLatticeBasedKemService
+public interface IMLKemService
 {
     /// <summary>
     /// Generate key pair

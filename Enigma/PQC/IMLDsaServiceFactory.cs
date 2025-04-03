@@ -3,20 +3,20 @@
 /// <summary>
 /// Definition for Module-Lattice-Based digital signature algorithm (ML-DSA) service factory
 /// </summary>
-public interface IModuleLatticeBasedDsaServiceFactory
+public interface IMLDsaServiceFactory
 {
     /// <summary>
     /// Create ML-DSA 44 service
     /// </summary>
-    IModuleLatticeBasedDsaService CreateDsa44Service();
+    IMLDsaService CreateDsa44Service();
     
     /// <summary>
     /// Create ML-DSA 65 service
     /// </summary>
-    IModuleLatticeBasedDsaService CreateDsa65Service();
+    IMLDsaService CreateDsa65Service();
     
     /// <summary>
     /// Create ML-DSA 87 service
     /// </summary>
-    IModuleLatticeBasedDsaService CreateDsa87Service();
+    IMLDsaService CreateDsa87Service();
 }

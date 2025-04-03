@@ -5,7 +5,7 @@ namespace Enigma.PQC;
 /// <summary>
 /// Definition for Module-Lattice-Based digital signature algorithm (ML-DSA) services
 /// </summary>
-public interface IModuleLatticeBasedDsaService
+public interface IMLDsaService
 {
     /// <summary>
     /// Generate key pair
