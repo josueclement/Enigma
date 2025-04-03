@@ -3,6 +3,7 @@
 /// <summary>
 /// Definition for Module-Lattice-Based key-encapsulation mechanism (ML-KEM) service factory
 /// </summary>
+// ReSharper disable once InconsistentNaming
 public interface IMLKemServiceFactory
 {
     /// <summary>

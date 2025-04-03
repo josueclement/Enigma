@@ -5,6 +5,7 @@ namespace Enigma.PQC;
 /// <summary>
 /// Definition for Module-Lattice-Based digital signature algorithm (ML-DSA) services
 /// </summary>
+// ReSharper disable once InconsistentNaming
 public interface IMLDsaService
 {
     /// <summary>

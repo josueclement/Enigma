@@ -5,6 +5,7 @@ namespace Enigma.PQC;
 /// <summary>
 /// Definition for Module-Lattice-Based key-encapsulation mechanism (ML-KEM) service
 /// </summary>
+// ReSharper disable once InconsistentNaming
 public interface IMLKemService
 {
     /// <summary>

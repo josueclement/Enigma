@@ -3,6 +3,7 @@
 /// <summary>
 /// Definition for Module-Lattice-Based digital signature algorithm (ML-DSA) service factory
 /// </summary>
+// ReSharper disable once InconsistentNaming
 public interface IMLDsaServiceFactory
 {
     /// <summary>

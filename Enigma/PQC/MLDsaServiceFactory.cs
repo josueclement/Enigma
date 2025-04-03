@@ -5,6 +5,7 @@ namespace Enigma.PQC;
 /// <summary>
 /// Module-Lattice-Based digital signature algorithm (ML-DSA) service factory
 /// </summary>
+// ReSharper disable once InconsistentNaming
 public class MLDsaServiceFactory : IMLDsaServiceFactory
 {
     /// <inheritdoc />

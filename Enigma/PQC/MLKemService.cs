@@ -11,6 +11,7 @@ namespace Enigma.PQC;
 /// Module-Lattice-Based key-encapsulation mechanism (ML-KEM) service
 /// </summary>
 /// <param name="parametersFactory">Parameters factory</param>
+// ReSharper disable once InconsistentNaming
 public class MLKemService(
     Func<MLKemParameters> parametersFactory) : IMLKemService
 {
