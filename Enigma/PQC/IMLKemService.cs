@@ -24,8 +24,8 @@ public interface IMLKemService
     /// <summary>
     /// Decapsulate a secret
     /// </summary>
-    /// <param name="privateKey">Private key</param>
     /// <param name="encapsulation">Encapsulation</param>
+    /// <param name="privateKey">Private key</param>
     /// <returns>Secret</returns>
-    byte[] Decapsulate(AsymmetricKeyParameter privateKey, byte[] encapsulation);
+    byte[] Decapsulate(byte[] encapsulation, AsymmetricKeyParameter privateKey);
 }

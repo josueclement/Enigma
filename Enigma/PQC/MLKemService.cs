@@ -35,7 +35,7 @@ public class MLKemService(
     }
 
     /// <inheritdoc />
-    public byte[] Decapsulate(AsymmetricKeyParameter privateKey, byte[] encapsulation)
+    public byte[] Decapsulate(byte[] encapsulation, AsymmetricKeyParameter privateKey)
     {
         var decapsulator = new MLKemDecapsulator(parametersFactory());
         decapsulator.Init(privateKey);
