@@ -349,3 +349,7 @@ var service = new PaddingServiceFactory().CreatePkcs7Service();
 var padded = service.Pad(data, blockSize: 16);
 var unpadded = service.Unpad(padded, blockSize: 16);
 ```
+
+---
+
+Copyright (c) 2025 Josué Clément
