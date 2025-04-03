@@ -4,11 +4,11 @@ Enigma is a .NET cryptography library based on `BouncyCastle.Cryptography`.
 
 ## Acknowledgements
 
-Thanks to the BouncyCastle team for their outstanding work on `BouncyCastle.Cryptography`, which made this project possible.
+Thanks to the Bouncy Castle team for their outstanding work on `BouncyCastle.Cryptography`, which made this project possible.
 
-[GitHub repository](https://github.com/bcgit/bc-csharp)
+[Bouncy Castle GitHub repository](https://github.com/bcgit/bc-csharp)
 
-[Official website](https://www.bouncycastle.org/download/bouncy-castle-c/)
+[Bouncy Castle Official website](https://www.bouncycastle.org/download/bouncy-castle-c/)
 
 ---
 
