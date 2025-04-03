@@ -58,7 +58,7 @@ var key = RandomUtils.GenerateRandomBytes(keySizeInBytes);
 var iv = RandomUtils.GenerateRandomBytes(ivSizeInBytes);
 var parameters = new ParametersWithIV(new KeyParameter(key), iv);
 
-var data = Encoding.UTF8.GetBytes("This is a secret message !");
+var data = "This is a secret message !".GetUtf8Bytes();
 
 // Encrypt
 using var inputEnc = new MemoryStream(data);
@@ -97,7 +97,7 @@ var (keySizeInBytes, nonceSizeInBytes) = service.GetKeyNonceSize();
 var key = RandomUtils.GenerateRandomBytes(keySizeInBytes);
 var nonce = RandomUtils.GenerateRandomBytes(nonceSizeInBytes);
 
-var data = Encoding.UTF8.GetBytes("This is a secret message !");
+var data = "This is a secret message !".GetUtf8Bytes();
 
 // Encrypt
 using var inputEnc = new MemoryStream(data);
@@ -132,7 +132,7 @@ var service = new PublicKeyServiceFactory().CreateRsaService();
 // Generate 4096-bits key pair
 var keyPair = service.GenerateKeyPair(4096);
 
-var data = Encoding.UTF8.GetBytes("This is a secret message");
+var data = "This is a secret message".GetUtf8Bytes();
 
 // Encrypt/decrypt data
 var enc = service.Encrypt(data, keyPair.Public);
@@ -144,19 +144,94 @@ var verified = service.Verify(data, signature, keyPair.Public);
 
 // Save public key in PEM format
 using var publicOutput = new MemoryStream();
-service.SaveKey(keyPair.Public, publicOutput);
+PemUtils.SaveKey(keyPair.Public, publicOutput);
 
 // Save and encrypt private key in PEM format
 using var privateOutput = new MemoryStream();
-service.SavePrivateKey(keyPair.Private, privateOutput, "yourpassword", algorithm: "AES-256-CBC");
+PemUtils.SavePrivateKey(keyPair.Private, privateOutput, "yourpassword", algorithm: "AES-256-CBC");
 
 // Load public key from PEM format
 using var publicInput = new MemoryStream(publicOutput.ToArray());
-var publicKey = service.LoadKey(publicInput);
+var publicKey = PemUtils.LoadKey(publicInput);
 
 // Load and decrypt private key from PEM format
 using var privateInput = new MemoryStream(privateOutput.ToArray());
-var privateKey = service.LoadPrivateKey(privateInput, "yourpassword");
+var privateKey = PemUtils.LoadPrivateKey(privateInput, "yourpassword");
+```
+
+---
+
+## Post-Quantum Cryptography (PQC)
+
+Classes :
+
+- `MLDsaService`: Service Module-Lattice-Based digital signature algorithm (ML-DSA)
+- `MLDsaServiceFactory`: IMLDsaService factory
+- `MLKemService`: Service for Module-Lattice-Based key-encapsulation mechanism (ML-KEM)
+- `MLKemServiceFactory`: IMLKemService factory
+
+ML-DSA example :
+
+```csharp
+// Create ML-DSA-65 service
+var service = new MLDsaServiceFactory().CreateDsa65Service();
+
+// Generate key pair
+var keyPair = service.GenerateKeyPair();
+
+var data = "Data to sign".GetUtf8Bytes();
+
+// Sign/verify data
+var signature = service.Sign(data, keyPair.Private);
+var verified = service.Verify(data, signature, keyPair.Public);
+
+// Save public key in PEM format
+using var publicOutput = new MemoryStream();
+PemUtils.SaveKey(keyPair.Public, publicOutput);
+
+// Save and encrypt private key in PEM format
+using var privateOutput = new MemoryStream();
+PemUtils.SavePrivateKey(keyPair.Private, privateOutput, "yourpassword", algorithm: "AES-256-CBC");
+
+// Load public key from PEM format
+using var publicInput = new MemoryStream(publicOutput.ToArray());
+var publicKey = PemUtils.LoadKey(publicInput);
+
+// Load and decrypt private key from PEM format
+using var privateInput = new MemoryStream(privateOutput.ToArray());
+var privateKey = PemUtils.LoadPrivateKey(privateInput, "yourpassword");
+```
+
+ML-KEM example :
+
+```csharp
+// Create ML-KEM-1024 service
+var service = new MLKemServiceFactory().CreateKem1024();
+
+// Generate key pair
+var keyPair = service.GenerateKeyPair();
+
+// Encapsulate secret key
+var (encapsulation, secret) = service.Encapsulate(keyPair.Public);
+
+// Decapsulate secret key
+var secretDec = service.Decapsulate(encapsulation, keyPair.Private);
+
+// Save public key in PEM format
+using var publicOutput = new MemoryStream();
+PemUtils.SaveKey(keyPair.Public, publicOutput);
+
+// Save and encrypt private key in PEM format
+using var privateOutput = new MemoryStream();
+PemUtils.SavePrivateKey(keyPair.Private, privateOutput, "yourpassword", algorithm: "AES-256-CBC");
+
+// Load public key from PEM format
+using var publicInput = new MemoryStream(publicOutput.ToArray());
+var publicKey = PemUtils.LoadKey(publicInput);
+
+// Load and decrypt private key from PEM format
+using var privateInput = new MemoryStream(privateOutput.ToArray());
+var privateKey = PemUtils.LoadPrivateKey(privateInput, "yourpassword");
 ```
 
 ---
@@ -171,7 +246,7 @@ Classes :
 Full example :
 
 ```csharp
-var data = Encoding.UTF8.GetBytes("This is some data");
+var data = "This is some data".GetUtf8Bytes();
 
 // Encode/decode with hex
 var hex = new HexService();
@@ -182,6 +257,20 @@ var hexDecoded = hex.Decode(hexEncoded);
 var base64 = new Base64Service();
 var base64Encoded = base64.Encode(data);
 var base64Decoded = base64.Decode(base64Encoded);
+```
+
+With extension methods :
+
+```csharp
+var data = "This is some data".GetUtf8Bytes();
+
+// Encode/decode with hex
+var hexEncoded = data.ToHexString();
+var hexDecoded = hexEncoded.FromHexString();
+
+// Encode/decode with base64
+var base64Encoded = data.ToBase64String();
+var base64Decoded = base64Encoded.FromBase64String();
 ```
 
 ---
@@ -196,7 +285,7 @@ Classes :
 Full example :
 
 ```csharp
-var data = Encoding.UTF8.GetBytes("Data to hash");
+var data = "Data to hash".GetUtf8Bytes();
 
 // Create SHA3 hash service
 var service = new HashServiceFactory().CreateSha3Service();
@@ -212,17 +301,30 @@ var hash = await service.HashAsync(input);
 
 Classes :
 
-- `Pbkdf2Service`: Password-based key derivation function service
+- `Pbkdf2Service`: PBKDF2 service
+- `Argon2Service`: Argon2 PBE service
 
-Full example :
+PBKDF2 example :
 
 ```csharp
 var service = new Pbkdf2Service();
 
-var salt = new HexService().Decode("5775ada0513d7d7d7316de8d72d1f4d2");
+var salt = "5775ada0513d7d7d7316de8d72d1f4d2".FromHexString();
 
 // Generate a 32 bytes key based on a password and salt
 var key = service.GenerateKey(size: 32, password: "yourpassword", salt, iterations: 10_000);
+```
+
+Argon2 example :
+
+```csharp
+var service = new Argon2Service();
+
+var passwordData = "yourpassword".GetUtf8Bytes();
+var salt = RandomUtils.GenerateRandomBytes(16);
+
+// Generate a 32 bytes key based on a password and salt
+var key = service.GenerateKey(32, passwordData, salt);
 ```
 
 ---
@@ -238,7 +340,7 @@ Classes :
 Full example :
 
 ```csharp
-var data = Encoding.UTF8.GetBytes("Data to pad");
+var data = "Data to pad".GetUtf8Bytes();
 
 // Create a PKCS7 padding service
 var service = new PaddingServiceFactory().CreatePkcs7Service();
@@ -247,3 +349,7 @@ var service = new PaddingServiceFactory().CreatePkcs7Service();
 var padded = service.Pad(data, blockSize: 16);
 var unpadded = service.Unpad(padded, blockSize: 16);
 ```
+
+---
+
+Copyright (c) 2025 Josué Clément

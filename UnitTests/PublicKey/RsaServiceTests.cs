@@ -1,5 +1,5 @@
-﻿using Enigma.Extensions;
-using Enigma.PublicKey;
+﻿using Enigma.PublicKey;
+using Enigma.Utils;
 using System.IO;
 using System.Text;
 
@@ -13,7 +13,7 @@ public class RsaServiceTests
         var service = new PublicKeyServiceFactory().CreateRsaService();
 
         using var input = new FileStream(@"PublicKey\pub_key1.pem", FileMode.Open, FileAccess.Read);
-        var key = service.LoadKey(input);
+        var key = PemUtils.LoadKey(input);
 
         Assert.NotNull(key);
     }
@@ -24,7 +24,7 @@ public class RsaServiceTests
         var service = new PublicKeyServiceFactory().CreateRsaService();
         
         using var input = new FileStream(@"PublicKey\pk_key1.pem", FileMode.Open, FileAccess.Read);
-        var key = service.LoadPrivateKey(input, "test1234");
+        var key = PemUtils.LoadPrivateKey(input, "test1234");
         
         Assert.NotNull(key);
     }
@@ -35,9 +35,9 @@ public class RsaServiceTests
         var service = new PublicKeyServiceFactory().CreateRsaService();
         
         using var inputPrivate = new FileStream(@"PublicKey\pk_key1.pem", FileMode.Open, FileAccess.Read);
-        var privateKey = service.LoadPrivateKey(inputPrivate, "test1234");
+        var privateKey = PemUtils.LoadPrivateKey(inputPrivate, "test1234");
         using var inputPublic = new FileStream(@"PublicKey\pub_key1.pem", FileMode.Open, FileAccess.Read);
-        var publicKey = service.LoadKey(inputPublic);
+        var publicKey = PemUtils.LoadKey(inputPublic);
         
         var data = Encoding.UTF8.GetBytes("This message will be signed and verified");
         var signature = service.Sign(data, privateKey);
@@ -51,9 +51,9 @@ public class RsaServiceTests
         var service = new PublicKeyServiceFactory().CreateRsaService();
         
         using var inputPrivate = new FileStream(@"PublicKey\pk_key1.pem", FileMode.Open, FileAccess.Read);
-        var privateKey = service.LoadPrivateKey(inputPrivate, "test1234");
+        var privateKey = PemUtils.LoadPrivateKey(inputPrivate, "test1234");
         using var inputPublic = new FileStream(@"PublicKey\pub_key1.pem", FileMode.Open, FileAccess.Read);
-        var publicKey = service.LoadKey(inputPublic);
+        var publicKey = PemUtils.LoadKey(inputPublic);
         
         var data = Encoding.UTF8.GetBytes("This message will be signed and verified");
         var otherData = Encoding.UTF8.GetBytes("This is not gonna work !");
