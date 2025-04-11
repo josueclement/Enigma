@@ -1,4 +1,5 @@
 ﻿using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto;
 
 namespace Enigma.StreamCiphers;
 
@@ -9,13 +10,13 @@ public class StreamCipherServiceFactory : IStreamCipherServiceFactory
 {
     /// <inheritdoc />
     public IStreamCipherService CreateChaCha7539Service()
-        => new StreamCipherService(() => new ChaCha7539Engine());
+        => new StreamCipherService(() => new BufferedStreamCipher(new ChaCha7539Engine()));
 
     /// <inheritdoc />
     public IStreamCipherService CreateChaCha20Service()
-        => new StreamCipherService(() => new ChaChaEngine());
+        => new StreamCipherService(() => new BufferedStreamCipher(new ChaChaEngine()));
 
     /// <inheritdoc />
     public IStreamCipherService CreateSalsa20Service()
-        => new StreamCipherService(() => new Salsa20Engine());
+        => new StreamCipherService(() => new BufferedStreamCipher(new Salsa20Engine()));
 }

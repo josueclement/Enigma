@@ -8,6 +8,7 @@ using Enigma.Padding;
 using Enigma.PublicKey;
 using Enigma.StreamCiphers;
 using Enigma.Utils;
+using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Parameters;
 using System.IO;
 using System.Text;
@@ -24,7 +25,7 @@ internal static class Program
 
         try
         {
-            
+
         }
         catch (Exception ex)
         {

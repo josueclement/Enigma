@@ -35,4 +35,24 @@ public class BlockCipherEngineFactory : IBlockCipherEngineFactory
     /// <inheritdoc />
     public IBlockCipher CreateTripleDesEngine()
         => new DesEdeEngine();
+
+    /// <inheritdoc />
+    public IBlockCipher CreateCast5Engine()
+        => new Cast5Engine();
+
+    /// <inheritdoc />
+    public IBlockCipher CreateIdeaEngine()
+        => new IdeaEngine();
+
+    /// <inheritdoc />
+    public IBlockCipher CreateSeedEngine()
+        => new SeedEngine();
+
+    /// <inheritdoc />
+    public IBlockCipher CreateAriaEngine()
+        => new AriaEngine();
+
+    /// <inheritdoc />
+    public IBlockCipher CreateSm4Engine()
+        => new SM4Engine();
 }

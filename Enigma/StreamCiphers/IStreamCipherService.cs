@@ -9,12 +9,6 @@ namespace Enigma.StreamCiphers;
 public interface IStreamCipherService
 {
     /// <summary>
-    /// Get key and nonce size
-    /// </summary>
-    /// <returns>(key size, nonce size)</returns>
-    (int keySizeInBytes, int nonceSizeInBytes) GetKeyNonceSize();
-    
-    /// <summary>
     /// Asynchronously encrypt
     /// </summary>
     /// <param name="input">Input stream</param>
