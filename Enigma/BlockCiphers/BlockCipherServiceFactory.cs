@@ -31,6 +31,6 @@ public class BlockCipherServiceFactory : IBlockCipherServiceFactory
         => new BlockCipherService(() => new BufferedBlockCipher(new SicBlockCipher(engineFactory())), bufferSize);
 
     /// <inheritdoc />
-    public IBlockCipherService CreateSicService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize = 4096)
-        => new BlockCipherService(() => new PaddedBufferedBlockCipher(new SicBlockCipher(engineFactory()), paddingFactory()), bufferSize);
+    public IBlockCipherService CreateGcmService(Func<IBlockCipher> engineFactory, int bufferSize = 4096)
+        => new BlockCipherService(() => new BufferedAeadBlockCipher(new GcmBlockCipher(engineFactory())), bufferSize);
 }

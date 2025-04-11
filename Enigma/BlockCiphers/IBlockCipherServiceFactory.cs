@@ -47,10 +47,10 @@ public interface IBlockCipherServiceFactory
     IBlockCipherService CreateSicService(Func<IBlockCipher> engineFactory, int bufferSize);
     
     /// <summary>
-    /// Create a block cipher service with Segmented Integer Counter (SIC) mode
+    /// Create a block cipher service with Galois/Counter mode (GCM) mode
     /// </summary>
-    /// <param name="engineFactory">Engine factory</param>
-    /// <param name="paddingFactory">Padding factory</param>
-    /// <param name="bufferSize">Buffer size</param>
-    IBlockCipherService CreateSicService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize);
+    /// <param name="engineFactory"></param>
+    /// <param name="bufferSize"></param>
+    /// <returns></returns>
+    IBlockCipherService CreateGcmService(Func<IBlockCipher> engineFactory, int bufferSize);
 }
