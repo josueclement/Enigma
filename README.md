@@ -68,7 +68,7 @@ AES-256 GCM example :
 // Create block cipher service
 var service = new BlockCipherService("AES/GCM");
 
-// Generate random key and iv
+// Generate random key and nonce
 var key = RandomUtils.GenerateRandomBytes(32);
 var nonce = RandomUtils.GenerateRandomBytes(12);
 var parameters = new BlockCipherParametersFactory().CreateGcmParameters(key, nonce, "associated data".GetUtf8Bytes());
