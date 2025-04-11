@@ -1,7 +1,7 @@
-﻿using Org.BouncyCastle.Crypto;
+﻿using Org.BouncyCastle.Crypto.IO;
+using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Security;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System;
 
@@ -35,33 +35,11 @@ public class BlockCipherService : IBlockCipherService
         : this(() => CipherUtilities.GetCipher(algorithmName), bufferSize) { }
     
     /// <inheritdoc />
-    public (int keySizeInBytes, int ivSizeInBytes) GetKeyIvSize()
-    {
-        var cipher = _cipherFactory();
-        var engineName = cipher.AlgorithmName.Split('/').FirstOrDefault();
-
-        if (engineName is null)
-            throw new InvalidOperationException("Algorithm name not found");
-
-        return engineName switch
-        {
-            "AES" => (32, 16),
-            "Serpent" => (32, 16),
-            "Camellia" => (32, 16),
-            "Twofish" => (32, 16),
-            "Blowfish" => (56, 16),
-            "DESede" => (24, 8),
-            "DES" => (8, 8),
-            _ => throw new NotImplementedException($"GetKeyIvSize not implemented for {engineName}")
-        };
-    }
-    
-    /// <inheritdoc />
     public async Task EncryptAsync(Stream input, Stream output, ICipherParameters cipherParameters)
     {
         var cipher = _cipherFactory();
         cipher.Init(forEncryption: true, cipherParameters);
-        await ProcessStreamsAsync(input, output, cipher).ConfigureAwait(false);
+        await EncryptStreamAsync(input, output, cipher).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
@@ -69,24 +47,28 @@ public class BlockCipherService : IBlockCipherService
     {
         var cipher = _cipherFactory();
         cipher.Init(forEncryption: false, cipherParameters);
-        await ProcessStreamsAsync(input, output, cipher).ConfigureAwait(false);
+        await DecryptStreamAsync(input, output, cipher).ConfigureAwait(false);
     }
 
-    private async Task ProcessStreamsAsync(Stream input, Stream output, IBufferedCipher cipher)
+    private async Task EncryptStreamAsync(Stream input, Stream output, IBufferedCipher cipher)
     {
+        using var cipherStream = new CipherStream(output, null, cipher);
         var buffer = new byte[_bufferSize];
-        byte[] outputBuffer;
         int bytesRead;
-    
         while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) > 0)
         {
-            outputBuffer = cipher.ProcessBytes(buffer, 0, bytesRead);
-            if (outputBuffer is { Length: > 0 })
-                await output.WriteAsync(outputBuffer, 0, outputBuffer.Length).ConfigureAwait(false);
+            await cipherStream.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(false);
         }
-    
-        outputBuffer = cipher.DoFinal();
-        if (outputBuffer is { Length: > 0 })
-            await output.WriteAsync(outputBuffer, 0, outputBuffer.Length).ConfigureAwait(false); 
+    }
+
+    private async Task DecryptStreamAsync(Stream input, Stream output, IBufferedCipher cipher)
+    {
+        using var cipherStream = new CipherStream(input, cipher, null);
+        var buffer = new byte[_bufferSize];
+        int bytesRead;
+        while ((bytesRead = await cipherStream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) > 0)
+        {
+            await output.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(false);
+        } 
     }
 }

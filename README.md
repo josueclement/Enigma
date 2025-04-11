@@ -2,10 +2,6 @@
 
 Enigma is a .NET cryptography library based on `BouncyCastle.Cryptography`.
 
-## Acknowledgements
-
-Thanks to the Bouncy Castle team for their outstanding work on `BouncyCastle.Cryptography`, which made this project possible.
-
 [Bouncy Castle GitHub repository](https://github.com/bcgit/bc-csharp)
 
 [Bouncy Castle Official website](https://www.bouncycastle.org/download/bouncy-castle-c/)
@@ -14,49 +10,96 @@ Thanks to the Bouncy Castle team for their outstanding work on `BouncyCastle.Cry
 
 ## Block ciphers
 
+### Sizes
+
+| Cipher Name      | Block Size (bits) | Supported Key Size(s) (bits) | Notes                                                                     |
+|------------------|-------------------|------------------------------|---------------------------------------------------------------------------|
+| AES              | 128               | 128, 192, 256                | Current global standard. Recommended for new applications.                |
+| DES              | 64                | 56 (effective)               | Insecure. Broken due to small key size. Do not use.                       |
+| 3DES (TripleDES) | 64                | 112, 168 (effective)         | Slow, small block size. Largely superseded by AES. Use with caution.      |
+| Blowfish         | 64                | 32 - 448 (variable)          | Older cipher, 64-bit block size can be problematic (Sweet32).             |
+| Twofish          | 128               | 128, 192, 256                | AES finalist. Strong, but less widely adopted than AES.                   |
+| Serpent          | 128               | 128, 192, 256                | AES finalist. Known for conservative security margin, slower in software. |
+| Camellia         | 128               | 128, 192, 256                | ISO/NESSIE/CRYPTREC standard. Similar performance/security to AES.        |
+| CAST-128 (CAST5) | 64                | 40 - 128 (variable)          | Used in older PGP/GPG. 64-bit block size limitation.                      |
+| IDEA             | 64                | 128                          | Used in older PGP. Patented until ~2012. 64-bit block size limit.         |
+| SEED             | 128               | 128                          | South Korean standard.                                                    |
+| ARIA             | 128               | 128, 192, 256                | South Korean standard, successor to SEED.                                 |
+| SM4              | 128               | 128                          | Chinese national standard.                                                |
+
 Classes :
 
 - `BlockCipherService`: Service for encryption/decryption with block ciphers
 - `BlockCipherServiceFactory`: IBlockCipherService factory
 - `BlockCipherEngineFactory`: IBlockCipher factory
 - `BlockCipherPaddingFactory`: IBlockCipherPadding factory
+- `BlockCipherParametersFactory`: ICipherParameters factory
 
 Create block cipher service with algorithm name :
 
 ```csharp
-// AES-CBC without padding
-var service = new BlockCipherService("AES/CBC/NoPadding");
-
-// AES-CBC with PKCS7 padding
 var service = new BlockCipherService("AES/CBC/PKCS7Padding");
+```
+
+Create block cipher service with algorithm name (no padding) :
+
+```csharp
+var service = new BlockCipherService("AES/CBC/NoPadding");
 ```
 
 Create block cipher service with factories :
 
 ```csharp
-// AES-CBC without padding
-var engineFactory = new BlockCipherEngineFactory();
-var service = new BlockCipherServiceFactory().CreateCbcService(engineFactory.CreateAesEngine);
-
-// AES-CBC with PKCS7 padding
 var engineFactory = new BlockCipherEngineFactory();
 var paddingFactory = new BlockCipherPaddingFactory();
 var service = new BlockCipherServiceFactory().CreateCbcService(engineFactory.CreateAesEngine, paddingFactory.CreatePkcs7Padding);
 ```
 
-Full example :
+Create block cipher service with factories (no padding) :
 
 ```csharp
-// Create a block cipher service for AES/CBC/PKCS7Padding
-var service = new BlockCipherService("AES/CBC/PKCS7Padding");
+var engineFactory = new BlockCipherEngineFactory();
+var service = new BlockCipherServiceFactory().CreateCbcService(engineFactory.CreateAesEngine);
+```
 
-// Get the key and IV sizes
-var (keySizeInBytes, ivSizeInBytes) = service.GetKeyIvSize();
+AES-256 GCM example :
+
+```csharp
+// Create block cipher service
+var service = new BlockCipherService("AES/GCM");
 
 // Generate random key and iv
-var key = RandomUtils.GenerateRandomBytes(keySizeInBytes);
-var iv = RandomUtils.GenerateRandomBytes(ivSizeInBytes);
-var parameters = new ParametersWithIV(new KeyParameter(key), iv);
+var key = RandomUtils.GenerateRandomBytes(32);
+var nonce = RandomUtils.GenerateRandomBytes(12);
+var parameters = new BlockCipherParametersFactory().CreateGcmParameters(key, nonce, "associated data".GetUtf8Bytes());
+
+var data = "This is a secret message !".GetUtf8Bytes();
+
+// Encrypt
+using var inputEnc = new MemoryStream(data);
+using var outputEnc = new MemoryStream();
+await service.EncryptAsync(inputEnc, outputEnc, parameters);
+
+var encrypted = outputEnc.ToArray();
+
+// Decrypt
+using var inputDec = new MemoryStream(encrypted);
+using var outputDec = new MemoryStream();
+await service.DecryptAsync(inputDec, outputDec, parameters);
+
+var decrypted = outputDec.ToArray();
+```
+
+AES-256 CBC example :
+
+```csharp
+// Create block cipher service
+var service = new BlockCipherService("AES/CBC/PKCS7Padding");
+
+// Generate random key and iv
+var key = RandomUtils.GenerateRandomBytes(32);
+var iv = RandomUtils.GenerateRandomBytes(16);
+var parameters = new BlockCipherParametersFactory().CreateCbcParameters(key, iv);
 
 var data = "This is a secret message !".GetUtf8Bytes();
 
@@ -87,15 +130,12 @@ Classes :
 Full example :
 
 ```csharp
-// Create a stream cipher service for ChaCha7539
+// Create stream cipher service
 var service = new StreamCipherServiceFactory().CreateChaCha7539Service();
 
-// Get the key and nonce sizes
-var (keySizeInBytes, nonceSizeInBytes) = service.GetKeyNonceSize();
-
 // Generate random key and nonce
-var key = RandomUtils.GenerateRandomBytes(keySizeInBytes);
-var nonce = RandomUtils.GenerateRandomBytes(nonceSizeInBytes);
+var key = RandomUtils.GenerateRandomBytes(32);
+var nonce = RandomUtils.GenerateRandomBytes(12);
 
 var data = "This is a secret message !".GetUtf8Bytes();
 

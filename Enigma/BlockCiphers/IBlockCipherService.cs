@@ -10,12 +10,6 @@ namespace Enigma.BlockCiphers;
 public interface IBlockCipherService
 {
     /// <summary>
-    /// Get key and IV size
-    /// </summary>
-    /// <returns>(key size, IV size)</returns>
-    (int keySizeInBytes, int ivSizeInBytes) GetKeyIvSize();
-    
-    /// <summary>
     /// Asynchronously encrypt
     /// </summary>
     /// <param name="input">Input stream</param>

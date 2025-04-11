@@ -41,4 +41,29 @@ public interface IBlockCipherEngineFactory
     /// Create TripleDES block cipher engine
     /// </summary>
     IBlockCipher CreateTripleDesEngine();
+    
+    /// <summary>
+    /// Create Cast-128 (CAST5) block cipher engine
+    /// </summary>
+    IBlockCipher CreateCast5Engine();
+    
+    /// <summary>
+    /// Create IDEA block cipher engine
+    /// </summary>
+    IBlockCipher CreateIdeaEngine();
+    
+    /// <summary>
+    /// Create SEED block cipher engine
+    /// </summary>
+    IBlockCipher CreateSeedEngine();
+    
+    /// <summary>
+    /// Create ARIA block cipher engine
+    /// </summary>
+    IBlockCipher CreateAriaEngine();
+    
+    /// <summary>
+    /// Create SM4 block cipher engine
+    /// </summary>
+    IBlockCipher CreateSm4Engine();
 }
