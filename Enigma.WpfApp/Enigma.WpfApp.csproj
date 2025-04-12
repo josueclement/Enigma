@@ -6,6 +6,7 @@
         <LangVersion>13</LangVersion>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
+        <RootNamespace>Enigma.WpfApp</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

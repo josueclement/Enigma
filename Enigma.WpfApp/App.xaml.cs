@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Enigma.WpfApp.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ using NLog.Extensions.Logging;
 using Wpf.Ui;
 using Wpf.Ui.DependencyInjection;
 
-namespace Enigma.Wpf;
+namespace Enigma.WpfApp;
 
 /// <summary>
 /// Interaction logic for App.xaml
@@ -17,15 +18,6 @@ namespace Enigma.Wpf;
 public partial class App
 {
     private static readonly IHost Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
-        // .ConfigureAppConfiguration(c =>
-        // {
-        //     var basePath =
-        //         Path.GetDirectoryName(AppContext.BaseDirectory)
-        //         ?? throw new DirectoryNotFoundException(
-        //             "Unable to find the base directory of the application."
-        //         );
-        //     _ = c.SetBasePath(basePath);
-        // })
         .ConfigureServices((_1, services) =>
         {
             _ = services.AddLogging(builder =>
@@ -44,17 +36,8 @@ public partial class App
             _ = services.AddSingleton<INavigationService, NavigationService>();
             // _ = services.AddSingleton<NavigationHelperService>();
             
-            // _ = services.AddSingleton<MainWindow>();
-            // _ = services.AddSingleton<MainWindowViewModel>();
-
-            // _ = services.AddSingleton<HomePage>();
-            // _ = services.AddSingleton<HomePageViewModel>();
-            // _ = services.AddSingleton<UsersPage>();
-            // _ = services.AddSingleton<UsersPageViewModel>();
-            // _ = services.AddTransient<UserFormPage>();
-            // _ = services.AddTransient<UserFormPageViewModel>();
-            // _ = services.AddSingleton<SettingsPage>();
-            // _ = services.AddSingleton<SettingsPageViewModel>();
+            _ = services.AddSingleton<MainWindow>();
+            _ = services.AddSingleton<MainWindowViewModel>();
         })
         .Build();
     
