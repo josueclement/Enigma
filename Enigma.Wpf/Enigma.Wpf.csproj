@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <LangVersion>13</LangVersion>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+      <PackageReference Include="MdiWpf" Version="2.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.4" />
+      <PackageReference Include="NLog" Version="5.4.0" />
+      <PackageReference Include="NLog.Extensions.Logging" Version="5.4.0" />
+      <PackageReference Include="WPF-UI" Version="4.0.2" />
+      <PackageReference Include="WPF-UI.Abstractions" Version="4.0.2" />
+      <PackageReference Include="WPF-UI.DependencyInjection" Version="4.0.2" />
+    </ItemGroup>
+
+</Project>

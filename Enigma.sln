@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{28DBCDDB-EF7F-48AE-A3DC-9966023DE362}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma.Wpf", "Enigma.Wpf\Enigma.Wpf.csproj", "{8D1AA6F4-112C-4E47-B403-D337F8D062D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{28DBCDDB-EF7F-48AE-A3DC-9966023DE362}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28DBCDDB-EF7F-48AE-A3DC-9966023DE362}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28DBCDDB-EF7F-48AE-A3DC-9966023DE362}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D1AA6F4-112C-4E47-B403-D337F8D062D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D1AA6F4-112C-4E47-B403-D337F8D062D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D1AA6F4-112C-4E47-B403-D337F8D062D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D1AA6F4-112C-4E47-B403-D337F8D062D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
