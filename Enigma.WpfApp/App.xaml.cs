@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Enigma.WpfApp.Services;
 using Enigma.WpfApp.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +35,7 @@ public partial class App
             
             // Service containing navigation, same as INavigationWindow... but without window
             _ = services.AddSingleton<INavigationService, NavigationService>();
-            // _ = services.AddSingleton<NavigationHelperService>();
+            _ = services.AddSingleton<NavigationHelperService>();
             
             _ = services.AddSingleton<MainWindow>();
             _ = services.AddSingleton<MainWindowViewModel>();

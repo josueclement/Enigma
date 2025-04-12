@@ -7,19 +7,21 @@
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                  xmlns:mdi="clr-namespace:MdiWpf;assembly=MdiWpf"
                  mc:Ignorable="d"
-                 Title="MainWindow" Height="450" Width="800">
+                 Height="700" Width="1000"
+                 WindowStartupLocation="CenterScreen"
+                 d:DataContext="{d:DesignInstance local:MainWindow}">
     <Grid>
-        <ui:TitleBar Margin="55 0 0 0"
-                     Title="Window title">
-            <ui:TitleBar.Icon>
-                <ui:ImageIcon Source="{mdi:IconSource IconName='home-city', Brush=White}" />
-            </ui:TitleBar.Icon>
+        <ui:TitleBar Margin="41 0 0 0"
+                     Title="Enigma Wpf App">
+            <!-- <ui:TitleBar.Icon> -->
+            <!--     <ui:ImageIcon Source="{mdi:IconSource IconName='home-city', Brush=White}" /> -->
+            <!-- </ui:TitleBar.Icon> -->
         </ui:TitleBar>
         <ui:NavigationView x:Name="RootNavigation"
                            MenuItemsSource="{Binding ViewModel.NavigationItems}"
                            FooterMenuItemsSource="{Binding ViewModel.FooterNavigationItems}"
                            BreadcrumbBar="{Binding ElementName=BreadcrumbBar}"
-                           IsPaneOpen="False"
+                           IsPaneOpen="True"
                            IsPaneToggleVisible="True">
             <ui:NavigationView.Header>
                 <ui:BreadcrumbBar x:Name="BreadcrumbBar"

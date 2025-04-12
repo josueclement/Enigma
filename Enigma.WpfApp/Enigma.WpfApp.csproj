@@ -21,4 +21,8 @@
       <PackageReference Include="WPF-UI.DependencyInjection" Version="4.0.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Enigma\Enigma.csproj" />
+    </ItemGroup>
+
 </Project>
