@@ -19,7 +19,8 @@ public partial class MainWindow
 
     public MainWindow(MainWindowViewModel viewModel,
         INavigationService navigationService,
-        NavigationHelperService navigationHelperService)
+        NavigationHelperService navigationHelperService,
+        IContentDialogService contentDialogService)
     {
         _navigationService = navigationService;
         _navigationHelperService = navigationHelperService;
@@ -28,6 +29,7 @@ public partial class MainWindow
         DataContext = this;
         
         navigationService.SetNavigationControl(RootNavigation);
+        contentDialogService.SetDialogHost(RootContentDialog);
         
         Loaded += OnLoaded;
         Closed += OnClosed;

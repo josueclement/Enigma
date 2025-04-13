@@ -7,7 +7,14 @@
                              xmlns:controls="clr-namespace:Enigma.WpfApp.Controls"
                              mc:Ignorable="d"
                              d:DataContext="{d:DesignInstance local:RsaPage}">
-    <Grid>
-        
-    </Grid>
+    <DockPanel Margin="10">
+        <StackPanel DockPanel.Dock="Top"
+                    Orientation="Horizontal">
+            <Button Content="Generate key pair"
+                    Command="{Binding ViewModel.GenerateKeyPairCommand}"/>
+        </StackPanel>
+        <Grid>
+            
+        </Grid>
+    </DockPanel>
 </controls:NavigationPageBase>

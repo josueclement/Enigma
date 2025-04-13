@@ -11,6 +11,7 @@
                  WindowStartupLocation="CenterScreen"
                  d:DataContext="{d:DesignInstance local:MainWindow}">
     <Grid>
+        <ContentPresenter x:Name="RootContentDialog" />
         <ui:TitleBar Margin="41 0 0 0"
                      Title="Enigma Wpf App">
             <!-- <ui:TitleBar.Icon> -->

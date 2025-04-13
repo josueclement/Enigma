@@ -60,6 +60,8 @@ public partial class App
             _ = services.AddSingleton<HashPageViewModel>();
             _ = services.AddSingleton<SettingsPage>();
             _ = services.AddSingleton<SettingsPageViewModel>();
+            
+            _ = services.AddSingleton<IContentDialogService, ContentDialogService>();
         })
         .Build();
     
