@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Enigma.WpfApp.ViewModels.Dialogs;
 using Enigma.WpfApp.Views.Dialogs;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
@@ -22,17 +23,21 @@ public class RsaPageViewModel : ObservableObject
 
     public async Task GenerateKeyPairAsync()
     {
-        // ContentDialogResult result = await _dialogService.ShowSimpleDialogAsync(
-        //     new SimpleContentDialogCreateOptions()
-        //     {
-        //         Title = "Save your work?",
-        //         Content = null,
-        //         PrimaryButtonText = "Save",
-        //         SecondaryButtonText = "Don't Save",
-        //         CloseButtonText = "Cancel",
-        //     }
-        // );
-        var dialog = new RsaKeyPairGenerationDialog(_dialogService.GetDialogHost());
-        _ = await dialog.ShowAsync();
+        var keyGenerationDialog = new RsaKeyPairGenerationDialog();
+        var vm = new RsaKeyPairGenerationDialogViewModel();
+        keyGenerationDialog.DataContext = vm;
+        
+        var dialog = new ContentDialog(_dialogService.GetDialogHost()) // Use GetDialogHost()
+        {
+            Title = "Generate RSA Key Pair",
+            Content = keyGenerationDialog, // Set our UserControl as content
+            PrimaryButtonText = "Generate",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
+        };
+        
+        var result = await dialog.ShowAsync();
+
+        var keySize = vm.KeySize;
     }
 }

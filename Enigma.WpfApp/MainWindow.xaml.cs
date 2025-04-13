@@ -29,7 +29,7 @@ public partial class MainWindow
         DataContext = this;
         
         navigationService.SetNavigationControl(RootNavigation);
-        contentDialogService.SetDialogHost(RootContentDialog);
+        contentDialogService.SetDialogHost(RootContentDialogPresenter);
         
         Loaded += OnLoaded;
         Closed += OnClosed;

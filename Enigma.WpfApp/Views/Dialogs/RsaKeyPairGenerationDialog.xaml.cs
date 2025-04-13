@@ -3,16 +3,10 @@ using Wpf.Ui.Controls;
 
 namespace Enigma.WpfApp.Views.Dialogs;
 
-public partial class RsaKeyPairGenerationDialog : ContentDialog
+public partial class RsaKeyPairGenerationDialog : UserControl
 {
-    public RsaKeyPairGenerationDialog(ContentPresenter? contentPresenter)
-        : base(contentPresenter)
+    public RsaKeyPairGenerationDialog()
     {
         InitializeComponent();
-    }
-
-    protected override void OnButtonClick(ContentDialogButton button)
-    {
-        base.OnButtonClick(button);
     }
 }

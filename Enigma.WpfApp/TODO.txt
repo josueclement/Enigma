@@ -1,0 +1,180 @@
+﻿// KeyGenerationDialog.xaml.cs
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data; // Required for Binding
+
+namespace YourAppName.Views.Dialogs
+{
+    public partial class KeyGenerationDialog : UserControl
+    {
+        // --- Validation Dependency Property ---
+        public static readonly DependencyProperty IsDataValidProperty =
+            DependencyProperty.Register(
+                nameof(IsDataValid),
+                typeof(bool),
+                typeof(KeyGenerationDialog),
+                new PropertyMetadata(false)); // Start as invalid initially
+
+        public bool IsDataValid
+        {
+            get { return (bool)GetValue(IsDataValidProperty); }
+            set { SetValue(IsDataValidProperty, value); }
+        }
+        // --- End Validation Dependency Property ---
+
+        public KeyGenerationDialog()
+        {
+            InitializeComponent();
+            // Hook up event handlers to trigger validation
+            PasswordInput.PasswordChanged += Input_Changed;
+            KeySizeComboBox.SelectionChanged += Input_Changed;
+
+            // Perform initial validation check after controls are loaded
+            this.Loaded += (s, e) => ValidateData();
+        }
+
+        // Event handler for input changes
+        private void Input_Changed(object sender, RoutedEventArgs e)
+        {
+            ValidateData();
+        }
+         private void Input_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            ValidateData();
+        }
+
+
+        // Method to perform the validation logic
+        private void ValidateData()
+        {
+            bool isValid = true;
+
+            // Rule 1: Key Size must be selected
+            if (KeySizeComboBox.SelectedItem == null || KeySizeComboBox.SelectedIndex < 0)
+            {
+                isValid = false;
+            }
+
+            // Rule 2: Add more rules if needed (e.g., password complexity)
+            // Example: Password must be at least 8 chars if not empty
+            // string currentPassword = PasswordInput.Password;
+            // if (!string.IsNullOrEmpty(currentPassword) && currentPassword.Length < 8)
+            // {
+            //     isValid = false;
+            //     // Optional: Provide feedback to the user, e.g., show a message
+            // }
+
+            // Update the dependency property
+            this.IsDataValid = isValid;
+        }
+
+        // Property to get the entered password (no change needed)
+        public string Password => PasswordInput.Password;
+
+        // Property to get the selected key size (no change needed)
+        public int SelectedKeySize
+        {
+            get
+            {
+                if (KeySizeComboBox.SelectedItem is ComboBoxItem selectedItem &&
+                    int.TryParse(selectedItem.Content?.ToString(), out int keySize))
+                {
+                    return keySize;
+                }
+                return 0; // Return 0 or throw if invalid state (shouldn't happen if validation works)
+            }
+        }
+    }
+}
+
+
+
+// RsaPageViewModel.cs
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows.Data; // Required for Binding
+using Wpf.Ui.Controls;
+using Wpf.Ui.Contracts;
+using YourAppName.Views.Dialogs;
+
+namespace YourAppName.ViewModels
+{
+    public partial class RsaPageViewModel : ObservableObject
+    {
+        private readonly IContentDialogService _contentDialogService;
+
+        [ObservableProperty]
+        private string? _resultPassword;
+        [ObservableProperty]
+        private int _resultKeySize;
+        [ObservableProperty]
+        private string? _statusMessage;
+
+        public RsaPageViewModel(IContentDialogService contentDialogService)
+        {
+            _contentDialogService = contentDialogService;
+        }
+
+        [RelayCommand]
+        private async Task ShowGenerateDialogAsync()
+        {
+            StatusMessage = "Preparing dialog...";
+            ResultPassword = null;
+            ResultKeySize = 0;
+
+            // 1. Create instance of Dialog UserControl
+            var keyGenerationDialog = new KeyGenerationDialog();
+            // Note: The KeyGenerationDialog's constructor and Loaded event
+            // will handle the initial IsDataValid state.
+
+            // 2. Create the ContentDialog
+            var dialog = new ContentDialog(_contentDialogService.GetDialogHost())
+            {
+                Title = "Generate RSA Key Pair",
+                Content = keyGenerationDialog, // Set UserControl as content
+                PrimaryButtonText = "Generate",
+                CloseButtonText = "Cancel",
+                DefaultButton = ContentDialogButton.Primary
+            };
+
+            // --- > 3. BIND the Primary Button Enabled state <---
+            Binding primaryButtonBinding = new Binding(nameof(KeyGenerationDialog.IsDataValid))
+            {
+                Source = keyGenerationDialog, // Source is our UserControl instance
+                Mode = BindingMode.OneWay // Button enabled depends on UserControl state
+            };
+            dialog.SetBinding(ContentDialog.IsPrimaryButtonEnabledProperty, primaryButtonBinding);
+            // --- > End Binding <---
+
+            try
+            {
+                // 4. Show the dialog
+                var result = await dialog.ShowAsync();
+                StatusMessage = $"Dialog closed with result: {result}";
+
+                // 5. Process result (no change needed here)
+                if (result == ContentDialogResult.Primary)
+                {
+                    ResultPassword = keyGenerationDialog.Password;
+                    ResultKeySize = keyGenerationDialog.SelectedKeySize;
+                    // ... rest of your logic ...
+                    StatusMessage = $"Key generation parameters received: Size={ResultKeySize}, Password Provided={!string.IsNullOrEmpty(ResultPassword)}";
+                    // TODO: GenerateRsaKeys(ResultPassword, ResultKeySize);
+                }
+                else
+                {
+                    StatusMessage = "Key generation cancelled.";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error showing dialog: {ex.Message}";
+                Debug.WriteLine($"Dialog Error: {ex}");
+            }
+        }
+        // ... rest of ViewModel ...
+    }
+}
