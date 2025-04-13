@@ -1,0 +1,13 @@
+﻿<controls:NavigationPageBase x:Class="Enigma.WpfApp.Views.Pages.HashPage"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                             xmlns:local="clr-namespace:Enigma.WpfApp.Views.Pages"
+                             xmlns:controls="clr-namespace:Enigma.WpfApp.Controls"
+                             mc:Ignorable="d"
+                             d:DataContext="{d:DesignInstance local:HashPage}">
+    <Grid>
+        
+    </Grid>
+</controls:NavigationPageBase>

@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Threading;
 using Enigma.WpfApp.Services;
 using Enigma.WpfApp.ViewModels;
+using Enigma.WpfApp.ViewModels.Pages;
+using Enigma.WpfApp.Views.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -39,6 +41,25 @@ public partial class App
             
             _ = services.AddSingleton<MainWindow>();
             _ = services.AddSingleton<MainWindowViewModel>();
+            
+            _ = services.AddSingleton<HomePage>();
+            _ = services.AddSingleton<HomePageViewModel>();
+            _ = services.AddSingleton<RsaPage>();
+            _ = services.AddSingleton<RsaPageViewModel>();
+            _ = services.AddSingleton<MlDsaPage>();
+            _ = services.AddSingleton<MlDsaPageViewModel>();
+            _ = services.AddSingleton<MlKemPage>();
+            _ = services.AddSingleton<MlKemPageViewModel>();
+            _ = services.AddSingleton<BlockCiphersPage>();
+            _ = services.AddSingleton<BlockCiphersPageViewModel>();
+            _ = services.AddSingleton<StreamCiphersPage>();
+            _ = services.AddSingleton<StreamCiphersPageViewModel>();
+            _ = services.AddSingleton<KdfPage>();
+            _ = services.AddSingleton<KdfPageViewModel>();
+            _ = services.AddSingleton<HashPage>();
+            _ = services.AddSingleton<HashPageViewModel>();
+            _ = services.AddSingleton<SettingsPage>();
+            _ = services.AddSingleton<SettingsPageViewModel>();
         })
         .Build();
     
@@ -67,7 +88,7 @@ public partial class App
     /// <summary>
     /// Get services
     /// </summary>
-    private static IServiceProvider Services => Host.Services;
+    public static IServiceProvider Services => Host.Services;
 
     private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
     {

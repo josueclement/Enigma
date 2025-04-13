@@ -3,6 +3,7 @@ using System.Windows;
 using Enigma.WpfApp.Controls;
 using Enigma.WpfApp.Services;
 using Enigma.WpfApp.ViewModels;
+using Enigma.WpfApp.Views.Pages;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
@@ -45,7 +46,7 @@ public partial class MainWindow
     
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        // _navigationService.Navigate(typeof(HomePage));
+        _navigationService.Navigate(typeof(HomePage));
     }
 
     private void OnClosed(object? sender, EventArgs e)
@@ -61,7 +62,7 @@ public partial class MainWindow
         Application.Current.Shutdown();
     }
 
-    private void RootNavigationOnNavigating(NavigationView sender, Wpf.Ui.Controls.NavigatingCancelEventArgs args)
+    private void RootNavigationOnNavigating(NavigationView sender, NavigatingCancelEventArgs args)
     {
         if (_navigationHelperService.CurrentPage is NavigationPageBase page)
             page.OnDisappeared();

@@ -22,7 +22,7 @@
                            FooterMenuItemsSource="{Binding ViewModel.FooterNavigationItems}"
                            BreadcrumbBar="{Binding ElementName=BreadcrumbBar}"
                            IsPaneOpen="True"
-                           IsPaneToggleVisible="True">
+                           IsPaneToggleVisible="False">
             <ui:NavigationView.Header>
                 <ui:BreadcrumbBar x:Name="BreadcrumbBar"
                                   Margin="20 40 20 20"
