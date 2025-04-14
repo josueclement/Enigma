@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Enigma.PublicKey;
 using Enigma.WpfApp.Services;
 using Enigma.WpfApp.ViewModels;
 using Enigma.WpfApp.ViewModels.Pages;
@@ -60,6 +61,8 @@ public partial class App
             _ = services.AddSingleton<HashPageViewModel>();
             _ = services.AddSingleton<SettingsPage>();
             _ = services.AddSingleton<SettingsPageViewModel>();
+            
+            _ = services.AddSingleton<IPublicKeyServiceFactory, PublicKeyServiceFactory>();
             
             _ = services.AddSingleton<IContentDialogService, ContentDialogService>();
         })
