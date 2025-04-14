@@ -88,7 +88,9 @@
             <!-- Encrypt / Decrypt -->
             <ui:CardExpander Grid.Row="1"
                              Margin="0 20 0 0"
-                             Header="Encrypt / Decrypt"/>
+                             Header="Encrypt / Decrypt">
+                <controls:InputData />
+            </ui:CardExpander>
             
             <!-- Sign / Verify -->
             <ui:CardExpander Grid.Row="2"

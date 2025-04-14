@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="Enigma.WpfApp.Controls.InputData"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Enigma.WpfApp.Controls"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:converters="clr-namespace:Enigma.WpfApp.Converters"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance local:InputData}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        
+        <ComboBox Grid.Row="0" Grid.Column="0"
+                  ItemsSource="{Binding DataTypes}"
+                  SelectedItem="{Binding SelectedDataType}"
+                  DisplayMemberPath="DisplayText"
+                  VerticalAlignment="Center"
+                  Margin="0 0 10 0"/>
+        <ui:Button Grid.Row="0" Grid.Column="1"
+                   Icon="{ui:SymbolIcon Add24}"
+                   VerticalAlignment="Center"/>
+        
+        <!-- <ui:TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" -->
+        <!--             Height="80" -->
+        <!--             Margin="0 10 0 0" -->
+        <!--             Text="{Binding Data, Converter={converters:InputDataValueConverter}, ConverterParameter={Binding SelectedDataType}}"/> -->
+        
+        <ui:TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    Height="80"
+                    Margin="0 10 0 0">
+            <ui:TextBox.Text>
+                <MultiBinding Converter="{converters:InputDataValueConverter}">
+                    <Binding Path="Data" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="SelectedDataType" />
+                </MultiBinding>
+            </ui:TextBox.Text>
+        </ui:TextBox>
+    </Grid>
+</UserControl>
