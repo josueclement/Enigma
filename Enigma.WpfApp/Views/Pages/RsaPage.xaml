@@ -89,7 +89,7 @@
             <ui:CardExpander Grid.Row="1"
                              Margin="0 20 0 0"
                              Header="Encrypt / Decrypt">
-                <controls:InputData />
+                <controls:InputData Data="{Binding ViewModel.InputData, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
             </ui:CardExpander>
             
             <!-- Sign / Verify -->

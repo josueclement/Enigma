@@ -7,6 +7,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
+using Enigma.Extensions;
+using InvalidOperationException = System.InvalidOperationException;
 
 namespace Enigma.WpfApp.Controls;
 
@@ -22,19 +24,6 @@ public readonly struct InputDataTypeItem(InputDataType dataType, string displayT
     public InputDataType DataType { get; } = dataType;
     public string DisplayText { get; } = displayText;
 }
-
-// public class InputDataValueConverter : IValueConverter
-// {
-//     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-//     {
-//         return null;
-//     }
-//
-//     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-//     {
-//         return null;
-//     }
-// }
 
 public partial class InputData : INotifyPropertyChanged
 {
@@ -68,7 +57,7 @@ public partial class InputData : INotifyPropertyChanged
         DependencyProperty.Register(name: nameof(Data),
                                     propertyType: typeof(byte[]),
                                     ownerType: typeof(InputData),
-                                    typeMetadata: new PropertyMetadata(null, OnDataPropertyChanged));
+                                    typeMetadata: new FrameworkPropertyMetadata(Array.Empty<byte>(), OnDataPropertyChanged));
     
     /// <summary>
     /// Called when <see cref="DataProperty"/> has changed
@@ -82,16 +71,52 @@ public partial class InputData : INotifyPropertyChanged
     /// Called when <see cref="Data"/> has changed
     /// </summary>
     /// <param name="e">Event</param>
-    protected virtual void OnDataChanged(DependencyPropertyChangedEventArgs e) { }
-
-    public ObservableCollection<InputDataTypeItem> DataTypes { get; }
+    protected virtual void OnDataChanged(DependencyPropertyChangedEventArgs e)
+    {
         
+    }
+
+    public List<InputDataTypeItem> DataTypes { get; }
     
     private InputDataTypeItem? _selectedDataType;
     public InputDataTypeItem? SelectedDataType
     {
         get => _selectedDataType;
-        set => SetField(ref _selectedDataType, value);
+        set
+        {
+            if (SetField(ref _selectedDataType, value))
+                UpdateData();
+        }
+    }
+
+    private string? _dataText;
+    public string? DataText
+    {
+        get => _dataText;
+        set
+        {
+            if (SetField(ref _dataText, value))
+                UpdateData();
+        }
+    }
+
+    private void UpdateData()
+    {
+        if (SelectedDataType is null)
+            return;
+        if (DataText is null)
+        {
+            Data = [];
+            return;
+        }
+
+        Data = SelectedDataType.Value.DataType switch
+        {
+            InputDataType.Hexadecimal => DataText.FromHexString(),
+            InputDataType.Base64 => DataText.FromBase64String(),
+            InputDataType.Utf8Text => DataText.GetUtf8Bytes(),
+            _ => throw new InvalidOperationException("Invalid data type.")
+        };
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

@@ -38,6 +38,13 @@ public class RsaPageViewModel : ObservableObject
         get => _privateKey;
         set => SetProperty(ref _privateKey, value);
     }
+
+    private byte[] _inputData = [];
+    public byte[] InputData
+    {
+        get => _inputData;
+        set => SetProperty(ref _inputData, value);
+    }
     
     public AsyncRelayCommand GenerateKeyPairCommand { get; }
 
