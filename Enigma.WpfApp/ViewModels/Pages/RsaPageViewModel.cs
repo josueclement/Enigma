@@ -9,6 +9,7 @@ using Enigma.Utils;
 using Enigma.WpfApp.Views.Dialogs;
 using Enigma.Extensions;
 using Microsoft.Win32;
+using Org.BouncyCastle.Crypto;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
@@ -29,23 +30,60 @@ public class RsaPageViewModel : ObservableObject
         LoadPublicKeyCommand = new AsyncRelayCommand(LoadPublicKeyAsync);
         LoadPrivateKeyCommand = new AsyncRelayCommand(LoadPrivateKeyAsync);
         LoadEncryptedPrivateKeyCommand = new AsyncRelayCommand(LoadEncryptedPrivateKeyAsync);
-        SavePublicKeyCommand = new AsyncRelayCommand(SavePublicKeyAsync);
-        SavePrivateKeyCommand = new AsyncRelayCommand(SavePrivateKeyAsync);
-        SaveEncryptedPrivateKeyCommand = new AsyncRelayCommand(SaveEncryptedPrivateKeyAsync);
+        SavePublicKeyCommand = new AsyncRelayCommand(SavePublicKeyAsync, () => PublicKey is not null);
+        SavePrivateKeyCommand = new AsyncRelayCommand(SavePrivateKeyAsync, () => PrivateKey is not null);
+        SaveEncryptedPrivateKeyCommand = new AsyncRelayCommand(SaveEncryptedPrivateKeyAsync, () => PrivateKey is not null);
     }
 
-    private string? _publicKey;
-    public string? PublicKey
+    private AsymmetricKeyParameter? _publicKey;
+    public AsymmetricKeyParameter? PublicKey
     {
         get => _publicKey;
-        set => SetProperty(ref _publicKey, value);
+        set
+        {
+            if (SetProperty(ref _publicKey, value))
+            {
+                SavePublicKeyCommand.NotifyCanExecuteChanged();
+                
+                if (value is null) return;
+                using var pubMs = new MemoryStream();
+                PemUtils.SaveKey(value, pubMs);
+                PublicKeyStr = pubMs.ToArray().GetUtf8String(); 
+            }
+        }
+    }
+
+    private string? _publicKeyStrStr;
+    public string? PublicKeyStr
+    {
+        get => _publicKeyStrStr;
+        set => SetProperty(ref _publicKeyStrStr, value);
     }
     
-    private string? _privateKey;
-    public string? PrivateKey
+    private AsymmetricKeyParameter? _privateKey;
+    public AsymmetricKeyParameter? PrivateKey
     {
         get => _privateKey;
-        set => SetProperty(ref _privateKey, value);
+        set
+        {
+            if (SetProperty(ref _privateKey, value))
+            {
+                SavePrivateKeyCommand.NotifyCanExecuteChanged();
+                SaveEncryptedPrivateKeyCommand.NotifyCanExecuteChanged();
+                
+                if (value is null) return;
+                using var priMs = new MemoryStream();
+                PemUtils.SaveKey(value, priMs);
+                PrivateKeyStr = priMs.ToArray().GetUtf8String(); 
+            }
+        }
+    }
+    
+    private string? _privateKeyStrStr;
+    public string? PrivateKeyStr
+    {
+        get => _privateKeyStrStr;
+        set => SetProperty(ref _privateKeyStrStr, value);
     }
 
     private byte[] _inputData = [];
@@ -75,23 +113,13 @@ public class RsaPageViewModel : ObservableObject
             DefaultButton = ContentDialogButton.Primary
         };
         
-        Binding primaryButtonBinding = new Binding(nameof(RsaKeyPairGenerationDialog.IsDataValid))
-        {
-            Source = keyGenerationDialog,
-            Mode = BindingMode.OneWay
-        };
-        dialog.SetBinding(ContentDialog.IsPrimaryButtonEnabledProperty, primaryButtonBinding);
-        
         var result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
         {
-            PublicKey = "Please wait...";
-            PrivateKey = "Please wait...";
+            PublicKeyStr = "Please wait...";
+            PrivateKeyStr = "Please wait...";
             
             var keySize = keyGenerationDialog.KeySize;
-            // string password = keyGenerationDialog.KeyPassword.Password;
-
-            // await GenerateRsaKeyPairAsync(keySize);
             await Task.Run(async () => await GenerateRsaKeyPairAsync(keySize));
         }
     }
@@ -99,14 +127,8 @@ public class RsaPageViewModel : ObservableObject
     private async Task GenerateRsaKeyPairAsync(int keySize)
     {
         var keyPair = _publicKeyService.GenerateKeyPair(keySize);
-        using var pubMs = new MemoryStream();
-        PemUtils.SaveKey(keyPair.Public, pubMs);
-        PublicKey = pubMs.ToArray().GetUtf8String();
-            
-        using var priMs = new MemoryStream();
-        PemUtils.SaveKey(keyPair.Private, priMs);
-        PrivateKey = priMs.ToArray().GetUtf8String();
-
+        PublicKey = keyPair.Public;
+        PrivateKey = keyPair.Private;
         await Task.CompletedTask;
     }
 
@@ -120,8 +142,7 @@ public class RsaPageViewModel : ObservableObject
         if (dialog.ShowDialog() == true)
         {
             await using var input = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read);
-            using var reader = new StreamReader(input);
-            PublicKey = await reader.ReadToEndAsync();
+            PublicKey = PemUtils.LoadKey(input);
         }
     }
 
@@ -135,8 +156,7 @@ public class RsaPageViewModel : ObservableObject
         if (dialog.ShowDialog() == true)
         {
             await using var input = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read);
-            using var reader = new StreamReader(input);
-            PrivateKey = await reader.ReadToEndAsync();
+            PrivateKey = PemUtils.LoadKey(input);
         }
     }
 
@@ -172,12 +192,15 @@ public class RsaPageViewModel : ObservableObject
         {
             var password = passwordDialog.KeyPassword.Password;
             await using var input = new FileStream(fileDialog.FileName, FileMode.Open, FileAccess.Read);
-            // TODO: continue after fix
+            PrivateKey = PemUtils.LoadPrivateKey(input, password);
         }
     }
 
     private async Task SavePublicKeyAsync()
     {
+        if (PublicKey is null)
+            return;
+        
         var dialog = new SaveFileDialog
         {
             Title = "Save public key",
@@ -186,13 +209,15 @@ public class RsaPageViewModel : ObservableObject
         if (dialog.ShowDialog() == true)
         {
             await using var output = new FileStream(dialog.FileName, FileMode.Create, FileAccess.Write);
-            await using var writer = new StreamWriter(output, Encoding.UTF8);
-            await writer.WriteAsync(PublicKey);
+            PemUtils.SaveKey(PublicKey, output);
         }
     }
 
     private async Task SavePrivateKeyAsync()
     {
+        if (PrivateKey is null)
+            return;
+        
         var dialog = new SaveFileDialog
         {
             Title = "Save private key",
@@ -201,13 +226,46 @@ public class RsaPageViewModel : ObservableObject
         if (dialog.ShowDialog() == true)
         {
             await using var output = new FileStream(dialog.FileName, FileMode.Create, FileAccess.Write);
-            await using var writer = new StreamWriter(output, Encoding.UTF8);
-            await writer.WriteAsync(PrivateKey);
+            PemUtils.SaveKey(PrivateKey, output);
         } 
     }
 
     private async Task SaveEncryptedPrivateKeyAsync()
     {
+        if (PrivateKey is null)
+            return;
         
+        var fileDialog = new SaveFileDialog
+        {
+            Title = "Save public key",
+            Filter = "PEM Files (*.pem)|*.pem"
+        };
+        if (fileDialog.ShowDialog() != true)
+            return;
+        
+        var passwordDialog = new PasswordDialog();
+        var dialog = new ContentDialog(_dialogService.GetDialogHost())
+        {
+            Title = "Enter key password",
+            Content = passwordDialog,
+            PrimaryButtonText = "Validate",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
+        };
+        
+        Binding primaryButtonBinding = new Binding(nameof(RsaKeyPairGenerationDialog.IsDataValid))
+        {
+            Source = passwordDialog,
+            Mode = BindingMode.OneWay
+        };
+        dialog.SetBinding(ContentDialog.IsPrimaryButtonEnabledProperty, primaryButtonBinding);
+        
+        var result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            var password = passwordDialog.KeyPassword.Password;
+            await using var output = new FileStream(fileDialog.FileName, FileMode.Create, FileAccess.Write);
+            PemUtils.SavePrivateKey(PrivateKey, output, password);
+        } 
     }
 }
