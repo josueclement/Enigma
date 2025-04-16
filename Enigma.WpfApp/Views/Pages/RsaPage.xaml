@@ -25,10 +25,13 @@
                 <ui:DropDownButton.Flyout>
                     <ContextMenu>
                         <MenuItem Header="Public key"
+                                  Command="{Binding ViewModel.LoadPublicKeyCommand}"
                                   Icon="{ui:SymbolIcon Document24}"/>
                         <MenuItem Header="Private key"
+                                  Command="{Binding ViewModel.LoadPrivateKeyCommand}"
                                   Icon="{ui:SymbolIcon Document24}"/>
                         <MenuItem Header="Encrypted private key"
+                                  Command="{Binding ViewModel.LoadEncryptedPrivateKeyCommand}"
                                   Icon="{ui:SymbolIcon DocumentLock24}"/>
                     </ContextMenu>
                 </ui:DropDownButton.Flyout>
@@ -40,10 +43,13 @@
                 <ui:DropDownButton.Flyout>
                     <ContextMenu>
                         <MenuItem Header="Public key"
+                                  Command="{Binding ViewModel.SavePublicKeyCommand}"
                                   Icon="{ui:SymbolIcon Document24}"/>
                         <MenuItem Header="Private key"
+                                  Command="{Binding ViewModel.SavePrivateKeyCommand}"
                                   Icon="{ui:SymbolIcon Document24}"/>
                         <MenuItem Header="Encrypted private key"
+                                  Command="{Binding ViewModel.SaveEncryptedPrivateKeyCommand}"
                                   Icon="{ui:SymbolIcon DocumentLock24}"/>
                     </ContextMenu>
                 </ui:DropDownButton.Flyout>
