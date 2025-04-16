@@ -8,15 +8,18 @@ public interface IStreamCipherServiceFactory
     /// <summary>
     /// Create ChaCha20Rfc7539 stream cipher service
     /// </summary>
-    IStreamCipherService CreateChaCha7539Service();
+    /// <param name="bufferSize">Buffer size</param>
+    IStreamCipherService CreateChaCha7539Service(int bufferSize = 4096);
     
     /// <summary>
     /// Create ChaCha20 stream cipher service
     /// </summary>
-    IStreamCipherService CreateChaCha20Service();
+    /// <param name="bufferSize">Buffer size</param>
+    IStreamCipherService CreateChaCha20Service(int bufferSize = 4096);
     
     /// <summary>
     /// Create Salsa20 stream cipher service
     /// </summary>
-    IStreamCipherService CreateSalsa20Service();
+    /// <param name="bufferSize">Buffer size</param>
+    IStreamCipherService CreateSalsa20Service(int bufferSize = 4096);
 }
