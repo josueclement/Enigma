@@ -14,7 +14,7 @@ public interface IBlockCipherServiceFactory
     /// </summary>
     /// <param name="engineFactory">Engine factory</param>
     /// <param name="bufferSize">Buffer size</param>
-    IBlockCipherService CreateEcbService(Func<IBlockCipher> engineFactory, int bufferSize);
+    IBlockCipherService CreateEcbService(Func<IBlockCipher> engineFactory, int bufferSize = 4096);
     
     /// <summary>
     /// Create a block cipher service with Electronic Code Book (ECB) mode
@@ -22,14 +22,14 @@ public interface IBlockCipherServiceFactory
     /// <param name="engineFactory">Engine factory</param>
     /// <param name="paddingFactory">Padding factory</param>
     /// <param name="bufferSize">Buffer size</param>
-    IBlockCipherService CreateEcbService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize);
+    IBlockCipherService CreateEcbService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize = 4096);
     
     /// <summary>
     /// Create a block cipher service with Cipher-Block-Chaining (CBC) mode
     /// </summary>
     /// <param name="engineFactory">Engine factory</param>
     /// <param name="bufferSize">Buffer size</param>
-    IBlockCipherService CreateCbcService(Func<IBlockCipher> engineFactory, int bufferSize);
+    IBlockCipherService CreateCbcService(Func<IBlockCipher> engineFactory, int bufferSize = 4096);
     
     /// <summary>
     /// Create a block cipher service with Cipher-Block-Chaining (CBC) mode
@@ -37,14 +37,14 @@ public interface IBlockCipherServiceFactory
     /// <param name="engineFactory">Engine factory</param>
     /// <param name="paddingFactory">Padding factory</param>
     /// <param name="bufferSize">Buffer size</param>
-    IBlockCipherService CreateCbcService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize);
+    IBlockCipherService CreateCbcService(Func<IBlockCipher> engineFactory, Func<IBlockCipherPadding> paddingFactory, int bufferSize = 4096);
     
     /// <summary>
     /// Create a block cipher service with Segmented Integer Counter (SIC) mode
     /// </summary>
     /// <param name="engineFactory">Engine factory</param>
     /// <param name="bufferSize">Buffer size</param>
-    IBlockCipherService CreateSicService(Func<IBlockCipher> engineFactory, int bufferSize);
+    IBlockCipherService CreateSicService(Func<IBlockCipher> engineFactory, int bufferSize = 4096);
     
     /// <summary>
     /// Create a block cipher service with Galois/Counter mode (GCM) mode
@@ -52,5 +52,5 @@ public interface IBlockCipherServiceFactory
     /// <param name="engineFactory"></param>
     /// <param name="bufferSize"></param>
     /// <returns></returns>
-    IBlockCipherService CreateGcmService(Func<IBlockCipher> engineFactory, int bufferSize);
+    IBlockCipherService CreateGcmService(Func<IBlockCipher> engineFactory, int bufferSize = 4096);
 }
