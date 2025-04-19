@@ -1,11 +1,11 @@
 ﻿using Org.BouncyCastle.Crypto.IO;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto;
+using System.Buffers;
 using System.IO;
 using System.Threading.Tasks;
-using System;
-using System.Buffers;
 using System.Threading;
+using System;
 
 namespace Enigma.StreamCiphers;
 
