@@ -25,7 +25,29 @@ internal static class Program
 
         try
         {
+            // Create block cipher service
+            var service = new BlockCipherService("AES/GCM");
 
+            // Generate random key and nonce
+            var key = RandomUtils.GenerateRandomBytes(32);
+            var nonce = RandomUtils.GenerateRandomBytes(12);
+            var parameters = new BlockCipherParametersFactory().CreateGcmParameters(key, nonce, "associated data".GetUtf8Bytes());
+
+            var data = "This is a secret message !".GetUtf8Bytes();
+
+            // Encrypt
+            using var inputEnc = new MemoryStream(data);
+            using var outputEnc = new MemoryStream();
+            await service.EncryptAsync(inputEnc, outputEnc, parameters);
+
+            var encrypted = outputEnc.ToArray();
+
+            // Decrypt
+            using var inputDec = new MemoryStream(encrypted);
+            using var outputDec = new MemoryStream();
+            await service.DecryptAsync(inputDec, outputDec, parameters);
+
+            var decrypted = outputDec.ToArray();
         }
         catch (Exception ex)
         {
