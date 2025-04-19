@@ -4,7 +4,10 @@ using Org.BouncyCastle.Crypto;
 namespace Enigma.BlockCiphers;
 
 /// <summary>
-/// Block cipher parameters factory
+/// Factory for creating various block cipher parameters used in cryptographic operations.
+/// This class implements the <see cref="IBlockCipherParametersFactory"/> interface and 
+/// provides methods to create parameters for different cipher modes including ECB, CBC, 
+/// SIC (CTR mode), and GCM, with appropriate initialization vectors and authentication data.
 /// </summary>
 public class BlockCipherParametersFactory : IBlockCipherParametersFactory
 {

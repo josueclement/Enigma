@@ -7,7 +7,9 @@ using System;
 namespace Enigma.BlockCiphers;
 
 /// <summary>
-/// Definition for block cipher services
+/// Provides cryptographic services for block cipher operations. This interface defines methods
+/// for encrypting and decrypting data using block ciphers with configurable parameters,
+/// supporting asynchronous operations with progress reporting and cancellation capabilities.
 /// </summary>
 public interface IBlockCipherService
 {
