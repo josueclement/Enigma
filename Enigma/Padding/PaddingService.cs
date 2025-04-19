@@ -4,9 +4,16 @@ using System;
 namespace Enigma.Padding;
 
 /// <summary>
-/// Padding service
+/// Provides padding and unpadding functionality for block cipher operations.
+/// This service uses BouncyCastle's padding mechanisms to ensure data blocks
+/// are properly sized for encryption and decryption operations.
 /// </summary>
-/// <param name="paddingFactory">Padding factory</param>
+/// <remarks>
+/// The service is initialized with a factory function that creates padding instances.
+/// It supports padding data to match block size requirements and removing padding
+/// from previously padded data.
+/// </remarks>
+/// <param name="paddingFactory">Factory function that creates IBlockCipherPadding instances</param>
 public class PaddingService(Func<IBlockCipherPadding> paddingFactory) : IPaddingService
 {
     /// <inheritdoc />
