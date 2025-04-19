@@ -4,53 +4,131 @@ using Org.BouncyCastle.Crypto;
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using System.Buffers;
+using System.Threading;
 
 namespace Enigma.StreamCiphers;
 
 /// <summary>
 /// Stream cipher service
 /// </summary>
-/// <param name="cipherFactory">Cipher factory</param>
-/// <param name="bufferSize">Buffer size</param>
-public class StreamCipherService(Func<IBufferedCipher> cipherFactory, int bufferSize = 4096) : IStreamCipherService
+public class StreamCipherService : IStreamCipherService
 {
-    /// <inheritdoc />
-    public async Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce)
+    private readonly Func<IBufferedCipher> _cipherFactory;
+    private readonly int _bufferSize;
+    private readonly ArrayPool<byte> _arrayPool;
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StreamCipherService"/> class using a custom cipher factory
+    /// </summary>
+    /// <param name="cipherFactory">Cipher factory</param>
+    /// <param name="bufferSize">Buffer size. Default is 4096 bytes (4kB)</param>
+    public StreamCipherService(Func<IBufferedCipher> cipherFactory, int bufferSize = 4096)
     {
-        var cipher = cipherFactory();
-        var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
-        cipher.Init(true, parameters);
-        await EncryptStreamAsync(input, output, cipher).ConfigureAwait(false);
-    }
-
-    /// <inheritdoc />
-    public async Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce)
-    {
-        var cipher = cipherFactory();
-        var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
-        cipher.Init(false, parameters);
-        await DecryptStreamAsync(input, output, cipher).ConfigureAwait(false);
+        _cipherFactory = cipherFactory;
+        _bufferSize = bufferSize;
+        _arrayPool = ArrayPool<byte>.Shared;
     }
     
-    private async Task EncryptStreamAsync(Stream input, Stream output, IBufferedCipher cipher)
+    /// <inheritdoc />
+    public async Task EncryptAsync(
+        Stream input,
+        Stream output,
+        byte[] key,
+        byte[] nonce,
+        IProgress<long>? progress = null,
+        CancellationToken cancellationToken = default)
     {
-        using var cipherStream = new CipherStream(output, null, cipher);
-        var buffer = new byte[bufferSize];
-        int bytesRead;
-        while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) > 0)
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        // Create and initialize the cipher
+        var cipher = _cipherFactory();
+        var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
+        cipher.Init(true, parameters);
+        
+        // Create a cipher stream for encryption
+        using var cipherStream = new CipherStream(output, readCipher: null, writeCipher: cipher);
+        
+        // Rent a buffer from the pool
+        var buffer = _arrayPool.Rent(_bufferSize);
+
+        try
         {
-            await cipherStream.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(false);
+            int bytesRead;
+            long totalBytesProgress = 0;
+            
+            // Read from the input stream
+            while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                
+                // Write to the cipher stream
+                await cipherStream.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
+                
+                // Report progress
+                totalBytesProgress += bytesRead;
+                progress?.Report(totalBytesProgress);
+            }
+            
+            // Flush the cipher stream
+            await cipherStream.FlushAsync(cancellationToken).ConfigureAwait(false);
+        }
+        finally
+        {
+            // Clear the buffer and return it to the pool
+            Array.Clear(buffer, 0, buffer.Length);
+            _arrayPool.Return(buffer);
         }
     }
 
-    private async Task DecryptStreamAsync(Stream input, Stream output, IBufferedCipher cipher)
+    /// <inheritdoc />
+    public async Task DecryptAsync(
+        Stream input,
+        Stream output,
+        byte[] key,
+        byte[] nonce,
+        IProgress<long>? progress = null,
+        CancellationToken cancellationToken = default)
     {
-        using var cipherStream = new CipherStream(input, cipher, null);
-        var buffer = new byte[bufferSize];
-        int bytesRead;
-        while ((bytesRead = await cipherStream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) > 0)
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        // Create and initialize the cipher
+        var cipher = _cipherFactory();
+        var parameters = new ParametersWithIV(new KeyParameter(key), nonce);
+        cipher.Init(false, parameters);
+        
+        // Create a cipher stream for decryption
+        using var cipherStream = new CipherStream(input, readCipher: cipher, writeCipher: null);
+        
+        // Rent a buffer from the pool
+        var buffer = _arrayPool.Rent(_bufferSize);
+
+        try
         {
-            await output.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(false);
-        } 
+            int bytesRead;
+            long totalBytesProgress = 0;
+            
+            // Read from the cipher stream
+            while ((bytesRead = await cipherStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                
+                // Write to the output stream
+                await output.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
+                
+                // Report progress
+                totalBytesProgress += bytesRead;
+                progress?.Report(totalBytesProgress);
+            }
+            
+            // Flush the output stream
+            await output.FlushAsync(cancellationToken).ConfigureAwait(false);
+        }
+        finally
+        {
+            // Clear the buffer and return it to the pool
+            Array.Clear(buffer, 0, buffer.Length);
+            _arrayPool.Return(buffer);
+        }
     }
 }

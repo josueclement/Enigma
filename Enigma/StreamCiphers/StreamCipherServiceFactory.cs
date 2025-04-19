@@ -4,7 +4,7 @@ using Org.BouncyCastle.Crypto;
 namespace Enigma.StreamCiphers;
 
 /// <summary>
-/// Stream cipher service factory
+/// A factory for creating stream cipher services.
 /// </summary>
 public class StreamCipherServiceFactory : IStreamCipherServiceFactory
 {
