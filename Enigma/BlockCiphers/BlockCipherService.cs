@@ -55,9 +55,45 @@ public class BlockCipherService : IBlockCipherService
         IProgress<long>? progress = null,
         CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        // Create and initialize the cipher
         var cipher = _cipherFactory();
         cipher.Init(forEncryption: true, cipherParameters);
-        await EncryptStreamAsync(input, output, cipher, progress, cancellationToken).ConfigureAwait(false);
+        
+        // Create a cipher stream for encryption
+        using var cipherStream = new CipherStream(output, readCipher: null, writeCipher: cipher);
+        
+        // Rent a buffer from the pool
+        var buffer = _arrayPool.Rent(_bufferSize);
+        
+        try
+        {
+            int bytesRead;
+            long totalBytesProgress = 0;
+            
+            // Read from the input stream
+            while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                
+                // Write to the cipher stream
+                await cipherStream.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
+
+                // Report progress
+                totalBytesProgress += bytesRead;
+                progress?.Report(totalBytesProgress);
+            }
+
+            // Flush the cipher stream
+            await cipherStream.FlushAsync(cancellationToken).ConfigureAwait(false);
+        }
+        finally
+        {
+            // Clear the buffer and return it to the pool
+            Array.Clear(buffer, 0, buffer.Length);
+            _arrayPool.Return(buffer);
+        } 
     }
 
     /// <inheritdoc />
@@ -68,57 +104,16 @@ public class BlockCipherService : IBlockCipherService
         IProgress<long>? progress = null,
         CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        // Create and initialize the cipher
         var cipher = _cipherFactory();
         cipher.Init(forEncryption: false, cipherParameters);
-        await DecryptStreamAsync(input, output, cipher, progress, cancellationToken).ConfigureAwait(false);
-    }
-
-    private async Task EncryptStreamAsync(
-        Stream input,
-        Stream output,
-        IBufferedCipher cipher,
-        IProgress<long>? progress = null,
-        CancellationToken cancellationToken = default)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
         
-        using var cipherStream = new CipherStream(output, null, cipher);
-        var buffer = _arrayPool.Rent(_bufferSize);
+        // Create a cipher stream for decryption
+        using var cipherStream = new CipherStream(input, readCipher: cipher, writeCipher: null);
         
-        try
-        {
-            int bytesRead;
-            long totalBytesProgress = 0;
-            
-            while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                
-                await cipherStream.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
-
-                totalBytesProgress += bytesRead;
-                progress?.Report(totalBytesProgress);
-            }
-
-            await cipherStream.FlushAsync(cancellationToken).ConfigureAwait(false);
-        }
-        finally
-        {
-            Array.Clear(buffer, 0, buffer.Length);
-            _arrayPool.Return(buffer);
-        }
-    }
-
-    private async Task DecryptStreamAsync(
-        Stream input,
-        Stream output,
-        IBufferedCipher cipher,
-        IProgress<long>? progress = null,
-        CancellationToken cancellationToken = default)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-        
-        using var cipherStream = new CipherStream(input, cipher, null);
+        // Rent a buffer from the pool
         var buffer = _arrayPool.Rent(_bufferSize);
 
         try
@@ -126,20 +121,25 @@ public class BlockCipherService : IBlockCipherService
             int bytesRead;
             long totalBytesProgress = 0;
             
+            // Read from the cipher stream
             while ((bytesRead = await cipherStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 
+                // Write to the output stream
                 await output.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
                 
+                // Report progress
                 totalBytesProgress += bytesRead;
                 progress?.Report(totalBytesProgress);
             }
 
+            // Flush the output stream
             await output.FlushAsync(cancellationToken).ConfigureAwait(false);
         }
         finally
         {
+            // Clear the buffer and return it to the pool
             Array.Clear(buffer, 0, buffer.Length);
             _arrayPool.Return(buffer);
         }
