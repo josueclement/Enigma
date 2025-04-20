@@ -25,25 +25,7 @@ internal static class Program
 
         try
         {
-            // KDF = ARGON2ID
-            // Ctrl.lanes = lanes:4
-            // Ctrl.iter = iter:3
-            // Ctrl.memcost = memcost:32
-            // Ctrl.pass = hexpass:0101010101010101010101010101010101010101010101010101010101010101
-            // Ctrl.salt = hexsalt:02020202020202020202020202020202
-            // Output = 03aab965c12001c9d7d0d2de33192c0494b684bb148196d73c1df1acaf6d0c2e
             
-            
-            
-            var service = new Argon2Service();
-            var key = service.GenerateKey(
-                size: 32,
-                passwordBytes: "".FromHexString(),
-                salt: "02020202020202020202020202020202".FromHexString(),
-                iterations: 3,
-                parallelism: 4,
-                memoryPowOfTwo: 5);
-            var res = key.ToHexString();
         }
         catch (Exception ex)
         {

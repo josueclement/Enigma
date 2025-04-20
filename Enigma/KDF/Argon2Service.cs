@@ -4,18 +4,18 @@ using Org.BouncyCastle.Crypto.Parameters;
 namespace Enigma.KDF;
 
 /// <summary>
-/// Service for password-based key derivation using the Argon2id algorithm.
+/// Service for password-based key derivation using the Argon2 algorithm family.
 /// Argon2 is a memory-hard password hashing function designed to be resistant to
 /// GPU, ASIC, and side-channel attacks.
 /// </summary>
 /// <remarks>
-/// This implementation uses BouncyCastle's Argon2BytesGenerator with the Argon2id variant,
-/// which combines the security benefits of Argon2i and Argon2d.
+/// This implementation uses BouncyCastle's Argon2BytesGenerator which supports all
+/// Argon2 variants (Argon2d, Argon2i, and Argon2id) configurable through parameters.
 /// </remarks>
 public class Argon2Service
 {
     /// <summary>
-    /// Generates a cryptographic key using the Argon2id password-based key derivation function.
+    /// Generates a cryptographic key using the Argon2 password-based key derivation function.
     /// </summary>
     /// <param name="size">The size of the derived key in bytes.</param>
     /// <param name="passwordBytes">The password bytes to derive the key from.</param>
@@ -39,9 +39,9 @@ public class Argon2Service
     /// <param name="argon2Variant">
     /// The Argon2 variant to use. Default is Argon2id (0x02).
     /// <list type="bullet">
-    /// <item><description>0x00: Argon2d</description></item>
-    /// <item><description>0x01: Argon2i</description></item>
-    /// <item><description>0x02: Argon2id</description></item>
+    /// <item><description>0x00: Argon2d - Provides the highest resistance against GPU cracking attacks</description></item>
+    /// <item><description>0x01: Argon2i - Provides protection against side-channel attacks</description></item>
+    /// <item><description>0x02: Argon2id - Hybrid mode that combines Argon2i and Argon2d approaches</description></item>
     /// </list>
     /// </param>
     /// <param name="argon2Version">
