@@ -3,7 +3,7 @@ using Org.BouncyCastle.Utilities.Encoders;
 namespace Enigma.DataEncoding;
 
 /// <summary>
-/// Base64 encoding service
+/// Provides methods for encoding and decoding data using the Base64 algorithm.
 /// </summary>
 public class Base64Service : IEncodingService
 {

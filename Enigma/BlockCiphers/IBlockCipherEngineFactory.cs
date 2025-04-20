@@ -3,67 +3,67 @@
 namespace Enigma.BlockCiphers;
 
 /// <summary>
-/// Definition for block cipher engine factory
+/// Factory interface for creating various block cipher engine implementations.
 /// </summary>
 public interface IBlockCipherEngineFactory
 {
     /// <summary>
-    /// Create AES block cipher engine
+    /// Creates a new instance of an AES block cipher engine
     /// </summary>
     IBlockCipher CreateAesEngine();
 
     /// <summary>
-    /// Create Serpent block cipher engine
+    /// Creates a new instance of a Serpent block cipher engine
     /// </summary>
     IBlockCipher CreateSerpentEngine();
 
     /// <summary>
-    /// Create Camellia block cipher engine
+    /// Creates a new instance of a Camellia block cipher engine
     /// </summary>
     IBlockCipher CreateCamelliaEngine();
 
     /// <summary>
-    /// Create Twofish block cipher engine
+    /// Creates a new instance of a Twofish block cipher engine
     /// </summary>
     IBlockCipher CreateTwofishEngine();
     
     /// <summary>
-    /// Create Blowfish block cipher engine
+    /// Creates a new instance of a Blowfish block cipher engine
     /// </summary>
     IBlockCipher CreateBlowfishEngine();
     
     /// <summary>
-    /// Create DES block cipher engine
+    /// Creates a new instance of a DES block cipher engine
     /// </summary>
     IBlockCipher CreateDesEngine();
     
     /// <summary>
-    /// Create TripleDES block cipher engine
+    /// Creates a new instance of a TripleDES block cipher engine
     /// </summary>
     IBlockCipher CreateTripleDesEngine();
     
     /// <summary>
-    /// Create Cast-128 (CAST5) block cipher engine
+    /// Creates a new instance of a Cast-128 (CAST5) block cipher engine
     /// </summary>
     IBlockCipher CreateCast5Engine();
     
     /// <summary>
-    /// Create IDEA block cipher engine
+    /// Creates a new instance of an IDEA block cipher engine
     /// </summary>
     IBlockCipher CreateIdeaEngine();
     
     /// <summary>
-    /// Create SEED block cipher engine
+    /// Creates a new instance of a SEED block cipher engine
     /// </summary>
     IBlockCipher CreateSeedEngine();
     
     /// <summary>
-    /// Create ARIA block cipher engine
+    /// Creates a new instance of an ARIA block cipher engine
     /// </summary>
     IBlockCipher CreateAriaEngine();
     
     /// <summary>
-    /// Create SM4 block cipher engine
+    /// Creates a new instance of a SM4 block cipher engine
     /// </summary>
     IBlockCipher CreateSm4Engine();
 }

@@ -3,7 +3,8 @@
 namespace Enigma.BlockCiphers;
 
 /// <summary>
-/// Block cipher padding factory
+/// Factory for creating various block cipher padding implementations.
+/// Provides methods to instantiate standard padding mechanisms such as PKCS7, ISO7816, ISO10126, and X923.
 /// </summary>
 public class BlockCipherPaddingFactory : IBlockCipherPaddingFactory
 {

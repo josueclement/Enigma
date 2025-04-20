@@ -3,8 +3,13 @@
 namespace Enigma.Hash;
 
 /// <summary>
-/// Hash service factory
+/// Factory for creating various cryptographic hash service implementations.
 /// </summary>
+/// <remarks>
+/// This factory provides methods to create different hash services including MD5, SHA-1, 
+/// SHA-3, SHA-256, and SHA-512, each with configurable buffer sizes for optimizing performance.
+/// All hash implementations are based on the BouncyCastle cryptography library.
+/// </remarks>
 public class HashServiceFactory : IHashServiceFactory
 {
     /// <inheritdoc />
