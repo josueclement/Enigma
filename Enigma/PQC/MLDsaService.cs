@@ -8,9 +8,14 @@ using System;
 namespace Enigma.PQC;
 
 /// <summary>
-/// Module-Lattice-Based digital signature algorithm (ML-DSA) service
+/// Provides implementation for the Module-Lattice-Based Digital Signature Algorithm (ML-DSA), a post-quantum cryptographic signing scheme.
 /// </summary>
-/// <param name="parametersFactory">Parameters factory</param>
+/// <remarks>
+/// This service offers key generation, message signing, and signature verification operations using the ML-DSA algorithm.
+/// The implementation uses BouncyCastle's cryptographic libraries and allows configurable parameters through a factory pattern.
+/// ML-DSA is designed to be secure against quantum computer attacks, unlike traditional public-key algorithms.
+/// </remarks>
+/// <param name="parametersFactory">Factory function that provides algorithm-specific parameters for the ML-DSA operations</param>
 // ReSharper disable once InconsistentNaming
 public class MLDsaService(
     Func<MLDsaParameters> parametersFactory) : IMLDsaService

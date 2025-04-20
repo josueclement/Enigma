@@ -1,28 +1,50 @@
 using System.IO;
 using System.Threading.Tasks;
+using System.Threading;
+using System;
 
 namespace Enigma.StreamCiphers;
 
 /// <summary>
-/// Definition for stream cipher services
+/// Provides cryptographic services for stream cipher operations. This interface defines methods
+/// for encrypting and decrypting data using stream ciphers with configurable parameters,
+/// supporting asynchronous operations with progress reporting and cancellation capabilities.
 /// </summary>
 public interface IStreamCipherService
 {
     /// <summary>
-    /// Asynchronously encrypt
+    /// Encrypts data from the input stream to the output stream using the specified key and nonce.
     /// </summary>
-    /// <param name="input">Input stream</param>
-    /// <param name="output">Output stream</param>
-    /// <param name="key">Key</param>
-    /// <param name="nonce">Nonce</param>
-    Task EncryptAsync(Stream input, Stream output, byte[] key, byte[] nonce);
+    /// <param name="input">The input stream containing the plaintext data</param>
+    /// <param name="output">The output stream where encrypted data will be written</param>
+    /// <param name="key">The secret key used for encryption/decryption</param>
+    /// <param name="nonce">Number used once that must be unique for each encryption with the same key</param>
+    /// <param name="progress">Optional progress reporting mechanism that reports bytes processed.</param>
+    /// <param name="cancellationToken">Optional cancellation token to cancel the operation</param>
+    /// <returns>A task representing the asynchronous encryption operation</returns>
+    Task EncryptAsync(
+        Stream input,
+        Stream output,
+        byte[] key,
+        byte[] nonce,
+        IProgress<long>? progress = null,
+        CancellationToken cancellationToken = default);
     
     /// <summary>
-    /// Asynchronously decrypt
+    /// Decrypts data from the input stream to the output stream using the specified key and nonce.
     /// </summary>
-    /// <param name="input">Input stream</param>
-    /// <param name="output">Output stream</param>
-    /// <param name="key">Key</param>
-    /// <param name="nonce">Nonce</param> 
-    Task DecryptAsync(Stream input, Stream output, byte[] key, byte[] nonce);
+    /// <param name="input">The input stream containing the encrypted data</param>
+    /// <param name="output">The output stream where decrypted data will be written</param>
+    /// <param name="key">The secret key used for encryption/decryption</param>
+    /// <param name="nonce">Number used once that must be unique for each encryption with the same key</param>
+    /// <param name="progress">Optional progress reporting mechanism that reports bytes processed.</param>
+    /// <param name="cancellationToken">Optional cancellation token to cancel the operation</param>
+    /// <returns>A task representing the asynchronous decryption operation</returns>
+    Task DecryptAsync(
+        Stream input,
+        Stream output,
+        byte[] key,
+        byte[] nonce,
+        IProgress<long>? progress = null,
+        CancellationToken cancellationToken = default);
 }

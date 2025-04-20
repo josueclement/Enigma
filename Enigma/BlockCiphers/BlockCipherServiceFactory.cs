@@ -6,8 +6,19 @@ using System;
 namespace Enigma.BlockCiphers;
 
 /// <summary>
-/// Block cipher service factory
+/// A factory for creating block cipher services with various modes of operation and padding schemes.
 /// </summary>
+/// <remarks>
+/// <para>
+/// This factory provides methods to create block cipher services using different cipher modes:
+/// <list type="bullet">
+///   <item><description>ECB (Electronic Codebook)</description></item>
+///   <item><description>CBC (Cipher Block Chaining)</description></item>
+///   <item><description>SIC (Segmented Integer Counter, also known as CTR mode)</description></item>
+///   <item><description>GCM (Galois/Counter Mode)</description></item>
+/// </list>
+/// </para>
+/// </remarks>
 public class BlockCipherServiceFactory : IBlockCipherServiceFactory
 {
     /// <inheritdoc />
