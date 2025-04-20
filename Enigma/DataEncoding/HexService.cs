@@ -3,7 +3,7 @@ using Org.BouncyCastle.Utilities.Encoders;
 namespace Enigma.DataEncoding;
 
 /// <summary>
-/// Hexadecimal encoding service
+/// Provides methods for encoding and decoding data using hexadecimal representation.
 /// </summary>
 public class HexService : IEncodingService
 {

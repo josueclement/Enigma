@@ -5,11 +5,24 @@ using System;
 namespace Enigma.PublicKey;
 
 /// <summary>
-/// Public-key service
+/// Provides cryptographic operations for asymmetric (public-key) encryption, decryption, 
+/// digital signatures, and key pair generation using the BouncyCastle library.
 /// </summary>
-/// <param name="cipherFactory">Cipher factory</param>
-/// <param name="keyPairGeneratorFactory">Key pair generator factory</param>
-/// <param name="signerFactory">Signer factory</param>
+/// <remarks>
+/// This service encapsulates common public-key cryptography operations including:
+/// <list type="bullet">
+///   <item><description>Key pair generation with configurable key sizes</description></item>
+///   <item><description>Data encryption using public keys</description></item>
+///   <item><description>Data decryption using private keys</description></item>
+///   <item><description>Digital signature creation using private keys</description></item>
+///   <item><description>Signature verification using public keys</description></item>
+/// </list>
+/// The implementation relies on factory methods to create the necessary cryptographic primitives,
+/// allowing for flexibility in the underlying algorithms used.
+/// </remarks>
+/// <param name="cipherFactory">Factory method that creates the asymmetric block cipher implementation</param>
+/// <param name="keyPairGeneratorFactory">Factory method that creates the key pair generator implementation</param>
+/// <param name="signerFactory">Factory method that creates the digital signature implementation</param>
 public class PublicKeyService(
     Func<IAsymmetricBlockCipher> cipherFactory,
     Func<IAsymmetricCipherKeyPairGenerator> keyPairGeneratorFactory,

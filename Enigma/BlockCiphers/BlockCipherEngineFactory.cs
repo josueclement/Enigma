@@ -4,7 +4,7 @@ using Org.BouncyCastle.Crypto;
 namespace Enigma.BlockCiphers;
 
 /// <summary>
-/// Block cipher engine factory
+/// Factory class that creates various block cipher engine implementations.
 /// </summary>
 public class BlockCipherEngineFactory : IBlockCipherEngineFactory
 {

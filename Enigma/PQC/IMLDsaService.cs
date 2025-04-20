@@ -3,31 +3,32 @@
 namespace Enigma.PQC;
 
 /// <summary>
-/// Definition for Module-Lattice-Based digital signature algorithm (ML-DSA) services
+/// Provides cryptographic operations for the Module-Lattice-Based Digital Signature Algorithm (ML-DSA),
+/// a post-quantum cryptographic signature scheme that is resistant to quantum computing attacks.
 /// </summary>
 // ReSharper disable once InconsistentNaming
 public interface IMLDsaService
 {
     /// <summary>
-    /// Generate key pair
+    /// Generates a new asymmetric key pair for use with ML-DSA signatures.
     /// </summary>
-    /// <returns>Key pair</returns>
+    /// <returns>An asymmetric key pair containing both public and private keys.</returns>
     AsymmetricCipherKeyPair GenerateKeyPair();
     
     /// <summary>
-    /// Sign data with private key
+    /// Signs the specified data using the provided private key.
     /// </summary>
-    /// <param name="data">Data to sign</param>
-    /// <param name="privateKey">Private key</param>
-    /// <returns>Signature</returns>
+    /// <param name="data">The data to be signed, represented as a byte array.</param>
+    /// <param name="privateKey">The private key used for signing the data.</param>
+    /// <returns>A byte array containing the cryptographic signature.</returns>
     byte[] Sign(byte[] data, AsymmetricKeyParameter privateKey);
     
     /// <summary>
-    /// Verify signature
+    /// Verifies that a signature is valid for the given data using the provided public key.
     /// </summary>
-    /// <param name="data">Data to verify</param>
-    /// <param name="signature">Signature</param>
-    /// <param name="publicKey">Public key</param>
-    /// <returns>True if signature is valid, otherwise false</returns>
+    /// <param name="data">The original data that was signed, represented as a byte array.</param>
+    /// <param name="signature">The signature to verify, represented as a byte array.</param>
+    /// <param name="publicKey">The public key corresponding to the private key used for signing.</param>
+    /// <returns>True if the signature is valid for the given data and public key; otherwise, false.</returns>
     bool Verify(byte[] data, byte[] signature, AsymmetricKeyParameter publicKey);
 }

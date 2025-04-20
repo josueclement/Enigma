@@ -3,8 +3,15 @@
 namespace Enigma.Padding;
 
 /// <summary>
-/// Padding service factory
+/// Factory that creates various padding service implementations used for cryptographic operations.
+/// This factory provides methods to create different standard padding algorithms including:
+/// No Padding, PKCS7, ISO-7816, ISO-10126, and X.923.
 /// </summary>
+/// <remarks>
+/// The factory implements the IPaddingServiceFactory interface and instantiates
+/// specific padding service implementations based on the requested padding algorithm.
+/// Each method returns an IPaddingService that encapsulates the corresponding BouncyCastle padding implementation.
+/// </remarks>
 public class PaddingServiceFactory : IPaddingServiceFactory
 {
     /// <inheritdoc />
