@@ -25,29 +25,25 @@ internal static class Program
 
         try
         {
-            // Create block cipher service
-            var service = new BlockCipherService("AES/GCM");
-
-            // Generate random key and nonce
-            var key = RandomUtils.GenerateRandomBytes(32);
-            var nonce = RandomUtils.GenerateRandomBytes(12);
-            var parameters = new BlockCipherParametersFactory().CreateGcmParameters(key, nonce, "associated data".GetUtf8Bytes());
-
-            var data = "This is a secret message !".GetUtf8Bytes();
-
-            // Encrypt
-            using var inputEnc = new MemoryStream(data);
-            using var outputEnc = new MemoryStream();
-            await service.EncryptAsync(inputEnc, outputEnc, parameters);
-
-            var encrypted = outputEnc.ToArray();
-
-            // Decrypt
-            using var inputDec = new MemoryStream(encrypted);
-            using var outputDec = new MemoryStream();
-            await service.DecryptAsync(inputDec, outputDec, parameters);
-
-            var decrypted = outputDec.ToArray();
+            // KDF = ARGON2ID
+            // Ctrl.lanes = lanes:4
+            // Ctrl.iter = iter:3
+            // Ctrl.memcost = memcost:32
+            // Ctrl.pass = hexpass:0101010101010101010101010101010101010101010101010101010101010101
+            // Ctrl.salt = hexsalt:02020202020202020202020202020202
+            // Output = 03aab965c12001c9d7d0d2de33192c0494b684bb148196d73c1df1acaf6d0c2e
+            
+            
+            
+            var service = new Argon2Service();
+            var key = service.GenerateKey(
+                size: 32,
+                passwordBytes: "".FromHexString(),
+                salt: "02020202020202020202020202020202".FromHexString(),
+                iterations: 3,
+                parallelism: 4,
+                memoryPowOfTwo: 5);
+            var res = key.ToHexString();
         }
         catch (Exception ex)
         {

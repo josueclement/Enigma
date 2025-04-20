@@ -36,6 +36,21 @@ public class Argon2Service
     /// Memory used will be 2^memoryPowOfTwo KiB. Default is 16 (64 MiB).
     /// Higher values increase security but also memory usage.
     /// </param>
+    /// <param name="argon2Variant">
+    /// The Argon2 variant to use. Default is Argon2id (0x02).
+    /// <list type="bullet">
+    /// <item><description>0x00: Argon2d</description></item>
+    /// <item><description>0x01: Argon2i</description></item>
+    /// <item><description>0x02: Argon2id</description></item>
+    /// </list>
+    /// </param>
+    /// <param name="argon2Version">
+    /// The Argon2 version to use. Default is Argon2 1.3 (0x13).
+    /// <list type="bullet">
+    /// <item><description>0x10: Argon2 1.0</description></item>
+    /// <item><description>0x13: Argon2 1.3</description></item>
+    /// </list>
+    /// </param>
     /// <returns>The derived key as a byte array of the specified size.</returns>
     public byte[] GenerateKey(
         int size,
@@ -43,10 +58,12 @@ public class Argon2Service
         byte[] salt,
         int iterations = 10,
         int parallelism = 4,
-        int memoryPowOfTwo = 16)
+        int memoryPowOfTwo = 16,
+        int argon2Variant = 0x02,
+        int argon2Version = 0x13)
     {
-        var argon2Params = new Argon2Parameters.Builder(Argon2Parameters.Argon2id)
-            .WithVersion(Argon2Parameters.Version13)
+        var argon2Params = new Argon2Parameters.Builder(argon2Variant)
+            .WithVersion(argon2Version)
             .WithIterations(iterations)
             .WithMemoryPowOfTwo(memoryPowOfTwo)
             .WithParallelism(parallelism)
