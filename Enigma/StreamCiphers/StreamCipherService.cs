@@ -58,7 +58,7 @@ public class StreamCipherService : IStreamCipherService
             long totalBytesProgress = 0;
             
             // Read from the input stream
-            while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
+            while ((bytesRead = await input.ReadAsync(buffer, 0, _bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 
@@ -75,9 +75,8 @@ public class StreamCipherService : IStreamCipherService
         }
         finally
         {
-            // Clear the buffer and return it to the pool
-            Array.Clear(buffer, 0, buffer.Length);
-            _arrayPool.Return(buffer);
+            // Return the buffer to the pool and clear it
+            _arrayPool.Return(buffer, clearArray: true);
         }
     }
 
@@ -109,7 +108,7 @@ public class StreamCipherService : IStreamCipherService
             long totalBytesProgress = 0;
             
             // Read from the cipher stream
-            while ((bytesRead = await cipherStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
+            while ((bytesRead = await cipherStream.ReadAsync(buffer, 0, _bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 
@@ -126,9 +125,8 @@ public class StreamCipherService : IStreamCipherService
         }
         finally
         {
-            // Clear the buffer and return it to the pool
-            Array.Clear(buffer, 0, buffer.Length);
-            _arrayPool.Return(buffer);
+            // Return the buffer to the pool and clear it
+            _arrayPool.Return(buffer, clearArray: true);
         }
     }
 }
