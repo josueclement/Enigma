@@ -31,7 +31,7 @@ public class HashService : IHashService
     /// <inheritdoc />
     public async Task<byte[]> HashAsync(
         Stream input,
-        IProgress<long>? progress = null,
+        IProgress<int>? progress = null,
         CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -45,7 +45,6 @@ public class HashService : IHashService
         try
         {
             int bytesRead;
-            long totalBytesProgress = 0;
 
             // Read from the input stream
             while ((bytesRead = await input.ReadAsync(buffer, 0, _bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
@@ -56,8 +55,7 @@ public class HashService : IHashService
                 digest.BlockUpdate(buffer, 0, bytesRead);
                 
                 // Report progress
-                totalBytesProgress += bytesRead;
-                progress?.Report(totalBytesProgress);
+                progress?.Report(bytesRead);
             }
 
             // Compute and return the hash
