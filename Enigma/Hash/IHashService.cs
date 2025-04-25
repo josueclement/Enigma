@@ -19,6 +19,6 @@ public interface IHashService
     /// <returns>A task that represents the asynchronous operation. The task result contains the computed hash as a byte array.</returns>
     Task<byte[]> HashAsync(
         Stream input,
-        IProgress<long>? progress = null,
+        IProgress<int>? progress = null,
         CancellationToken cancellationToken = default);
 }

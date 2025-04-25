@@ -27,7 +27,7 @@ public interface IStreamCipherService
         Stream output,
         byte[] key,
         byte[] nonce,
-        IProgress<long>? progress = null,
+        IProgress<int>? progress = null,
         CancellationToken cancellationToken = default);
     
     /// <summary>
@@ -45,6 +45,6 @@ public interface IStreamCipherService
         Stream output,
         byte[] key,
         byte[] nonce,
-        IProgress<long>? progress = null,
+        IProgress<int>? progress = null,
         CancellationToken cancellationToken = default);
 }

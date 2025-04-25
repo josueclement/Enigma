@@ -26,7 +26,7 @@ public interface IBlockCipherService
         Stream input,
         Stream output,
         ICipherParameters cipherParameters,
-        IProgress<long>? progress = null,
+        IProgress<int>? progress = null,
         CancellationToken cancellationToken = default);
     
     /// <summary>
@@ -42,6 +42,6 @@ public interface IBlockCipherService
         Stream input,
         Stream output,
         ICipherParameters cipherParameters,
-        IProgress<long>? progress = null,
+        IProgress<int>? progress = null,
         CancellationToken cancellationToken = default);
 }
