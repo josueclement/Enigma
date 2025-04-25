@@ -36,7 +36,7 @@ public class StreamCipherService : IStreamCipherService
         Stream output,
         byte[] key,
         byte[] nonce,
-        IProgress<long>? progress = null,
+        IProgress<int>? progress = null,
         CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -55,7 +55,6 @@ public class StreamCipherService : IStreamCipherService
         try
         {
             int bytesRead;
-            long totalBytesProgress = 0;
             
             // Read from the input stream
             while ((bytesRead = await input.ReadAsync(buffer, 0, _bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
@@ -66,8 +65,7 @@ public class StreamCipherService : IStreamCipherService
                 await cipherStream.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
                 
                 // Report progress
-                totalBytesProgress += bytesRead;
-                progress?.Report(totalBytesProgress);
+                progress?.Report(bytesRead);
             }
             
             // Flush the cipher stream
@@ -86,7 +84,7 @@ public class StreamCipherService : IStreamCipherService
         Stream output,
         byte[] key,
         byte[] nonce,
-        IProgress<long>? progress = null,
+        IProgress<int>? progress = null,
         CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -105,7 +103,6 @@ public class StreamCipherService : IStreamCipherService
         try
         {
             int bytesRead;
-            long totalBytesProgress = 0;
             
             // Read from the cipher stream
             while ((bytesRead = await cipherStream.ReadAsync(buffer, 0, _bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
@@ -116,8 +113,7 @@ public class StreamCipherService : IStreamCipherService
                 await output.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
                 
                 // Report progress
-                totalBytesProgress += bytesRead;
-                progress?.Report(totalBytesProgress);
+                progress?.Report(bytesRead);
             }
             
             // Flush the output stream
