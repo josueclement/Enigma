@@ -1,7 +1,7 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using Enigma.PQC;
+﻿using Enigma.PQC;
 using Enigma.Utils;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace UnitTests.PQC;
 
