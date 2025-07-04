@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Enigma.Extensions;
-using Enigma.KDF;
+using Enigma.Cryptography.Extensions;
+using Enigma.Cryptography.KDF;
 
 namespace UnitTests.KDF;
 
