@@ -1,5 +1,5 @@
-﻿using Enigma.DataEncoding;
-using Enigma.Hash;
+﻿using Enigma.Cryptography.DataEncoding;
+using Enigma.Cryptography.Hash;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

@@ -1,5 +1,5 @@
-﻿using Enigma.PublicKey;
-using Enigma.Utils;
+﻿using Enigma.Cryptography.PublicKey;
+using Enigma.Cryptography.Utils;
 using System.IO;
 using System.Text;
 

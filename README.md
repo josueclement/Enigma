@@ -1,6 +1,6 @@
-# Enigma
+# Enigma.Cryptography
 
-Enigma is a .NET cryptography library based on `BouncyCastle.Cryptography`.
+Enigma.Cryptography is a .NET cryptography library based on `BouncyCastle.Cryptography`.
 
 [Bouncy Castle GitHub repository](https://github.com/bcgit/bc-csharp)
 
