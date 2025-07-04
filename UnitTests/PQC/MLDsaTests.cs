@@ -1,5 +1,5 @@
-﻿using Enigma.PQC;
-using Enigma.Utils;
+﻿using Enigma.Cryptography.PQC;
+using Enigma.Cryptography.Utils;
 using System.IO;
 using System.Threading.Tasks;
 

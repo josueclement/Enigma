@@ -2,8 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Enigma.BlockCiphers;
-using Enigma.DataEncoding;
+using Enigma.Cryptography.BlockCiphers;
+using Enigma.Cryptography.DataEncoding;
 using Org.BouncyCastle.Crypto.Parameters;
 
 namespace UnitTests.BlockCiphers;

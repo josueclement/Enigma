@@ -160,7 +160,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Enigma\Enigma.csproj" />
+      <ProjectReference Include="..\Enigma.Cryptography\Enigma.Cryptography.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
-﻿using Enigma.DataEncoding;
-using Enigma.Padding;
+﻿using Enigma.Cryptography.DataEncoding;
+using Enigma.Cryptography.Padding;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

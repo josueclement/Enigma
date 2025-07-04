@@ -1,5 +1,5 @@
-﻿using Enigma.DataEncoding;
-using Enigma.StreamCiphers;
+﻿using Enigma.Cryptography.DataEncoding;
+using Enigma.Cryptography.StreamCiphers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

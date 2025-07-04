@@ -1,6 +1,6 @@
-﻿using Enigma.DataEncoding;
-using Enigma.BlockCiphers;
-using Enigma.Padding;
+﻿using Enigma.Cryptography.DataEncoding;
+using Enigma.Cryptography.BlockCiphers;
+using Enigma.Cryptography.Padding;
 using Org.BouncyCastle.Crypto.Parameters;
 using System.Collections.Generic;
 using System.IO;
